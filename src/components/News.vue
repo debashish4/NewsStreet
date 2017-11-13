@@ -11,9 +11,9 @@
       </div>
     </q-toolbar>
     <!--
-                    Defining left side of QLayout.
-                    Notice slot="left"
-                  -->
+                              Defining left side of QLayout.
+                              Notice slot="left"
+                            -->
     <div slot="left">
       <q-side-link item to="/test-layout" exact>
         <q-item-main label="About" />
@@ -24,17 +24,22 @@
     </div>
   
   
-    <q-carousel :dots="true" class="text-white article">
+    <q-carousel class="text-white article">
       <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex">
-        <p>
-          {{article.title}}
-        </p>
-        <p>
-          <img :src="article.urlToImage" alt="" width="100%">
-        </p>
-        <p>
-          DESCRIPTION {{article.description}}
-        </p>
+        <div class="article-image row justify-center items-center">
+          <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
+          <q-spinner-cube class="spinner" color="primary" :size="50" />
+        </div>
+        <div class="news-text">
+          <h2>
+            {{article.title}}
+          </h2>
+          <p>
+          </p>
+          <p>
+            {{article.description}}
+          </p>
+        </div>
       </div>
     </q-carousel>
   
@@ -53,6 +58,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import {
     QLayout,
     QToolbar,
@@ -65,7 +71,8 @@
     QItemSide,
     QItemMain,
     QSideLink,
-    QCarousel
+    QCarousel,
+    QSpinnerCube
   } from "quasar";
   import {
     newsSourcetoApiString
@@ -73,6 +80,8 @@
   import {
     fetchNews
   } from "../network/requestNews";
+  import VueLazyload from 'vue-lazyload';
+  Vue.use(VueLazyload);
   
   export default {
     name: "News",
@@ -88,7 +97,8 @@
       QItemSide,
       QItemMain,
       QSideLink,
-      QCarousel
+      QCarousel,
+      QSpinnerCube
     },
     data() {
       return {
@@ -110,21 +120,83 @@
           console.log('newsCollection', this.newsCollection);
         });
       });
+    },
+    methods: {
+      cordovaShare(shareDetails) {
+        console.log({
+          shareDetails
+        });
+        const {
+          description,
+          title,
+          url,
+          urlToImage
+        } = shareDetails;
+        // this is the complete list of currently supported params you can pass to the plugin (all optional)
+        var options = {
+          message: `${title}
+            
+            ${description}` || null, // not supported on some apps (Facebook, Instagram)
+          subject: title, // fi. for email
+          files: null, // an array of filenames either locally or remotely
+          url: url || null,
+          chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
+        }
+  
+        var onSuccess = function(result) {
+          console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+          console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+        }
+  
+        var onError = function(msg) {
+          console.log("Sharing failed with message: " + msg);
+        }
+  
+        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+      }
     }
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .article {
     width: 100vw;
-    background: purple;
+    background: white;
     height: calc(100vh - 100px);
     overflow: hidden;
   }
   
   .news {
     width: 100%;
-    padding: 1rem;
+    padding: 0;
     overflow: hidden;
+    .article-image {
+      position: relative;
+      width: 100%;
+      padding: 0;
+      background: linear-gradient(to bottom, rgba(245, 247, 250, 1) 0%, rgba(195, 207, 226, 1) 100%);
+    }
+    .spinner{
+      position: absolute;
+    }
+    img {
+      opacity: 0;
+      width: 100%;
+      height: 200px;
+      display: inline-block;
+      transition: opacity 1s ease;
+    }
+    .news-text {
+      padding: 1rem;
+    }
+    img[lazy=loading] {
+      background: black;
+    }
+    img[lazy=loaded] {
+      opacity: 1
+    }
+    img[lazy=loaded]+ .spinner {
+      display:none;
+    }
   }
 </style>

@@ -1,0 +1,27 @@
+html {
+    body {
+        font-family: 'Raleway', 'sans-serif';
+      }
+      h2 {
+        font-family: 'Numans', 'sans-serif';
+        font-size: 1.3rem;
+        color: #171717;
+        margin: 0;
+        line-height: 1.2;
+      }
+      p {
+        color: #343434;
+        font-size: 1.2rem;
+        line-height: 1.4;
+    }
+}
+
+@font-face {
+    font-family: 'Numans';
+    src: url('../assets/fonts/Numans/Numans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('../assets/fonts/Raleway/Raleway-Regular.ttf') format('truetype');
+}
