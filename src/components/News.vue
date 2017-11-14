@@ -9,11 +9,13 @@
       <div class="q-toolbar-title">
         News Street
       </div>
+      <button @click="openWindow">click</button>
+  
     </q-toolbar>
     <!--
-                              Defining left side of QLayout.
-                              Notice slot="left"
-                            -->
+                                  Defining left side of QLayout.
+                                  Notice slot="left"
+                                -->
     <div slot="left">
       <q-side-link item to="/test-layout" exact>
         <q-item-main label="About" />
@@ -46,7 +48,11 @@
   
     <!-- Page insertion point -->
     <router-view></router-view>
-  
+    <div>
+      <q-modal v-model="openModal" @open="notify('open')">
+        <shimmer v-if="showShimmer"></shimmer>
+      </q-modal>
+    </div>
   
     <!-- Footer -->
     <q-toolbar slot="footer">
@@ -72,15 +78,18 @@
     QItemMain,
     QSideLink,
     QCarousel,
-    QSpinnerCube
+    QSpinnerCube,
+    QModal,
   } from "quasar";
   import {
-    newsSourcetoApiString
+    newsSourcetoApiString,
+    openInAppBrowser
   } from '../utils/commonUtils';
   import {
     fetchNews
   } from "../network/requestNews";
   import VueLazyload from 'vue-lazyload';
+  import Shimmer from '@/Shimmer.vue'
   Vue.use(VueLazyload);
   
   export default {
@@ -98,7 +107,9 @@
       QItemMain,
       QSideLink,
       QCarousel,
-      QSpinnerCube
+      QSpinnerCube,
+      QModal,
+      Shimmer
     },
     data() {
       return {
@@ -106,7 +117,9 @@
         popUpContent: "",
         newsCollection: [],
         isPopupOpen: false,
-        preLoader: true
+        preLoader: true,
+        openModal: false,
+        showShimmer: false
       };
     },
     mounted() {
@@ -122,6 +135,19 @@
       });
     },
     methods: {
+      openWindow() {
+        this.openModal = true;
+        try {
+          if (cordova) {
+            openInAppBrowser();
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      },
+      notify() {
+        this.showShimmer = true;
+      },
       cordovaShare(shareDetails) {
         console.log({
           shareDetails
@@ -135,8 +161,8 @@
         // this is the complete list of currently supported params you can pass to the plugin (all optional)
         var options = {
           message: `${title}
-            
-            ${description}` || null, // not supported on some apps (Facebook, Instagram)
+                
+                ${description}` || null, // not supported on some apps (Facebook, Instagram)
           subject: title, // fi. for email
           files: null, // an array of filenames either locally or remotely
           url: url || null,
@@ -176,13 +202,13 @@
       padding: 0;
       background: linear-gradient(to bottom, rgba(245, 247, 250, 1) 0%, rgba(195, 207, 226, 1) 100%);
     }
-    .spinner{
+    .spinner {
       position: absolute;
     }
     img {
       opacity: 0;
       width: 100%;
-      height: 200px;
+      height: 250px;
       display: inline-block;
       transition: opacity 1s ease;
     }
@@ -195,8 +221,8 @@
     img[lazy=loaded] {
       opacity: 1
     }
-    img[lazy=loaded]+ .spinner {
-      display:none;
+    img[lazy=loaded]+.spinner {
+      display: none;
     }
   }
 </style>
