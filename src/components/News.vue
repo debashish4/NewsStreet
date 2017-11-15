@@ -13,9 +13,9 @@
   
     </q-toolbar>
     <!--
-                                  Defining left side of QLayout.
-                                  Notice slot="left"
-                                -->
+                                    Defining left side of QLayout.
+                                    Notice slot="left"
+                                  -->
     <div slot="left">
       <q-side-link item to="/test-layout" exact>
         <q-item-main label="About" />
@@ -26,7 +26,7 @@
     </div>
   
   
-    <q-carousel class="text-white article">
+    <q-carousel class="text-white article" v-touch-swipe.vertical="userHasSwiped">
       <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex">
         <div class="article-image row justify-center items-center">
           <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
@@ -49,7 +49,8 @@
     <!-- Page insertion point -->
     <router-view></router-view>
     <div>
-      <q-modal v-model="openModal" @open="notify('open')">
+      <q-modal v-model="isReadMorePanelOpen" @open="notify('open')">
+        <button @click="toggleReadMorePanel">close</button>
         <shimmer v-if="showShimmer"></shimmer>
       </q-modal>
     </div>
@@ -64,7 +65,11 @@
 </template>
 
 <script>
-  import Vue from 'vue'
+  import Vue from 'vue';
+  import {
+    mapActions,
+    mapState
+  } from 'vuex';
   import {
     QLayout,
     QToolbar,
@@ -80,6 +85,7 @@
     QCarousel,
     QSpinnerCube,
     QModal,
+    TouchSwipe
   } from "quasar";
   import {
     newsSourcetoApiString,
@@ -111,6 +117,9 @@
       QModal,
       Shimmer
     },
+     directives: {
+        TouchSwipe
+    },
     data() {
       return {
         opened: false,
@@ -135,8 +144,9 @@
       });
     },
     methods: {
+      ...mapActions(['toggleReadMorePanel']),
       openWindow() {
-        this.openModal = true;
+        this.toggleReadMorePanel();
         try {
           if (cordova) {
             openInAppBrowser();
@@ -147,6 +157,10 @@
       },
       notify() {
         this.showShimmer = true;
+      },
+      userHasSwiped(data){
+        this.openWindow();
+        console.log('swiped', data)
       },
       cordovaShare(shareDetails) {
         console.log({
@@ -161,8 +175,8 @@
         // this is the complete list of currently supported params you can pass to the plugin (all optional)
         var options = {
           message: `${title}
-                
-                ${description}` || null, // not supported on some apps (Facebook, Instagram)
+                  
+                  ${description}` || null, // not supported on some apps (Facebook, Instagram)
           subject: title, // fi. for email
           files: null, // an array of filenames either locally or remotely
           url: url || null,
@@ -180,6 +194,11 @@
   
         window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
       }
+    },
+    computed: {
+      ...mapState({
+        isReadMorePanelOpen: state => state.app.isReadMorePanelOpen,
+      }),
     }
   };
 </script>
