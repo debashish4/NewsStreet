@@ -1,0 +1,96 @@
+$icomoon-font-path: "../assets/fonts/icons" !default;
+$ns-business: "\e900";
+$ns-entertainment: "\e901";
+$ns-gaming: "\e902";
+$ns-general: "\e903";
+$ns-health-and-medical: "\e904";
+$ns-music: "\e905";
+$ns-politics: "\e906";
+$ns-science-and-nature: "\e907";
+$ns-sports: "\e908";
+$ns-technology: "\e909";
+
+
+@font-face {
+    font-family: 'newsStreet';
+    src : url('#{$icomoon-font-path}/newsStreet.ttf?om9b2e') format('truetype'),
+    url('#{$icomoon-font-path}/newsStreet.woff?om9b2e') format('woff'),
+    url('#{$icomoon-font-path}/newsStreet.svg?om9b2e#newsStreet') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="ns-"],
+[class*=" ns-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'newsStreet' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.ns-business {
+    &:before {
+        content: $ns-business;
+    }
+}
+
+.ns-entertainment {
+    &:before {
+        content: $ns-entertainment;
+    }
+}
+
+.ns-gaming {
+    &:before {
+        content: $ns-gaming;
+    }
+}
+
+.ns-general {
+    &:before {
+        content: $ns-general;
+    }
+}
+
+.ns-health-and-medical {
+    &:before {
+        content: $ns-health-and-medical;
+    }
+}
+
+.ns-music {
+    &:before {
+        content: $ns-music;
+    }
+}
+
+.ns-politics {
+    &:before {
+        content: $ns-politics;
+    }
+}
+
+.ns-science-and-nature {
+    &:before {
+        content: $ns-science-and-nature;
+    }
+}
+
+.ns-sports {
+    &:before {
+        content: $ns-sports;
+    }
+}
+
+.ns-technology {
+    &:before {
+        content: $ns-technology;
+    }
+}

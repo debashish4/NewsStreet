@@ -1,19 +1,26 @@
+
 html {
+    font-size: 10px;
     body {
         font-family: 'Raleway', 'sans-serif';
-      }
-      h2 {
+    }
+    h2 {
         font-family: 'Numans', 'sans-serif';
-        font-size: 1.3rem;
+        font-size: 2rem;
         color: #171717;
         margin: 0;
         line-height: 1.2;
-      }
-      p {
+    }
+    p {
         color: #343434;
-        font-size: 1.2rem;
+        font-size: 1.8rem;
         line-height: 1.4;
     }
+}
+
+// Quasar CSS Overrides
+.layout-aside.layout-aside-left {
+    width: 100%;
 }
 
 @font-face {

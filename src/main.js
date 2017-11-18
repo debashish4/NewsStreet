@@ -15,7 +15,7 @@ import Quasar from 'quasar'
 import router from './router'
 import App from './App'
 import store from './store'
-import './styles/global.scss'
+import './styles/main.scss'
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework

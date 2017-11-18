@@ -50,7 +50,7 @@ const openInAppBrowser = () => {
     console.log('inside in app browser')
     var url = 'https://cordova.apache.org';
     var target = '_blank';
-    var options = "location=no,hidden=yes,clearcache=yes,clearsessioncache=yes"
+    var options = "location=no,hidden=yes,clearcache=yes,clearsessioncache=yes,zoom=no"
     var ref = cordova.InAppBrowser.open(url, target, options);
 
     ref.addEventListener('loadstart', loadstartCallback);

@@ -23,6 +23,7 @@
       <q-side-link item to="/test-layout/toolbar">
         <q-item-main label="Toolbar" />
       </q-side-link>
+      <side-bar-panel name="briefcase" />
     </div>
   
   
@@ -95,7 +96,8 @@
     fetchNews
   } from "../network/requestNews";
   import VueLazyload from 'vue-lazyload';
-  import Shimmer from '@/Shimmer.vue'
+  import Shimmer from '@/Shimmer.vue';
+  import SideBarPanel from '@/SideBarPanel.vue'
   Vue.use(VueLazyload);
   
   export default {
@@ -115,7 +117,8 @@
       QCarousel,
       QSpinnerCube,
       QModal,
-      Shimmer
+      Shimmer,
+      SideBarPanel,
     },
      directives: {
         TouchSwipe
