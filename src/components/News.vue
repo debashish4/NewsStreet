@@ -20,10 +20,7 @@
       <q-side-link item to="/test-layout" exact>
         <q-item-main label="About" />
       </q-side-link>
-      <q-side-link item to="/test-layout/toolbar">
-        <q-item-main label="Toolbar" />
-      </q-side-link>
-      <side-bar-panel name="briefcase" />
+      <side-bar-panel />
     </div>
   
   

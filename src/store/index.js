@@ -10,6 +10,7 @@ const state = {
     app: {
         isDrawerOpen: false,
         isReadMorePanelOpen: false,
+        isNewsListModalOpen: false
     }
 };
 

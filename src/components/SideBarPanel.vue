@@ -1,64 +1,70 @@
 <template>
     <div class="side-bar-panel">
-        <div class="categories">
-            <div class="icon technology">
+        <div class="categories clearfix">
+            <div class="icon technology" @click="toggleNewsListModal">
                 <p><i class="ns-technology"></i>
                     <span class="text">Technology</span></p>
             </div>
-            <div class="icon general">
+            <div class="icon general" @click="toggleNewsListModal">
                 <p><i class="ns-general"></i>
                     <span class="text">General</span></p>
             </div>
-            <div class="icon entertainment">
+            <div class="icon entertainment" @click="toggleNewsListModal">
                 <p><i class="ns-entertainment"></i>
                     <span class="text">Entertainment</span></p>
             </div>
-            <div class="icon gaming">
+            <div class="icon gaming" @click="toggleNewsListModal">
                 <p><i class="ns-gaming"></i>
                     <span class="text">Gaming</span></p>
             </div>
-            <div class="icon health-and-medical">
+            <div class="icon health-and-medical" @click="toggleNewsListModal">
                 <p><i class="ns-health-and-medical"></i>
                     <span class="text">Health & Medical</span></p>
             </div>
-            <div class="icon business">
+            <div class="icon business" @click="toggleNewsListModal">
                 <p><i class="ns-business"></i>
                     <span class="text">Business</span></p>
             </div>
-            <div class="icon politics">
+            <div class="icon politics" @click="toggleNewsListModal">
                 <p><i class="ns-politics"></i>
                     <span class="text">Politics</span></p>
             </div>
-            <div class="icon sports">
+            <div class="icon sports" @click="toggleNewsListModal">
                 <p><i class="ns-sports"></i>
                     <span class="text">Sports</span></p>
             </div>
-            <div class="icon science-and-nature">
+            <div class="icon science-and-nature" @click="toggleNewsListModal">
                 <p><i class="ns-science-and-nature"></i>
                     <span class="text">Science & Nature</span></p>
             </div>
-            <div class="icon music">
+            <div class="icon music" @click="toggleNewsListModal">
                 <p><i class="ns-music"></i>
                     <span class="text">Music</span></p>
             </div>
-    
+        
         </div>
-    
+        <news-select-modal/> 
     </div>
 </template>
 
 <script>
     import {
         QIcon
-    } from 'quasar';
+    } from 'quasar'
+    import NewsSelectModal from '@/NewsSelectModal'
+    import {mapActions} from 'vuex'
+
     export default {
         data() {
             return {
-    
             }
         },
+        methods:{
+            ...mapActions(['toggleNewsListModal']),
+        },
         components: {
-            QIcon
+            QIcon,
+            NewsSelectModal
         }
     }
 </script>
@@ -94,7 +100,7 @@
     }
     
     .business {
-        background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        background-image: linear-gradient(60deg, #96deda 0%, #50c9c3 100%);
     }
     
     .entertainment {
@@ -110,15 +116,15 @@
     }
     
     .health-and-medical {
-        background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+        background-image: linear-gradient(-60deg, #a8edea 0%, #fed6e3 100%);
     }
     
     .music {
-        background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+        background-image: linear-gradient(-60deg, #accbee 0%, #e7f0fd 100%);
     }
     
     .politics {
-        background: linear-gradient(-180deg, #BCC5CE 0%, #929EAD 98%), radial-gradient(at top left, rgba(255, 255, 255, 0.30) 0%, rgba(0, 0, 0, 0.30) 100%);
+        background: linear-gradient(-180deg, #BCC5CE 0%, #929EAD 100%);
     }
     
     .science-and-nature {
@@ -126,11 +132,11 @@
     }
     
     .sports {
-        background-image: linear-gradient(to right, #ffc3a0 0%, #ffafbd 100%);
+        background-image: linear-gradient(60deg, #ffc3a0 0%, #ffafbd 100%);
     }
     
     .technology {
-        background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
+        background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 100%);
     }
 </style>
 
