@@ -90,7 +90,8 @@
     openInAppBrowser
   } from '../utils/commonUtils';
   import {
-    fetchNews
+    fetchNews,
+    stringifyArray,
   } from "../network/requestNews";
   import VueLazyload from 'vue-lazyload';
   import Shimmer from '@/Shimmer.vue';
@@ -135,12 +136,16 @@
       let selectedLs = ["the-next-web", "techcrunch"];
       let transformed = newsSourcetoApiString(selectedLs);
       // TO DO - Convert to asycn await 
-      fetchNews(transformed).forEach(item => {
-        item.then(data => this.newsCollection = [...this.newsCollection, ...data.articles]).then((data) => {
-          this.preLoader = false;
-          console.log("turning of preloader");
-          console.log('newsCollection', this.newsCollection);
-        });
+      // fetchNews(transformed).forEach(item => {
+      //   item.then(data => this.newsCollection = [...this.newsCollection, ...data.articles]).then((data) => {
+      //     this.preLoader = false;
+      //     console.log("turning of preloader");
+      //   });
+      // });
+
+      // let Stringified = stringifyArray(transformed)
+      fetchNews(selectedLs).then(res => {
+        this.newsCollection = res.articles;
       });
     },
     methods: {

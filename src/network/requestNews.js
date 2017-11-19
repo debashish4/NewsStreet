@@ -1,25 +1,24 @@
-import { ARTICLES, API_KEY, SOURCES } from '../constants/api';
-
-console.log(API_KEY);
+import axios from 'axios'
+import { ARTICLES, API_KEY, SOURCES, TOP_HEADLINES } from '../constants/api'
+import { stringifyArray } from '../utils/commonUtils'
 
 
 const fetchNews = (checkedItems) => {
-	 let test = checkedItems.map((item, index, arr) => {
-		return fetch(`${ARTICLES}source=${item}&apiKey=${API_KEY}`, { method: "get" })
-			.then(res => res.json())
-			.then(res => res)
-			.catch(err => err)
-	})
-	console.log({test});
-	return test;
-}
+	let stringified = stringifyArray(checkedItems);
+	return axios({
+		method: 'GET',
+		url: `${TOP_HEADLINES}sources=${stringified}`,
+		headers: { 'X-Api-Key': `${API_KEY}` },
+	}).then(res => res.data);
+};
+
 
 const fetchNewsSource = () => {
-	return fetch(`${SOURCES}`)
-	.then(res => res.json())
-	.then(res => res)
-	.catch(err => err)
-}
-
+	return axios({
+		method: 'GET',
+		url: `${SOURCES}`,
+		headers: { 'X-Api-Key': `${API_KEY}` },
+	}).then(res => res.data);
+};
 
 export { fetchNews, fetchNewsSource }

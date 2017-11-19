@@ -8,6 +8,7 @@ const NEWS_CATEGORY = {
     SCIENCE_AND_NATURE: "science-and-nature", 
     SPORT: "sport", 
     TECHNOLOGY: "technology",
+    HEALTH_AND_MEDICAL: "health-and-medical",
 }
 
 export {NEWS_CATEGORY};
