@@ -58,11 +58,7 @@
     </div>
   
     <!-- Footer -->
-    <q-toolbar slot="footer">
-      <q-toolbar-title>
-        Layout Footer
-      </q-toolbar-title>
-    </q-toolbar>
+    <news-footer /> 
   </q-layout>
 </template>
 
@@ -100,6 +96,7 @@
   import VueLazyload from 'vue-lazyload';
   import Shimmer from '@/Shimmer.vue';
   import SideBarPanel from '@/SideBarPanel.vue'
+  import NewsFooter from '@/NewsFooter.vue'
   Vue.use(VueLazyload);
   
   export default {
@@ -121,6 +118,7 @@
       QModal,
       Shimmer,
       SideBarPanel,
+      NewsFooter
     },
      directives: {
         TouchSwipe
