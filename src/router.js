@@ -26,7 +26,8 @@ export default new VueRouter({
 
   routes: [
     { path: '/', component: load('News') },
-
+    { path: '/settings', component: load('Settings') },
+    { path: '/search', component: load('Search') },
     // Always leave this last one
     { path: '*', component: load('Error404') } // Not found
   ]

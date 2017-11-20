@@ -3,13 +3,18 @@
   <q-layout ref="layout" view="hHr LpR Fff">
     <!-- Layout header -->
     <q-toolbar slot="header">
-      <q-btn flat @click="$refs.layout.toggleLeft()">
-        <q-icon name="menu" />
+      <q-btn flat>
+        <router-link to="/settings"><q-icon name="settings" /></router-link>
       </q-btn>
       <div class="q-toolbar-title">
         News Street
       </div>
-      <button @click="openWindow">click</button>
+       <q-btn flat>
+        <router-link to="/search"><q-icon name="search" /></router-link>
+      </q-btn>
+      <q-btn flat @click="$refs.layout.toggleLeft()">
+        <q-icon name="menu" />
+      </q-btn>
   
     </q-toolbar>
     <!--
@@ -45,7 +50,6 @@
   
   
     <!-- Page insertion point -->
-    <router-view></router-view>
     <div>
       <q-modal v-model="isReadMorePanelOpen" @open="notify('open')">
         <button @click="toggleReadMorePanel">close</button>

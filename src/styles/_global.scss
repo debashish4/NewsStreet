@@ -30,6 +30,10 @@ html {
 }
 
 // Quasar CSS Overrides
+.layout-aside {
+    background: rgba(255, 255, 255, 0.9);
+}
+
 .layout-aside.layout-aside-left {
     width: 100%;
 }
