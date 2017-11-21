@@ -2,7 +2,7 @@
   <!-- Example using a QLayout as required -->
   <q-layout ref="layout" view="hHr LpR Fff">
     <!-- Layout header -->
-    <q-toolbar slot="header">
+    <!-- <q-toolbar slot="header">
       <q-btn flat>
         <router-link to="/settings"><q-icon name="settings" /></router-link>
       </q-btn>
@@ -16,17 +16,17 @@
         <q-icon name="menu" />
       </q-btn>
   
-    </q-toolbar>
+    </q-toolbar> -->
     <!--
                                     Defining left side of QLayout.
                                     Notice slot="left"
                                   -->
-    <div slot="left">
+    <!-- <div slot="left">
       <q-side-link item to="/test-layout" exact>
         <q-item-main label="About" />
       </q-side-link>
       <side-bar-panel />
-    </div>
+    </div> -->
   
   
     <q-carousel class="text-white article" v-touch-swipe.vertical="userHasSwiped">

@@ -12,4 +12,8 @@ const closeNewsListModal = ({ commit }) => {
     commit(types.CLOSE_NEWS_LIST_MODAL, false)
 }
 
-export { toggleReadMorePanel, toggleNewsListModal, closeNewsListModal }
+const saveSelectedNews = ({commit}, payload) => {
+    commit(types.SAVE_SELECTED_NEWS, payload)
+}
+
+export { toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}

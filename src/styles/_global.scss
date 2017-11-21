@@ -17,6 +17,10 @@ html {
     }
 }
 
+*::-webkit-scrollbar{
+    visibility: hidden;
+}
+
 .clearfix:after {
     content: " ";
     display: block;
@@ -30,8 +34,8 @@ html {
 }
 
 // Quasar CSS Overrides
-.layout-aside {
-    background: rgba(255, 255, 255, 0.9);
+.layout-aside.layout-aside-left {
+    background-image: url('../assets/cream-pixels.png');
 }
 
 .layout-aside.layout-aside-left {

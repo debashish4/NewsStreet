@@ -86,6 +86,7 @@
         mounted() {
             fetchNewsSource().then(res => {
                 res.sources.map((item, index, arr) => {
+                    item.isSelected = false; // used to select/deselect item in news source list
                     switch (item.category) {
                         case NEWS_CATEGORY.GENERAL:
                             {
@@ -114,7 +115,6 @@
                             }
                         case NEWS_CATEGORY.POLITICS:
                             {
-                                console.log("politics", item);
                                 this.NewsCategories.politics.push(item);
                                 break;
                             }
@@ -130,7 +130,6 @@
                             }
                         case NEWS_CATEGORY.SPORT:
                             {
-                                console.log("sport", item);
                                 this.NewsCategories.sport.push(item);
                                 break;
                             }
@@ -202,7 +201,6 @@
                     case NEWS_CATEGORY.SPORT:
                         {
                             this.selectNewsModalDataTitle = NEWS_CATEGORY.SPORT
-                            console.log('title', this.selectNewsModalDataTitle);
                             this.selectNewsModalData = this.NewsCategories.sport;
                             break;
                         }
@@ -232,7 +230,7 @@
         margin: 0.5rem;
         padding-top: 1rem;
         display: flex;
-        border-radius: 1rem;
+        border-radius: 0.8rem;
         float: left;
         align-items: center;
         justify-content: center;

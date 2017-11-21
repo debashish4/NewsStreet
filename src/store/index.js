@@ -11,6 +11,9 @@ const state = {
         isDrawerOpen: false,
         isReadMorePanelOpen: false,
         isNewsListModalOpen: false
+    },
+    news:{
+        selectedNews:[]
     }
 };
 
