@@ -11,13 +11,13 @@
                 </div>
             </div>
             <div class="action">
-                <q-btn class="cancel" @click="toggleNewsListModal" :flat="true">Cancel</q-btn>
-                    <q-btn class="save" icon="save" color="primary" @click="saveNews">
-                        Save
+                <q-btn class="deselectAll" color="secondary" @click="deselectAll">
+                        Deselect All
                     </q-btn>
-                    <q-btn class="save-continue" color="secondary">
-                        Save & Continue
+                    <q-btn class="okay" color="primary" @click="saveNews">
+                        Okay
                     </q-btn>
+                   
                 
             </div>
         </div>
@@ -59,15 +59,32 @@
         methods: {
             ...mapActions(['toggleNewsListModal', 'closeNewsListModal','saveSelectedNews']),
             selectNews(item, event){
-                // this.isSelected = !this.isSelected;
-                // document.querySelector("p").closest(".near.ancestor")
-                // let res = event.target.classList.contains('news-item');
                 item.isSelected = !item.isSelected;
                 this.selectedNews.push(item);
+                console.log('selectedNews', this.selectedNews);
             },
             saveNews(){
                 console.log('save news', this.selectedNews);
+                this.toggleNewsListModal();
                 this.saveSelectedNews(this.selectedNews);
+            },
+            deselectAll(){
+                let _toBeRemovedItemsIndex = [];
+                this.selectedNews.forEach((item, index, arr) => {
+                    if(item.category  === this.title){
+                        item.isSelected = false;
+                        _toBeRemovedItemsIndex.push(index);
+                    }
+                });
+                
+                for (var i = _toBeRemovedItemsIndex.length - 1; i >= 0; i--) {
+                    this.selectedNews.splice(_toBeRemovedItemsIndex[i], 1);
+                }
+
+             
+
+                console.log('_toBeRemovedItemsIndex',_toBeRemovedItemsIndex);
+                console.log('new selected news',this.selectedNews);
             }
         },
         components: {
@@ -143,17 +160,11 @@
         height: 5rem;
         overflow: hidden;
         background:#595959;
-        display: block;
+        display: flex;
         justify-content: space-between;
-        .cancel,
-        .save,
-        .save-continue {
-            float: right;
+        .okay,.deselectAll{
+            width: 50%;
             height: 100%;
-            color: #fff;
-        }
-        .cancel{
-            float:left;
         }
     }
 </style>

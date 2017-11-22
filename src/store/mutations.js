@@ -13,7 +13,7 @@ const mutations = {
     },
     [types.SAVE_SELECTED_NEWS](state, payload){
         console.log({payload});
-        state.news.selectedNews.push(...payload);
+        state.news.selectedNews = payload;
     }
 };
 
