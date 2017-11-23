@@ -6,7 +6,7 @@
                 <div v-for="(item, index) in newsSources" :key="index" :class="{'selected':item.isSelected}" class="news-item" @click="selectNews(item,$event)" >
                     <div class="news-thumb">
                         <p class="source-logo"><img :src="`https://icons.better-idea.org/icon?url=${item.url}&size=70..120..200`" :alt="`${item.name} logo`" /></p>
-                        <p class="source-name">{{item.name}}</p>
+                        <p class="source-name" @click.stop="test">{{item.name}}</p>
                     </div>
                 </div>
             </div>
@@ -43,6 +43,7 @@
                 open: false,
                 newsSources: [],
                 modalTitle: 'NewsStreet Channels',
+                selectedNewsId:[],
                 selectedNews: [],
             }
         },
@@ -59,9 +60,21 @@
         methods: {
             ...mapActions(['toggleNewsListModal', 'closeNewsListModal','saveSelectedNews']),
             selectNews(item, event){
-                item.isSelected = !item.isSelected;
-                this.selectedNews.push(item);
+                if(this.selectedNewsId.indexOf(item.id)  == '-1'){
+                    item.isSelected = !item.isSelected;
+                    this.selectedNewsId.push(item.id);
+                    this.selectedNews.push(item);
+                }else{
+                    item.isSelected = !item.isSelected;
+                    let indexOfItemToBeRemoved = this.selectedNewsId.indexOf(item.id);
+                    this.selectedNewsId.splice(indexOfItemToBeRemoved,1);
+                    this.selectedNews.splice(indexOfItemToBeRemoved,1);
+                }
                 console.log('selectedNews', this.selectedNews);
+                console.log('selectedNewsID', this.selectedNewsId);
+            },
+            deselectNews(item, event){
+                item.isSelected = !item.isSelected;
             },
             saveNews(){
                 console.log('save news', this.selectedNews);
@@ -79,12 +92,13 @@
                 
                 for (var i = _toBeRemovedItemsIndex.length - 1; i >= 0; i--) {
                     this.selectedNews.splice(_toBeRemovedItemsIndex[i], 1);
+                    this.selectedNewsId.splice(_toBeRemovedItemsIndex[i], 1);
                 }
-
-             
-
                 console.log('_toBeRemovedItemsIndex',_toBeRemovedItemsIndex);
                 console.log('new selected news',this.selectedNews);
+            },
+            test(){
+                console.log('works');
             }
         },
         components: {
