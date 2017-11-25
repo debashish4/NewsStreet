@@ -10,10 +10,14 @@ const toggleNewsListModal = ({commit}) => {
 
 const closeNewsListModal = ({ commit }) => {
     commit(types.CLOSE_NEWS_LIST_MODAL, false)
-}
+};
 
 const saveSelectedNews = ({commit}, payload) => {
     commit(types.SAVE_SELECTED_NEWS, payload)
-}
+};
 
-export { toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}
+const toggleDrawer = ({commit}) => {
+    commit(types.TOGGLE_DRAWER)
+};
+
+export { toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}

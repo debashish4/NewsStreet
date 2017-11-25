@@ -16,20 +16,13 @@
           <router-link to="/search">
             <q-icon name="search" /></router-link>
         </q-btn>
-        <q-btn flat @click="test">
+        <q-btn flat @click="toggleDrawer">
           <q-icon name="menu" />
         </q-btn>
   
       </q-toolbar>
   
-      <!--
-                                        Defining left side of QLayout.
-                                        Notice slot="left"
-                                      -->
       <div slot="left">
-        <q-side-link item to="/test-layout" exact>
-          <q-item-main label="About" />
-        </q-side-link>
         <side-bar-panel />
       </div>
       <router-view />
@@ -70,13 +63,25 @@
   export default {
     name: 'App',
     data() {
-      return {
-  
-      }
+      return {}
     },
-    methods:{
-      test(){
-        this.$refs.layout.showLeft()
+    computed: {
+      ...mapState({
+        isDrawerOpen: state => state.app.isDrawerOpen
+      })
+    },
+    methods: {
+      ...mapActions(['toggleDrawer']),
+      openDrawer() {
+        this.$refs.layout.showLeft();
+      },
+      closeDrawer() {
+        this.$refs.layout.hideLeft();
+      },
+    },
+    watch: {
+      isDrawerOpen: function(data) {
+        data ? this.openDrawer() : this.closeDrawer()
       }
     },
     components: {

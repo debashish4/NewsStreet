@@ -151,7 +151,7 @@
     
         },
         methods: {
-            ...mapActions(['toggleNewsListModal']),
+            ...mapActions(['toggleNewsListModal', 'toggleDrawer']),
             insertDataToSelectNewsModal(category) {
                 switch (category) {
                     case NEWS_CATEGORY.GENERAL:
@@ -219,6 +219,7 @@
             },
             loadNews(){
                 eventBus.$emit('loadNews', 'hello');
+                this.toggleDrawer();
             }
         },
         components: {

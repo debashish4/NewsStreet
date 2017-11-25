@@ -9,11 +9,13 @@ const mutations = {
         state.app.isNewsListModalOpen = !state.app.isNewsListModalOpen;
     },
     [types.CLOSE_NEWS_LIST_MODAL](state, payload){
-        state.app.isNewsListModalOpen = false
+        state.app.isNewsListModalOpen = false;
     },
     [types.SAVE_SELECTED_NEWS](state, payload){
-        console.log({payload});
         state.news.selectedNews = payload;
+    },
+    [types.TOGGLE_DRAWER](state){
+        state.app.isDrawerOpen = !state.app.isDrawerOpen;
     }
 };
 
