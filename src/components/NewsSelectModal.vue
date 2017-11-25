@@ -3,22 +3,22 @@
         <div class="news-list-wrapper">
             <h4 class="title">{{modalTitle}}</h4>
             <div class="news-list">
-                <div v-for="(item, index) in newsSources" :key="index" :class="{'selected':item.isSelected}" class="news-item" @click="selectNews(item,$event)" >
+                <div v-for="(item, index) in newsSources" :key="index" :class="{'selected':item.isSelected}" class="news-item" @click="selectNews(item,$event)">
                     <div class="news-thumb">
                         <p class="source-logo"><img :src="`https://icons.better-idea.org/icon?url=${item.url}&size=70..120..200`" :alt="`${item.name} logo`" /></p>
-                        <p class="source-name" @click.stop="test">{{item.name}}</p>
+                        <p class="source-name">{{item.name}}</p>
                     </div>
                 </div>
             </div>
             <div class="action">
                 <q-btn class="deselectAll" color="secondary" @click="deselectAll">
-                        Deselect All
-                    </q-btn>
-                    <q-btn class="okay" color="primary" @click="saveNews">
-                        Okay
-                    </q-btn>
-                   
-                
+                    Deselect All
+                </q-btn>
+                <q-btn class="okay" color="primary" @click="saveNews">
+                    Okay
+                </q-btn>
+    
+    
             </div>
         </div>
     </q-modal>
@@ -27,7 +27,8 @@
 <script>
     import {
         QBtn,
-        QModal
+        QModal,
+        LocalStorage
     } from 'quasar'
     import {
         mapActions,
@@ -43,7 +44,7 @@
                 open: false,
                 newsSources: [],
                 modalTitle: 'NewsStreet Channels',
-                selectedNewsId:[],
+                selectedNewsId: [],
                 selectedNews: [],
             }
         },
@@ -51,55 +52,93 @@
             ...mapState({
                 isNewsListModalOpen: state => state.app.isNewsListModalOpen
             }),
-            isSelected(){
-                return{
+            isSelected() {
+                return {
                     'selected': true
                 }
             }
         },
+        mounted() {
+            console.log({
+                newsSources: this.newsSources
+            });
+    
+            if (localStorage.getItem('selectedNews') && localStorage.getItem('selectedNews')) {
+                this.selectedNews = JSON.parse(localStorage.getItem('selectedNews'));
+                this.selectedNewsId = JSON.parse(localStorage.getItem('selectedNewsId'));
+            }
+        },
         methods: {
-            ...mapActions(['toggleNewsListModal', 'closeNewsListModal','saveSelectedNews']),
-            selectNews(item, event){
-                if(this.selectedNewsId.indexOf(item.id)  == '-1'){
+            ...mapActions(['toggleNewsListModal', 'closeNewsListModal', 'saveSelectedNews']),
+            selectNews(item, event) {
+                if (this.selectedNewsId.indexOf(item.id) == '-1') {
                     item.isSelected = !item.isSelected;
                     this.selectedNewsId.push(item.id);
                     this.selectedNews.push(item);
-                }else{
+                } else {
                     item.isSelected = !item.isSelected;
                     let indexOfItemToBeRemoved = this.selectedNewsId.indexOf(item.id);
-                    this.selectedNewsId.splice(indexOfItemToBeRemoved,1);
-                    this.selectedNews.splice(indexOfItemToBeRemoved,1);
+                    this.selectedNewsId.splice(indexOfItemToBeRemoved, 1);
+                    this.selectedNews.splice(indexOfItemToBeRemoved, 1);
                 }
                 console.log('selectedNews', this.selectedNews);
                 console.log('selectedNewsID', this.selectedNewsId);
+                console.log('newsSources', this.newsSources);
             },
-            deselectNews(item, event){
+            deselectNews(item, event) {
                 item.isSelected = !item.isSelected;
             },
-            saveNews(){
+            saveNews() {
                 console.log('save news', this.selectedNews);
                 this.toggleNewsListModal();
                 this.saveSelectedNews(this.selectedNews);
+                localStorage.setItem('selectedNews', JSON.stringify(this.selectedNews));
+                localStorage.setItem('selectedNewsId', JSON.stringify(this.selectedNewsId));
             },
-            deselectAll(){
+            deselectAll() {
                 let _toBeRemovedItemsIndex = [];
-                this.selectedNews.forEach((item, index, arr) => {
-                    if(item.category  === this.title){
+                let removedIdName = [];
+                console.log('selectedNews', this.selectedNews);
+                console.log({
+                    modalTitle: this.modalTitle
+                });
+                this.selectedNews.forEach((item, index) => {
+                    console.log({
+                        itemCategory: item.category,
+                        modalTitle: this.title
+                    });
+                    if (item.category === this.title) {
+                        console.log({
+                            title: this.modalTitle
+                        });
                         item.isSelected = false;
                         _toBeRemovedItemsIndex.push(index);
+                        console.log('_toBeRemovedItemsIndex', _toBeRemovedItemsIndex);
                     }
                 });
-                
+    
                 for (var i = _toBeRemovedItemsIndex.length - 1; i >= 0; i--) {
                     this.selectedNews.splice(_toBeRemovedItemsIndex[i], 1);
-                    this.selectedNewsId.splice(_toBeRemovedItemsIndex[i], 1);
+                    let removedItem = this.selectedNewsId.splice(_toBeRemovedItemsIndex[i], 1);
+                    removedIdName.push(...removedItem);
                 }
-                console.log('_toBeRemovedItemsIndex',_toBeRemovedItemsIndex);
-                console.log('new selected news',this.selectedNews);
+    
+                console.log({
+                    removedIdName
+                });
+                removedIdName.forEach((xitem, xindex) => {
+                    console.log({xitem});
+                    this.newsSources.some((yitem, yindex) => {
+                    console.log({yitem:yitem.id});
+                        if (xitem === yitem.id) {
+                            this.newsSources[yindex].isSelected = false;
+                            return true;
+                        }
+                    })
+                });
+                console.log('new selected news', this.selectedNews);
+                console.log('newsSources', this.newsSources);
             },
-            test(){
-                console.log('works');
-            }
         },
         components: {
             QBtn,
@@ -107,8 +146,18 @@
         },
         watch: {
             data: function(newNewsSources) {
-                this.newsSources = newNewsSources;
-                console.log('newsSources', this.newsSources);
+                if (this.selectedNews && this.selectedNewsId) {
+                    this.selectedNewsId.forEach((xitem, xindex) => {
+                        newNewsSources.some((yitem, yindex) => {
+                            if (xitem === yitem.id) {
+                                newNewsSources[yindex].isSelected = true;
+                                return true;
+                            }
+                        })
+                    });
+                    this.newsSources = newNewsSources;
+                }
+    
             },
             title: function(title) {
                 this.modalTitle = hyphenToSpace(title);
@@ -126,7 +175,7 @@
             padding: 1rem;
             height: 5rem;
             color: #fff;
-            background:#595959;
+            background: #595959;
         }
     }
     
@@ -173,10 +222,11 @@
     .action {
         height: 5rem;
         overflow: hidden;
-        background:#595959;
+        background: #595959;
         display: flex;
         justify-content: space-between;
-        .okay,.deselectAll{
+        .okay,
+        .deselectAll {
             width: 50%;
             height: 100%;
         }
