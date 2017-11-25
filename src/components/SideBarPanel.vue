@@ -44,23 +44,30 @@
     
         </div>
         <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" />
+        <div class="continue full-width">
+            <q-btn class="full-width" color="primary" big @click="loadNews">Load Selected News</q-btn>
+        </div>
     </div>
 </template>
 
 <script>
     import {
-        QIcon
+        QIcon,
+        QBtn
     } from 'quasar'
     import {
         mapActions
     } from 'vuex'
-    import NewsSelectModal from '@/NewsSelectModal'
+        import {
+            NEWS_CATEGORY
+        } from '../constants/UI_constants';
     import {
         fetchNewsSource
     } from '../network/requestNews'
     import {
-        NEWS_CATEGORY
-    } from '../constants/UI_constants';
+        eventBus
+    } from '../utils/eventBus'
+    import NewsSelectModal from '@/NewsSelectModal'
     
     export default {
         data() {
@@ -142,9 +149,6 @@
                 })
             })
     
-            this.$root.$on('openPanel', () => {
-                this.isPanelOpen = true
-            });
         },
         methods: {
             ...mapActions(['toggleNewsListModal']),
@@ -212,10 +216,14 @@
                         }
                 }
                 this.toggleNewsListModal();
+            },
+            loadNews(){
+                eventBus.$emit('loadNews', 'hello');
             }
         },
         components: {
             QIcon,
+            QBtn,
             NewsSelectModal
         }
     }
@@ -226,6 +234,15 @@
         width: 100%;
     }
     
+    .continue{
+        height: 50px;
+        position: fixed;
+        bottom: 0;
+        button{
+            height: 100%;
+        }
+    }
+
     .icon {
         margin: 0.5rem;
         padding-top: 1rem;

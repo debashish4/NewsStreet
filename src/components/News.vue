@@ -3,30 +3,30 @@
   <q-layout ref="layout" view="hHr LpR Fff">
     <!-- Layout header -->
     <!-- <q-toolbar slot="header">
-      <q-btn flat>
-        <router-link to="/settings"><q-icon name="settings" /></router-link>
-      </q-btn>
-      <div class="q-toolbar-title">
-        News Street
-      </div>
-       <q-btn flat>
-        <router-link to="/search"><q-icon name="search" /></router-link>
-      </q-btn>
-      <q-btn flat @click="$refs.layout.toggleLeft()">
-        <q-icon name="menu" />
-      </q-btn>
-  
-    </q-toolbar> -->
+        <q-btn flat>
+          <router-link to="/settings"><q-icon name="settings" /></router-link>
+        </q-btn>
+        <div class="q-toolbar-title">
+          News Street
+        </div>
+         <q-btn flat>
+          <router-link to="/search"><q-icon name="search" /></router-link>
+        </q-btn>
+        <q-btn flat @click="$refs.layout.toggleLeft()">
+          <q-icon name="menu" />
+        </q-btn>
+    
+      </q-toolbar> -->
     <!--
-                                    Defining left side of QLayout.
-                                    Notice slot="left"
-                                  -->
+                                      Defining left side of QLayout.
+                                      Notice slot="left"
+                                    -->
     <!-- <div slot="left">
-      <q-side-link item to="/test-layout" exact>
-        <q-item-main label="About" />
-      </q-side-link>
-      <side-bar-panel />
-    </div> -->
+        <q-side-link item to="/test-layout" exact>
+          <q-item-main label="About" />
+        </q-side-link>
+        <side-bar-panel />
+      </div> -->
   
   
     <q-carousel class="text-white article" v-touch-swipe.vertical="userHasSwiped">
@@ -58,7 +58,7 @@
     </div>
   
     <!-- Footer -->
-    <news-footer /> 
+    <news-footer />
   </q-layout>
 </template>
 
@@ -84,17 +84,20 @@
     QSpinnerCube,
     QModal,
     TouchSwipe
-  } from "quasar";
+  } from "quasar"
   import {
     newsSourcetoApiString,
     openInAppBrowser
-  } from '../utils/commonUtils';
+  } from '../utils/commonUtils'
+  import {
+    eventBus
+  } from '../utils/eventBus'
   import {
     fetchNews,
     stringifyArray,
-  } from "../network/requestNews";
-  import VueLazyload from 'vue-lazyload';
-  import Shimmer from '@/Shimmer.vue';
+  } from "../network/requestNews"
+  import VueLazyload from 'vue-lazyload'
+  import Shimmer from '@/Shimmer.vue'
   import SideBarPanel from '@/SideBarPanel.vue'
   import NewsFooter from '@/NewsFooter.vue'
   Vue.use(VueLazyload);
@@ -120,8 +123,8 @@
       SideBarPanel,
       NewsFooter
     },
-     directives: {
-        TouchSwipe
+    directives: {
+      TouchSwipe
     },
     data() {
       return {
@@ -136,19 +139,25 @@
     },
     mounted() {
       let selectedLs = ["the-next-web", "techcrunch"];
-      let transformed = newsSourcetoApiString(selectedLs);
-      // TO DO - Convert to asycn await 
-      // fetchNews(transformed).forEach(item => {
-      //   item.then(data => this.newsCollection = [...this.newsCollection, ...data.articles]).then((data) => {
-      //     this.preLoader = false;
-      //     console.log("turning of preloader");
-      //   });
-      // });
+      // let transformed = newsSourcetoApiString(selectedLs);
+      let loadNews = () => {
+        console.log('selectedNews', this.selectedNews);
+        console.log('selectedLs',selectedLs);
+          if(this.selectedNews.length){
+            selectedLs = this.selectedNews.map((item)=> item.id);
+            console.log('abc',this.selectedNews);
+          }
+        fetchNews(selectedLs).then(res => {
+          this.newsCollection = res.articles;
+        });
+      }
+      loadNews()
+      eventBus.$on('loadNews', (data)=>{
+        console.log('i received on', data)
+         loadNews()
+      })
 
-      // let Stringified = stringifyArray(transformed)
-      fetchNews(selectedLs).then(res => {
-        this.newsCollection = res.articles;
-      });
+
     },
     methods: {
       ...mapActions(['toggleReadMorePanel']),
@@ -165,7 +174,7 @@
       notify() {
         this.showShimmer = true;
       },
-      userHasSwiped(data){
+      userHasSwiped(data) {
         this.openWindow();
         console.log('swiped', data)
       },
@@ -182,8 +191,8 @@
         // this is the complete list of currently supported params you can pass to the plugin (all optional)
         var options = {
           message: `${title}
-                  
-                  ${description}` || null, // not supported on some apps (Facebook, Instagram)
+                    
+                    ${description}` || null, // not supported on some apps (Facebook, Instagram)
           subject: title, // fi. for email
           files: null, // an array of filenames either locally or remotely
           url: url || null,
@@ -205,6 +214,7 @@
     computed: {
       ...mapState({
         isReadMorePanelOpen: state => state.app.isReadMorePanelOpen,
+        selectedNews: state => state.news.selectedNews || ["the-next-web", "techcrunch"]
       }),
     }
   };

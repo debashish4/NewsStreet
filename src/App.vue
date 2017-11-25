@@ -16,7 +16,7 @@
           <router-link to="/search">
             <q-icon name="search" /></router-link>
         </q-btn>
-        <q-btn flat @click="$refs.layout.toggleLeft()">
+        <q-btn flat @click="test">
           <q-icon name="menu" />
         </q-btn>
   
@@ -72,6 +72,11 @@
     data() {
       return {
   
+      }
+    },
+    methods:{
+      test(){
+        this.$refs.layout.showLeft()
       }
     },
     components: {
