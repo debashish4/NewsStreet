@@ -1,33 +1,6 @@
 <template>
   <!-- Example using a QLayout as required -->
   <q-layout ref="layout" view="hHr LpR Fff">
-    <!-- Layout header -->
-    <!-- <q-toolbar slot="header">
-        <q-btn flat>
-          <router-link to="/settings"><q-icon name="settings" /></router-link>
-        </q-btn>
-        <div class="q-toolbar-title">
-          News Street
-        </div>
-         <q-btn flat>
-          <router-link to="/search"><q-icon name="search" /></router-link>
-        </q-btn>
-        <q-btn flat @click="$refs.layout.toggleLeft()">
-          <q-icon name="menu" />
-        </q-btn>
-    
-      </q-toolbar> -->
-    <!--
-                                      Defining left side of QLayout.
-                                      Notice slot="left"
-                                    -->
-    <!-- <div slot="left">
-        <q-side-link item to="/test-layout" exact>
-          <q-item-main label="About" />
-        </q-side-link>
-        <side-bar-panel />
-      </div> -->
-  
   
     <q-carousel class="text-white article" v-touch-swipe.vertical="userHasSwiped">
       <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex">
@@ -45,6 +18,7 @@
             {{article.description}}
           </p>
         </div>
+        <button @click="cordovaShare({title: article.title,description:article.description, url:article.url})">Share</button>
       </div>
     </q-carousel>
   
@@ -192,7 +166,9 @@
         var options = {
           message: `${title}
                     
-                    ${description}` || null, // not supported on some apps (Facebook, Instagram)
+    ${description}
+    
+    Read More: ` || null, // not supported on some apps (Facebook, Instagram)
           subject: title, // fi. for email
           files: null, // an array of filenames either locally or remotely
           url: url || null,
