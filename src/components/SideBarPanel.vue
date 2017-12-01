@@ -233,6 +233,9 @@
 <style lang="scss" scoped>
     .side-bar-panel {
         width: 100%;
+        .categories{
+            padding:1rem 0.5rem;
+        }
     }
     
     .continue{
@@ -245,7 +248,7 @@
     }
 
     .icon {
-        margin: 0.5rem;
+        margin: 1.2vw;
         padding-top: 1rem;
         display: flex;
         border-radius: 0.8rem;

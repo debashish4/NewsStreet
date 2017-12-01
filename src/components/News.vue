@@ -2,8 +2,8 @@
   <!-- Example using a QLayout as required -->
   <q-layout ref="layout" view="hHr LpR Fff">
   
-    <q-carousel class="text-white article" v-touch-swipe.vertical="userHasSwiped">
-      <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex">
+    <q-carousel class="text-white article">
+      <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
         <div class="article-image row justify-center items-center">
           <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
           <q-spinner-cube class="spinner" color="primary" :size="50" />
@@ -17,6 +17,7 @@
           <p>
             {{article.description}}
           </p>
+          <!-- <wave /> -->
         </div>
         <button @click="cordovaShare({title: article.title,description:article.description, url:article.url})">Share</button>
       </div>
@@ -72,6 +73,7 @@
   } from "../network/requestNews"
   import VueLazyload from 'vue-lazyload'
   import Shimmer from '@/Shimmer.vue'
+  // import Wave from '@/Wave.vue'
   import SideBarPanel from '@/SideBarPanel.vue'
   import NewsFooter from '@/NewsFooter.vue'
   Vue.use(VueLazyload);
@@ -95,7 +97,8 @@
       QModal,
       Shimmer,
       SideBarPanel,
-      NewsFooter
+      NewsFooter,
+      // Wave
     },
     directives: {
       TouchSwipe
@@ -108,7 +111,8 @@
         isPopupOpen: false,
         preLoader: true,
         openModal: false,
-        showShimmer: false
+        showShimmer: false,
+        inAppBrowserLoadNewsUrl: ''
       };
     },
     mounted() {
@@ -116,22 +120,22 @@
       // let transformed = newsSourcetoApiString(selectedLs);
       let loadNews = () => {
         console.log('selectedNews', this.selectedNews);
-        console.log('selectedLs',selectedLs);
-          if(this.selectedNews.length){
-            selectedLs = this.selectedNews.map((item)=> item.id);
-            console.log('abc',this.selectedNews);
-          }
+        console.log('selectedLs', selectedLs);
+        if (this.selectedNews.length) {
+          selectedLs = this.selectedNews.map((item) => item.id);
+          console.log('abc', this.selectedNews);
+        }
         fetchNews(selectedLs).then(res => {
           this.newsCollection = res.articles;
         });
       }
-      loadNews()
-      eventBus.$on('loadNews', (data)=>{
+      loadNews();
+      eventBus.$on('loadNews', (data) => {
         console.log('i received on', data)
-         loadNews()
+        loadNews()
       })
-
-
+  
+  
     },
     methods: {
       ...mapActions(['toggleReadMorePanel']),
@@ -139,7 +143,11 @@
         this.toggleReadMorePanel();
         try {
           if (cordova) {
-            openInAppBrowser();
+            let url = this.inAppBrowserLoadNewsUrl;
+            console.log({
+              url
+            });
+            openInAppBrowser(url);
           }
         } catch (err) {
           console.log(err);
@@ -148,9 +156,13 @@
       notify() {
         this.showShimmer = true;
       },
-      userHasSwiped(data) {
-        this.openWindow();
-        console.log('swiped', data)
+      loadNewsInBrowser(url, evt) {
+        console.log('swiped', url);
+        console.log('event', evt);
+        if(evt.direction == "up"){
+          this.inAppBrowserLoadNewsUrl = url
+          this.openWindow();
+        }
       },
       cordovaShare(shareDetails) {
         console.log({
@@ -165,10 +177,10 @@
         // this is the complete list of currently supported params you can pass to the plugin (all optional)
         var options = {
           message: `${title}
-                    
-    ${description}
-    
-    Read More: ` || null, // not supported on some apps (Facebook, Instagram)
+                      
+      ${description}
+      
+      Read More: ` || null, // not supported on some apps (Facebook, Instagram)
           subject: title, // fi. for email
           files: null, // an array of filenames either locally or remotely
           url: url || null,
@@ -183,8 +195,11 @@
         var onError = function(msg) {
           console.log("Sharing failed with message: " + msg);
         }
-  
-        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+        try {
+          window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+        } catch (err) {
+          console.log(err);
+        }
       }
     },
     computed: {

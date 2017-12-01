@@ -26,6 +26,13 @@
         <side-bar-panel />
       </div>
       <router-view />
+      <q-modal v-model="appExitConfirm" minimized>
+        <p>
+          Do you want to exit ?
+        </p>
+        <q-btn icon="create" @click="exitFromApp">Yes</q-btn>
+        <q-btn icon="create" class="primary">No</q-btn>
+      </q-modal>
   
     </q-layout>
   </div>
@@ -35,11 +42,14 @@
   /*
    * Root component
    */
-  import Vue from 'vue';
+  import Vue from 'vue'
   import {
     mapActions,
     mapState
-  } from 'vuex';
+  } from 'vuex'
+  import {
+    stopInAppBrowser
+  } from './utils/commonUtils'
   import {
     QLayout,
     QToolbar,
@@ -63,21 +73,62 @@
   export default {
     name: 'App',
     data() {
-      return {}
+      return {
+        appExitConfirm: false
+      }
+    },
+    mounted() {
+      let self = this;
+      // function stopInAppBrowser() {
+      //   alert("called stopInAppbrowser function");
+      //   if (inAppBrowserRef) {
+      //     alert('yes ref exist');
+      //     inAppBrowserRef.close();
+      //     alert('read more before');
+      //     self.toggleReadMorePanel();
+      //     alert('read more after');
+      //   }
+      // };
+  
+      function onBackKeyDown(e) {
+        if (!self.isDrawerOpen && !self.isNewsListModalOpen && !self.isReadMorePanelOpen) {
+          if (e) {
+            e.preventDefault();
+          }
+          self.appExitConfirm = true;
+        }
+  
+        if (self.isReadMorePanelOpen) {
+          e.preventDefault();
+          self.toggleReadMorePanel();
+          stopInAppBrowser();
+        } else if (self.isDrawerOpen) {
+          self.closeNewsListModal();
+          self.toggleDrawer();
+        }
+      }
+      // onBackKeyDown();
+      document.addEventListener("backbutton", onBackKeyDown, false);
+  
     },
     computed: {
       ...mapState({
-        isDrawerOpen: state => state.app.isDrawerOpen
+        isDrawerOpen: state => state.app.isDrawerOpen,
+        isNewsListModalOpen: state => state.app.isNewsListModalOpen,
+        isReadMorePanelOpen: state => state.app.isReadMorePanelOpen
       })
     },
     methods: {
-      ...mapActions(['toggleDrawer']),
+      ...mapActions(['toggleDrawer', 'toggleReadMorePanel', 'closeNewsListModal']),
       openDrawer() {
         this.$refs.layout.showLeft();
       },
       closeDrawer() {
         this.$refs.layout.hideLeft();
       },
+      exitFromApp() {
+        navigator.app.exitApp();
+      }
     },
     watch: {
       isDrawerOpen: function(data) {

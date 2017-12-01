@@ -1,3 +1,6 @@
+import { TOGGLE_READ_MORE_PANEL } from '../constants/mutation_types';
+import store from '../store'
+
 const _toWhiteSpace = (str) => {
     var item = str.match(/_/g);
     var newStr = str;
@@ -42,36 +45,46 @@ const shuffleArray = (array) => {
     return array;
 }
 
-const openInAppBrowser = () => {
-    console.log('inside in app browser')
-    var url = 'https://cordova.apache.org';
+var inAppBrowserRef;
+const openInAppBrowser = (url) => {
+    console.log('inside in app browser', url);
+    var url = url;
     var target = '_blank';
-    var options = "location=no,hidden=yes,clearcache=yes,clearsessioncache=yes,zoom=no"
-    var ref = cordova.InAppBrowser.open(url, target, options);
+    var options = "hardwareback=no,location=no,hidden=yes,zoom=no"
+    inAppBrowserRef = cordova.InAppBrowser.open(url, target, options);
 
-    ref.addEventListener('loadstart', loadstartCallback);
-    ref.addEventListener('loadstop', loadstopCallback);
-    ref.addEventListener('loadloaderror', loaderrorCallback);
-    ref.addEventListener('exit', exitCallback);
+    inAppBrowserRef.addEventListener('loadstart', loadstartCallback);
+    inAppBrowserRef.addEventListener('loadstop', loadstopCallback);
+    inAppBrowserRef.addEventListener('loadloaderror', loaderrorCallback);
+    inAppBrowserRef.addEventListener('exit', exitCallback);
 
     function loadstartCallback(event) {
         console.log('Loading started: ' + event.url)
     }
-
+    
     function loadstopCallback(event) {
         console.log('Loading finished: ' + event.url)
-        ref.show();
+        inAppBrowserRef.show();
     }
 
     function loaderrorCallback(error) {
-        console.log('Loading error: ' + error.message)
+        alert('Loading error: ' + error.message)
     }
-
+    
     function exitCallback() {
         console.log('Browser is closed...')
+        store.commit('TOGGLE_READ_MORE_PANEL')
     }
 }
+const stopInAppBrowser =() => {
+        alert("called stopInAppbrowser function");
+        if (inAppBrowserRef) {
+          alert('yes ref exist');
+          inAppBrowserRef.close();
+          alert('read more before');
+        store.commit('TOGGLE_READ_MORE_PANEL')
+          alert('read more after');
+        }
+      };
 
-
-
-export { _toWhiteSpace, whiteSpaceTo_, newsSourcetoApiString, shuffleArray, openInAppBrowser, stringifyArray, hyphenToSpace };
+export { _toWhiteSpace, whiteSpaceTo_, newsSourcetoApiString, shuffleArray, openInAppBrowser, stopInAppBrowser, stringifyArray, hyphenToSpace };
