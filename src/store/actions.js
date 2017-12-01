@@ -20,4 +20,9 @@ const toggleDrawer = ({commit}) => {
     commit(types.TOGGLE_DRAWER)
 };
 
-export { toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}
+const openDrawer = ({ commit }) => {
+    commit(types.OPEN_DRAWER)
+};
+
+
+export { openDrawer, toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}

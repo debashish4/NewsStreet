@@ -16,6 +16,9 @@ const mutations = {
     },
     [types.TOGGLE_DRAWER](state){
         state.app.isDrawerOpen = !state.app.isDrawerOpen;
+    },
+    [types.OPEN_DRAWER](state) {
+        state.app.isDrawerOpen = true;
     }
 };
 

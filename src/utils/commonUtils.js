@@ -77,13 +77,9 @@ const openInAppBrowser = (url) => {
     }
 }
 const stopInAppBrowser =() => {
-        alert("called stopInAppbrowser function");
         if (inAppBrowserRef) {
-          alert('yes ref exist');
           inAppBrowserRef.close();
-          alert('read more before');
         store.commit('TOGGLE_READ_MORE_PANEL')
-          alert('read more after');
         }
       };
 

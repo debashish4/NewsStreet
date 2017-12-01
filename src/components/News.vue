@@ -159,7 +159,7 @@
       loadNewsInBrowser(url, evt) {
         console.log('swiped', url);
         console.log('event', evt);
-        if(evt.direction == "up"){
+        if(evt.direction == "up" && evt.distance.y > 50){
           this.inAppBrowserLoadNewsUrl = url
           this.openWindow();
         }

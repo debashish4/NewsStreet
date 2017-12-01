@@ -53,14 +53,16 @@
 <script>
     import {
         QIcon,
-        QBtn
+        QBtn,
+        TouchSwipe,
+        TouchHold
     } from 'quasar'
     import {
         mapActions
     } from 'vuex'
-        import {
-            NEWS_CATEGORY
-        } from '../constants/UI_constants';
+    import {
+        NEWS_CATEGORY
+    } from '../constants/UI_constants';
     import {
         fetchNewsSource
     } from '../network/requestNews'
@@ -89,6 +91,10 @@
                 selectNewsModalData: [],
                 selectNewsModalDataTitle: ''
             }
+        },
+        directives: {
+            TouchSwipe,
+            TouchHold
         },
         mounted() {
             fetchNewsSource().then(res => {
@@ -217,7 +223,7 @@
                 }
                 this.toggleNewsListModal();
             },
-            loadNews(){
+            loadNews() {
                 eventBus.$emit('loadNews', 'hello');
                 this.toggleDrawer();
             }
@@ -233,20 +239,20 @@
 <style lang="scss" scoped>
     .side-bar-panel {
         width: 100%;
-        .categories{
-            padding:1rem 0.5rem;
+        .categories {
+            padding: 1rem 0.5rem;
         }
     }
     
-    .continue{
+    .continue {
         height: 50px;
         position: fixed;
         bottom: 0;
-        button{
+        button {
             height: 100%;
         }
     }
-
+    
     .icon {
         margin: 1.2vw;
         padding-top: 1rem;

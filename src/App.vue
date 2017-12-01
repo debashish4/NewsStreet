@@ -16,7 +16,7 @@
           <router-link to="/search">
             <q-icon name="search" /></router-link>
         </q-btn>
-        <q-btn flat @click="toggleDrawer">
+        <q-btn flat @click="openLeftDrawer">
           <q-icon name="menu" />
         </q-btn>
   
@@ -74,21 +74,11 @@
     name: 'App',
     data() {
       return {
-        appExitConfirm: false
+      appExitConfirm: false
       }
     },
     mounted() {
       let self = this;
-      // function stopInAppBrowser() {
-      //   alert("called stopInAppbrowser function");
-      //   if (inAppBrowserRef) {
-      //     alert('yes ref exist');
-      //     inAppBrowserRef.close();
-      //     alert('read more before');
-      //     self.toggleReadMorePanel();
-      //     alert('read more after');
-      //   }
-      // };
   
       function onBackKeyDown(e) {
         if (!self.isDrawerOpen && !self.isNewsListModalOpen && !self.isReadMorePanelOpen) {
@@ -119,11 +109,12 @@
       })
     },
     methods: {
-      ...mapActions(['toggleDrawer', 'toggleReadMorePanel', 'closeNewsListModal']),
-      openDrawer() {
+      ...mapActions(['toggleDrawer', 'openDrawer', 'toggleReadMorePanel', 'closeNewsListModal']),
+      openLeftDrawer() {
         this.$refs.layout.showLeft();
+        this.openDrawer();
       },
-      closeDrawer() {
+      closeLeftDrawer() {
         this.$refs.layout.hideLeft();
       },
       exitFromApp() {
@@ -132,7 +123,7 @@
     },
     watch: {
       isDrawerOpen: function(data) {
-        data ? this.openDrawer() : this.closeDrawer()
+        data ? this.openLeftDrawer() : this.closeLeftDrawer()
       }
     },
     components: {
