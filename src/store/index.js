@@ -10,10 +10,12 @@ const state = {
     app: {
         isDrawerOpen: false,
         isReadMorePanelOpen: false,
-        isNewsListModalOpen: false
+        isNewsListModalOpen: false,
     },
+    
     news:{
-        selectedNews:[]
+        selectedNews:[],
+        socialShareData:{}
     }
 };
 

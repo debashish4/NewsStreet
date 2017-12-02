@@ -19,6 +19,9 @@ const mutations = {
     },
     [types.OPEN_DRAWER](state) {
         state.app.isDrawerOpen = true;
+    },
+    [types.SAVE_SOCIAL_SHARE_DATA](state, payload){
+        state.news.socialShareData = payload
     }
 };
 

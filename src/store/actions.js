@@ -24,5 +24,9 @@ const openDrawer = ({ commit }) => {
     commit(types.OPEN_DRAWER)
 };
 
+const saveSocialShareData = ({commit}, payload) => {
+    commit(types.SAVE_SOCIAL_SHARE_DATA, payload)
+}
 
-export { openDrawer, toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}
+
+export { saveSocialShareData, openDrawer, toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}

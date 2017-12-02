@@ -1,8 +1,6 @@
 <template>
-  <!-- Example using a QLayout as required -->
   <q-layout ref="layout" view="hHr LpR Fff">
-  
-    <q-carousel class="text-white article">
+    <q-carousel class="text-white article" ref="newsCarousel" @slide="(index, direction) => slidePosition(index, direction)">
       <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
         <div class="article-image row justify-center items-center">
           <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
@@ -17,11 +15,15 @@
           <p>
             {{article.description}}
           </p>
+          <p class="read-full">
+            Swipe Up to read the full story...
+          </p>
           <!-- <wave /> -->
         </div>
-        <button @click="cordovaShare({title: article.title,description:article.description, url:article.url})">Share</button>
       </div>
     </q-carousel>
+    <button @click="$refs.newsCarousel.next()">Next</button>
+    <button @click="moveToFirstSlide">Move to First Slide</button>
   
   
     <!-- Page insertion point -->
@@ -58,8 +60,10 @@
     QCarousel,
     QSpinnerCube,
     QModal,
-    TouchSwipe
+    TouchSwipe,
+    Events
   } from "quasar"
+  import VueLazyload from 'vue-lazyload'
   import {
     newsSourcetoApiString,
     openInAppBrowser
@@ -71,7 +75,6 @@
     fetchNews,
     stringifyArray,
   } from "../network/requestNews"
-  import VueLazyload from 'vue-lazyload'
   import Shimmer from '@/Shimmer.vue'
   // import Wave from '@/Wave.vue'
   import SideBarPanel from '@/SideBarPanel.vue'
@@ -112,7 +115,7 @@
         preLoader: true,
         openModal: false,
         showShimmer: false,
-        inAppBrowserLoadNewsUrl: ''
+        inAppBrowserLoadNewsUrl: '',
       };
     },
     mounted() {
@@ -133,12 +136,29 @@
       eventBus.$on('loadNews', (data) => {
         console.log('i received on', data)
         loadNews()
-      })
-  
+      });
   
     },
     methods: {
-      ...mapActions(['toggleReadMorePanel']),
+      ...mapActions(['toggleReadMorePanel', 'saveSocialShareData']),
+      moveToFirstSlide() {
+        //start from 1st slide
+        this.$refs.newsCarousel.goToSlide(0)
+      },
+      slidePosition(index, direction) {
+        const {
+          description,
+          title,
+          url,
+          urlToImage
+        } = this.newsCollection[index];
+        this.saveSocialShareData({
+          description,
+          title,
+          url,
+          urlToImage
+        })
+      },
       openWindow() {
         this.toggleReadMorePanel();
         try {
@@ -159,48 +179,11 @@
       loadNewsInBrowser(url, evt) {
         console.log('swiped', url);
         console.log('event', evt);
-        if(evt.direction == "up" && evt.distance.y > 50){
+        if (evt.direction == "up" && evt.distance.y > 50) {
           this.inAppBrowserLoadNewsUrl = url
           this.openWindow();
         }
       },
-      cordovaShare(shareDetails) {
-        console.log({
-          shareDetails
-        });
-        const {
-          description,
-          title,
-          url,
-          urlToImage
-        } = shareDetails;
-        // this is the complete list of currently supported params you can pass to the plugin (all optional)
-        var options = {
-          message: `${title}
-                      
-      ${description}
-      
-      Read More: ` || null, // not supported on some apps (Facebook, Instagram)
-          subject: title, // fi. for email
-          files: null, // an array of filenames either locally or remotely
-          url: url || null,
-          chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
-        }
-  
-        var onSuccess = function(result) {
-          console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-          console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-        }
-  
-        var onError = function(msg) {
-          console.log("Sharing failed with message: " + msg);
-        }
-        try {
-          window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
-        } catch (err) {
-          console.log(err);
-        }
-      }
     },
     computed: {
       ...mapState({
@@ -241,6 +224,10 @@
     }
     .news-text {
       padding: 1rem;
+    }
+    .read-full {
+      font-size: 1.5rem;
+      color: red;
     }
     img[lazy=loading] {
       background: black;

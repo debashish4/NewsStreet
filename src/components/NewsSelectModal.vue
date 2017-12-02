@@ -201,8 +201,8 @@
                 border-radius: 0.5rem;
             }
             .source-logo {
-                width: 12rem;
-                height: 12rem;
+                width: 10rem;
+                height: 10rem;
                 display: block;
                 margin: 0 auto;
                 img {
