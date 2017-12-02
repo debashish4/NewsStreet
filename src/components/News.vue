@@ -22,8 +22,6 @@
         </div>
       </div>
     </q-carousel>
-    <button @click="$refs.newsCarousel.next()">Next</button>
-    <button @click="moveToFirstSlide">Move to First Slide</button>
   
   
     <!-- Page insertion point -->
@@ -137,14 +135,13 @@
         console.log('i received on', data)
         loadNews()
       });
-  
+      Events.$on('scrollToStart', (param1, param2) => {
+         //start from 1st slide
+        this.$refs.newsCarousel.goToSlide(0)
+      })
     },
     methods: {
       ...mapActions(['toggleReadMorePanel', 'saveSocialShareData']),
-      moveToFirstSlide() {
-        //start from 1st slide
-        this.$refs.newsCarousel.goToSlide(0)
-      },
       slidePosition(index, direction) {
         const {
           description,
@@ -230,13 +227,23 @@
       color: red;
     }
     img[lazy=loading] {
-      background: black;
+      opacity:1;
     }
     img[lazy=loaded] {
       opacity: 1
     }
     img[lazy=loaded]+.spinner {
       display: none;
+    }
+    img[lazy=error]{
+      display:block;
+      opacity:1;
+      background: url('../assets/no_image_placeholder.png') no-repeat;
+    }
+
+    img[lazy=error]+.spinner {
+      display: none;
+      
     }
   }
 </style>

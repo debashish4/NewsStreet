@@ -2,8 +2,12 @@
     <!-- Footer -->
     <q-toolbar class="news-footer" slot="footer">
         <q-toolbar-title>
+            <q-btn flat>
             <q-icon @click="cordovaShare" name="share" />
-            <button @click="$refs.newsCarousel.next()">Next</button>
+            </q-btn>
+            <q-btn flat>
+            <q-icon @click="scrollToStart" name="change history" class="change_history"/>
+            </q-btn>
         </q-toolbar-title>
     </q-toolbar>
 </template>
@@ -13,7 +17,9 @@
     import {
         QToolbar,
         QToolbarTitle,
-        QIcon
+        QIcon,
+        QBtn,
+        Events
     } from 'quasar'
     
     export default {
@@ -26,6 +32,9 @@
             })
         },
         methods: {
+            scrollToStart(){
+                Events.$emit('scrollToStart');
+            },
             cordovaShare() {
                 const {
                     description,
@@ -64,7 +73,8 @@
         components: {
             QToolbar,
             QToolbarTitle,
-            QIcon
+            QIcon,
+            QBtn
         }
     }
 </script>
@@ -74,6 +84,10 @@
         position:fixed;
         width:100%;
         bottom:0;
+
+        .change_history{
+            transform: rotate(-90deg);
+        }
     }
 </style>
 

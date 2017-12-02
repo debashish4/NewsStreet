@@ -2,6 +2,8 @@ html {
     font-size: 10px;
     body {
         font-family: 'Raleway', 'sans-serif';
+        height: 100vh;
+        overflow: hidden;
     }
     h2 {
         font-family: 'Numans', 'sans-serif';
@@ -15,9 +17,12 @@ html {
         font-size: 1.8rem;
         line-height: 1.4;
     }
+    i.q-icon {
+        font-size: 2.4rem;
+    }
 }
 
-*::-webkit-scrollbar{
+*::-webkit-scrollbar {
     visibility: hidden;
 }
 
@@ -46,7 +51,6 @@ html {
     font-family: 'Numans';
     src: url('../assets/fonts/Numans/Numans-Regular.ttf') format('truetype');
 }
-
 @font-face {
     font-family: 'Raleway';
     src: url('../assets/fonts/Raleway/Raleway-Regular.ttf') format('truetype');

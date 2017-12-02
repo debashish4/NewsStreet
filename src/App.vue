@@ -25,6 +25,7 @@
       <div slot="left">
         <side-bar-panel />
       </div>
+      <!-- Router View -->
       <router-view />
       <q-modal v-model="appExitConfirm" minimized>
         <p>
