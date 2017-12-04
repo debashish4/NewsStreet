@@ -26,7 +26,10 @@
         <side-bar-panel />
       </div>
       <!-- Router View -->
+       <!-- TO DO - add transition animation classes -->
+      <transition>
       <router-view />
+      </transition>
       <q-modal v-model="appExitConfirm" minimized>
         <p>
           Do you want to exit ?

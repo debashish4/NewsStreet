@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ARTICLES, API_KEY, SOURCES, TOP_HEADLINES } from '../constants/api'
+import { ARTICLES, API_KEY, SOURCES, TOP_HEADLINES, EVERYTHING } from '../constants/api'
 import { stringifyArray } from '../utils/commonUtils'
 
 
@@ -12,6 +12,13 @@ const fetchNews = (checkedItems) => {
 	}).then(res => res.data);
 };
 
+const fetchSearchNews = (query) =>{
+	return axios({
+		method: 'GET',
+		url: `${EVERYTHING}q=${query}`,
+		headers: { 'X-Api-Key': `${API_KEY}` },
+	}).then(res => res.data);
+}
 
 const fetchNewsSource = () => {
 	return axios({
@@ -21,4 +28,4 @@ const fetchNewsSource = () => {
 	}).then(res => res.data);
 };
 
-export { fetchNews, fetchNewsSource }
+export { fetchNews, fetchNewsSource, fetchSearchNews }
