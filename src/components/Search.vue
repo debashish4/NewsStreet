@@ -1,26 +1,25 @@
 <template>
   <div class="search-page">
-    <q-search class="search" :class="{'bring-search':isSearchInputVisible}" inverted color="primary" :debounce="600" placeholder="Search from 5000+ news sources" icon="search" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery($event)" />
-    <!-- <p>I am Search page</p> -->
+    <q-search class="search" :class="{'bring-search':isSearchInputVisible}" inverted color="primary" :debounce="600" placeholder="Search from 5000+ news sources" icon="search" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery($event)"
+    />
     <div>
-    <q-card inlinquery.targetq-card-media v-for="(result, index) in searchResult" :key="index">
-        <img :src="result.urlToImage">
-      </q-card-media>
-      <q-card-title>
-        {{result.title}}
-        <!-- <q-rating slot="subtitle" v-model="stars" :max="5" /> -->
-        
-      </q-card-title>
-      <q-card-main>
-        <p class="text-faded">{{result.description}}</p>
-      </q-card-main>
-      <q-card-separator />
-      <q-card-actions>
-        
-        <q-btn flat>SHARE</q-btn>
-        <q-btn flat color="primary">READ MORE</q-btn>
-      </q-card-actions>
-    </q-card>
+      <q-card inlinquery.targetq-card-media v-for="(result, index) in searchResult" :key="index">
+        <img :src="result.urlToImage" @click="result.showDescription = !result.showDescription">
+        </q-card-media>
+        <q-card-title>
+          {{result.title}}
+  
+        </q-card-title>
+        <q-card-main>
+          <p :class="{isVisible: result.showDescription}" class="description">{{result.description}}</p>
+        </q-card-main>
+        <q-card-separator />
+        <q-card-actions>
+  
+          <q-btn flat>SHARE</q-btn>
+          <q-btn flat color="primary">READ MORE</q-btn>
+        </q-card-actions>
+      </q-card>
     </div>
   </div>
 </template>
@@ -37,32 +36,35 @@
     QCardActions,
     QBtn,
   } from 'quasar'
-
+  
   import {
     fetchSearchNews
   } from '../network/requestNews'
-
+  
   export default {
     data() {
       return {
-        searchModel:'',
+        searchModel: '',
         isSearchInputVisible: false,
-        searchResult: []
+        searchResult: [],
       }
     },
     mounted() {
       console.log('sdef', this.$route.path);
       this.isSearchInputVisible = true;
-      
+  
     },
-    methods:{
-      fetchSearchQuery(event){
+    methods: {
+      fetchSearchQuery(event) {
         let query = event.target.value;
         console.log(query);
         fetchSearchNews(query)
-        .then(results =>  {
-          console.log(results);
-          this.searchResult = results.articles});
+          .then(results => {
+            this.searchResult = results.articles.map(item => {
+              item.showDescription = false;
+              return item;
+            })
+          });
       }
     },
     components: {
@@ -100,8 +102,17 @@
     .search.bring-search {
       top: 0;
     }
-    img{
-      width:100%;
+    img {
+      width: 100%;
+    }
+    .description{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 800ms ease;
+    }
+    .isVisible{
+      height:auto;
+      max-height:300px;
     }
   }
 </style>
