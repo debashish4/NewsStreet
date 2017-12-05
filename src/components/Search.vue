@@ -4,20 +4,20 @@
     />
     <div>
       <q-card inlinquery.targetq-card-media v-for="(result, index) in searchResult" :key="index">
-        <img :src="result.urlToImage" @click="result.showDescription = !result.showDescription">
+        <img v-lazy="result.urlToImage" :src="result.urlToImage" @click="result.showDescription = !result.showDescription">
         </q-card-media>
         <q-card-title>
-          {{result.title}}
+          <h2 @click="result.showDescription = !result.showDescription">{{result.title}}</h2>
   
         </q-card-title>
         <q-card-main>
           <p :class="{isVisible: result.showDescription}" class="description">{{result.description}}</p>
         </q-card-main>
         <q-card-separator />
-        <q-card-actions>
+        <q-card-actions class="row justify-between">
   
           <q-btn flat>SHARE</q-btn>
-          <q-btn flat color="primary">READ MORE</q-btn>
+          <q-btn flat color="primary"><a :href="result.url" target="_blank">READ THE FULL STORY</a></q-btn>
         </q-card-actions>
       </q-card>
     </div>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import Vue from 'vue';
+  import VueLazyload from 'vue-lazyload'
   import {
     QSearch,
     QCard,
@@ -36,10 +38,10 @@
     QCardActions,
     QBtn,
   } from 'quasar'
-  
   import {
     fetchSearchNews
   } from '../network/requestNews'
+  Vue.use(VueLazyload);
   
   export default {
     data() {
@@ -62,6 +64,7 @@
           .then(results => {
             this.searchResult = results.articles.map(item => {
               item.showDescription = false;
+              console.log(item);
               return item;
             })
           });
@@ -105,14 +108,14 @@
     img {
       width: 100%;
     }
-    .description{
-      max-height:0;
-      overflow:hidden;
-      transition:max-height 800ms ease;
+    .description {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 500ms ease;
     }
-    .isVisible{
-      height:auto;
-      max-height:300px;
+    .isVisible {
+      height: auto;
+      max-height: 300px;
     }
   }
 </style>
