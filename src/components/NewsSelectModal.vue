@@ -28,7 +28,6 @@
     import {
         QBtn,
         QModal,
-        LocalStorage
     } from 'quasar'
     import {
         mapActions,
