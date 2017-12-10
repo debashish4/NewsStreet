@@ -1,15 +1,15 @@
 <template>
   <div class="search-page">
     <div class="search" :class="{'bring-search':isSearchInputVisible}">
-      
+  
       <q-btn class="back">
-        <q-icon  @click="closeSearchPage" name="keyboard arrow left" />
+        <q-icon @click="closeSearchPage" name="keyboard arrow left" />
       </q-btn>
-      
+  
       <div class="search-input">
         <q-search inverted color="primary" ref="inputSearchRef" placeholder="Search in 5000+ news sources" icon="" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery" />
-        <q-btn class="search-btn"  color="positive">
-         <q-icon name="search" @click="fetchSearchQuery"/>
+        <q-btn class="search-btn" color="positive">
+          <q-icon name="search" @click="fetchSearchQuery" />
         </q-btn>
       </div>
     </div>
@@ -23,6 +23,7 @@
         </q-card-title>
         <q-card-main>
           <p :class="{isVisible: result.showDescription}" class="description">{{result.description}}</p>
+          <p>{{result.source.name}}</p>
         </q-card-main>
         <q-card-separator />
         <q-card-actions class="row justify-between">
@@ -69,7 +70,7 @@
   export default {
     data() {
       return {
-        searchModel:'',
+        searchModel: '',
         searchQuery: '',
         isSearchInputVisible: false,
         searchResult: [],
@@ -90,12 +91,34 @@
         console.log('searchModel', this.searchModel);
         // var searchQuery = event.target.value || this.$refs.searchQuery.value;
         var searchQuery = this.searchModel;
-        
+        var recentSearches = this.recentSearches
+        var searchQueryPositionInRecentSearches = recentSearches.indexOf(searchQuery);
         // this.searchQuery = searchQuery;
-        if (searchQuery){
-          this.recentSearches.push(searchQuery);
-        localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
-        }else{
+        if (searchQuery) {
+          if (searchQueryPositionInRecentSearches === -1) {
+            console.log('not inside', recentSearches);
+            // remove first element and insert new element once excced the max limit
+            if (recentSearches.length >= 5) {
+              recentSearches.shift();
+              recentSearches.push(searchQuery);
+            } else {
+              recentSearches.push(searchQuery);
+            }
+          } else {
+            console.log('already inside');
+            recentSearches.splice(searchQueryPositionInRecentSearches,1);
+            recentSearches.push(searchQuery);
+          }
+  
+          // // remove first element and insert new element once excced the max limit
+          // if (recentSearches.length >= 5) {
+          //   recentSearches.shift();
+          //   recentSearches.push(searchQuery);
+          // } else {
+          //   recentSearches.push(searchQuery);
+          // }
+          localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+        } else {
           console.log('blank input field');
           return;
         }
@@ -103,7 +126,6 @@
           .then(results => {
             this.searchResult = results.articles.map(item => {
               item.showDescription = false;
-              console.log(item);
               return item;
             })
           });
@@ -112,7 +134,7 @@
         this.isSearchInputVisible = false;
         this.$router.go(-1);
       },
-      fillInSearch(event){
+      fillInSearch(event) {
         console.log(event);
         this.searchModel = event.target.innerText;
       }
@@ -135,7 +157,7 @@
         console.log('sdf', to);
       },
       searchModel: function(params) {
-        if(!params){
+        if (!params) {
           this.searchResult = [];
         }
       }
@@ -151,11 +173,11 @@
     }
     .q-if-control.q-icon,
     .q-if-label,
-    .q-input-target{
+    .q-input-target {
       color: #343434;
     }
-    .q-if-inverted{
-      border-radius:0; 
+    .q-if-inverted {
+      border-radius: 0;
     }
     .search {
       position: fixed;
@@ -173,16 +195,16 @@
         flex-grow: 2;
         display: flex;
       }
-      .q-btn{
+      .q-btn {
         box-shadow: 0 0 0 0;
       }
-      .q-search{
-        background:#FFFFFF!important;
+      .q-search {
+        background: #FFFFFF!important;
         box-shadow: 0 0 0 0;
-        margin:0;
+        margin: 0;
         flex-grow: 2;
       }
-      ::placeholder{
+       ::placeholder {
         color: #7b7b7b!important;
       }
     }
@@ -202,15 +224,15 @@
       transition: max-height 500ms ease;
     }
     .no-result {
-    padding:1rem;
-    height: calc(100vh - 5rem);
+      padding: 1rem;
+      height: calc(100vh - 5rem);
     }
-    .q-chip{
+    .q-chip {
       box-sizing: border-box;
-      margin:0.3rem;
-      &:focus{
+      margin: 0.3rem;
+      &:focus {
         outline: none;
-        background:#035398!important;
+        background: #035398!important;
       }
     }
   }
