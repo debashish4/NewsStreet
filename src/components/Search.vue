@@ -3,7 +3,7 @@
     <div class="search" :class="{'bring-search':isSearchInputVisible}">
   
       <q-btn class="back">
-        <q-icon @click="closeSearchPage" name="keyboard arrow left" />
+        <q-icon @click="goBack" name="keyboard arrow left" />
       </q-btn>
   
       <div class="search-input">
@@ -100,14 +100,14 @@
             // remove first element and insert new element once excced the max limit
             if (recentSearches.length >= 5) {
               recentSearches.shift();
-              recentSearches.push(searchQuery);
+              recentSearches.unshift(searchQuery);
             } else {
-              recentSearches.push(searchQuery);
+              recentSearches.unshift(searchQuery);
             }
           } else {
             console.log('already inside');
             recentSearches.splice(searchQueryPositionInRecentSearches,1);
-            recentSearches.push(searchQuery);
+            recentSearches.unshift(searchQuery);
           }
   
           // // remove first element and insert new element once excced the max limit
@@ -130,7 +130,7 @@
             })
           });
       },
-      closeSearchPage() {
+      goBack() {
         this.isSearchInputVisible = false;
         this.$router.go(-1);
       },

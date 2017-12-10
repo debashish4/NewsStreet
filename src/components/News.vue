@@ -137,7 +137,10 @@
       });
       Events.$on('scrollToStart', (param1, param2) => {
          //start from 1st slide
-        this.$refs.newsCarousel.goToSlide(0)
+         let newCarouselRef = this.$refs.newsCarousel;
+         if(newCarouselRef){
+           newCarouselRef.goToSlide(0)
+         }
       })
     },
     methods: {

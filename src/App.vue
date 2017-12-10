@@ -5,9 +5,13 @@
     <q-layout ref="layout" view="hHr LpR Fff">
       <!-- Layout header -->
       <q-toolbar slot="header">
-        <q-btn flat>
+        <q-btn flat v-if="currentPath !== '/settings'">
           <router-link to="/settings">
-            <q-icon name="settings" /></router-link>
+            <q-icon name="settings" />
+          </router-link>
+        </q-btn>
+        <q-btn class="back" v-else>
+          <q-icon @click="goBack" name="keyboard arrow left" />
         </q-btn>
         <div class="q-toolbar-title">
           News Street
@@ -26,9 +30,9 @@
         <side-bar-panel />
       </div>
       <!-- Router View -->
-       <!-- TO DO - add transition animation classes -->
+      <!-- TO DO - add transition animation classes -->
       <transition>
-      <router-view />
+        <router-view />
       </transition>
       <q-modal v-model="appExitConfirm" minimized>
         <p>
@@ -78,7 +82,8 @@
     name: 'App',
     data() {
       return {
-      appExitConfirm: false
+        appExitConfirm: false,
+        currentPath: ''
       }
     },
     mounted() {
@@ -123,11 +128,18 @@
       },
       exitFromApp() {
         navigator.app.exitApp();
+      },
+      goBack() {
+        this.$router.go(-1);
       }
     },
     watch: {
       isDrawerOpen: function(data) {
         data ? this.openLeftDrawer() : this.closeLeftDrawer()
+      },
+      $route(route) {
+        console.log('path', route.path);
+        this.currentPath = route.path
       }
     },
     components: {

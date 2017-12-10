@@ -6,7 +6,7 @@
             <q-icon @click="cordovaShare" name="share" />
             </q-btn>
             <q-btn flat>
-            <q-icon @click="scrollToStart" name="change history" class="change_history"/>
+            <q-icon @click="scrollToStart" name="vertical align top" class="change_history"/>
             </q-btn>
         </q-toolbar-title>
     </q-toolbar>
