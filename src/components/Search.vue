@@ -7,7 +7,7 @@
       </q-btn>
       
       <div class="search-input">
-        <q-search inverted color="primary" ref="searchQuery" placeholder="Search in 5000+ news sources" icon="" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery($event)" />
+        <q-search inverted color="primary" ref="inputSearchRef" placeholder="Search in 5000+ news sources" icon="" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery" />
         <q-btn class="search-btn"  color="positive">
          <q-icon name="search" @click="fetchSearchQuery"/>
         </q-btn>
@@ -34,12 +34,10 @@
     <div class="no-result" v-else>
       <div class="recent-search-query">
         <h2 v-if="recentSearches.length>0">Recent Searches</h2>
-        <q-chip v-for="(recentSearch, index) in recentSearches" :key="index" color="primary">
+        <q-chip tabindex="-1" @click="fillInSearch($event)" v-for="(recentSearch, index) in recentSearches" :key="index" color="primary">
           {{recentSearch}}
         </q-chip>
       </div>
-  
-      <p>No search Results</p>
     </div>
   </div>
 </template>
@@ -84,11 +82,11 @@
       if (recentSearches) {
         this.recentSearches = JSON.parse(recentSearches);
       }
-  
+      this.$refs.inputSearchRef.focus();
     },
     methods: {
       ...mapActions([]),
-      fetchSearchQuery(event) {
+      fetchSearchQuery() {
         console.log('searchModel', this.searchModel);
         // var searchQuery = event.target.value || this.$refs.searchQuery.value;
         var searchQuery = this.searchModel;
@@ -113,6 +111,10 @@
       closeSearchPage() {
         this.isSearchInputVisible = false;
         this.$router.go(-1);
+      },
+      fillInSearch(event){
+        console.log(event);
+        this.searchModel = event.target.innerText;
       }
     },
     components: {
@@ -147,6 +149,14 @@
       height: auto;
       max-height: 300px;
     }
+    .q-if-control.q-icon,
+    .q-if-label,
+    .q-input-target{
+      color: #343434;
+    }
+    .q-if-inverted{
+      border-radius:0; 
+    }
     .search {
       position: fixed;
       display: flex;
@@ -167,11 +177,14 @@
         box-shadow: 0 0 0 0;
       }
       .q-search{
+        background:#FFFFFF!important;
         box-shadow: 0 0 0 0;
         margin:0;
         flex-grow: 2;
       }
-
+      ::placeholder{
+        color: #7b7b7b!important;
+      }
     }
     .back {
       width: 5rem;
@@ -189,7 +202,16 @@
       transition: max-height 500ms ease;
     }
     .no-result {
-      height: calc(100vh - 5rem);
+    padding:1rem;
+    height: calc(100vh - 5rem);
+    }
+    .q-chip{
+      box-sizing: border-box;
+      margin:0.3rem;
+      &:focus{
+        outline: none;
+        background:#035398!important;
+      }
     }
   }
 </style>
