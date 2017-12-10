@@ -2,16 +2,18 @@
   <div class="search-page">
     <div class="search" :class="{'bring-search':isSearchInputVisible}">
       
-        <q-icon class="back" @click="closeSearchPage" name="keyboard arrow left" />
+      <q-btn class="back">
+        <q-icon  @click="closeSearchPage" name="keyboard arrow left" />
+      </q-btn>
       
       <div class="search-input">
-        <q-icon name="search" @click="fetchSearchQuery"/>
-
-        <q-search inverted color="primary" ref="searchValue" :debounce="600" placeholder="Search in 5000+ news sources" icon="" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery($event)" />
-
+        <q-search inverted color="primary" ref="searchQuery" placeholder="Search in 5000+ news sources" icon="" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery($event)" />
+        <q-btn class="search-btn"  color="positive">
+         <q-icon name="search" @click="fetchSearchQuery"/>
+        </q-btn>
       </div>
     </div>
-    <div class="vifnotworking" v-if="searchResult.length > 0">
+    <div v-if="searchResult.length > 0">
       <q-card v-for="(result, index) in searchResult" :key="index">
         <q-card-media>
           <img v-lazy="result.urlToImage" :src="result.urlToImage" @click="result.showDescription = !result.showDescription">
@@ -31,6 +33,7 @@
     </div>
     <div class="no-result" v-else>
       <div class="recent-search-query">
+        <h2 v-if="recentSearches.length>0">Recent Searches</h2>
         <q-chip v-for="(recentSearch, index) in recentSearches" :key="index" color="primary">
           {{recentSearch}}
         </q-chip>
@@ -68,7 +71,8 @@
   export default {
     data() {
       return {
-        searchModel: '',
+        searchModel:'',
+        searchQuery: '',
         isSearchInputVisible: false,
         searchResult: [],
         recentSearches: []
@@ -85,15 +89,19 @@
     methods: {
       ...mapActions([]),
       fetchSearchQuery(event) {
-        var searchValue = event.target.value || this.$refs.searchValue.value;
-        if (searchValue){
-          this.recentSearches.push(searchValue);
+        console.log('searchModel', this.searchModel);
+        // var searchQuery = event.target.value || this.$refs.searchQuery.value;
+        var searchQuery = this.searchModel;
+        
+        // this.searchQuery = searchQuery;
+        if (searchQuery){
+          this.recentSearches.push(searchQuery);
         localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
         }else{
           console.log('blank input field');
           return;
         }
-        fetchSearchNews(searchValue)
+        fetchSearchNews(searchQuery)
           .then(results => {
             this.searchResult = results.articles.map(item => {
               item.showDescription = false;
@@ -123,6 +131,11 @@
       '$route' (to) {
         console.log('params', this.$route.path);
         console.log('sdf', to);
+      },
+      searchModel: function(params) {
+        if(!params){
+          this.searchResult = [];
+        }
       }
     }
   }
@@ -130,7 +143,7 @@
 
 <style lang="scss">
   .search-page {
-    .isVisible {
+    .description.isVisible {
       height: auto;
       max-height: 300px;
     }
@@ -158,6 +171,7 @@
         margin:0;
         flex-grow: 2;
       }
+
     }
     .back {
       width: 5rem;
