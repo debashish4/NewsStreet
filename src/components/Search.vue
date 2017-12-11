@@ -44,12 +44,12 @@
 </template>
 
 <script>
-  import Vue from 'vue'
+  import Vue from "vue";
   import {
     mapActions,
     mapState
-  } from 'vuex'
-  import VueLazyload from 'vue-lazyload'
+  } from "vuex";
+  import VueLazyload from "vue-lazyload";
   import {
     QSearch,
     QCard,
@@ -61,25 +61,25 @@
     QCardActions,
     QBtn,
     QChip
-  } from 'quasar'
+  } from "quasar";
   import {
     fetchSearchNews
-  } from '../network/requestNews'
+  } from "../network/requestNews";
   Vue.use(VueLazyload);
   
   export default {
     data() {
       return {
-        searchModel: '',
-        searchQuery: '',
+        searchModel: "",
+        searchQuery: "",
         isSearchInputVisible: false,
         searchResult: [],
         recentSearches: []
-      }
+      };
     },
     mounted() {
       this.isSearchInputVisible = true;
-      let recentSearches = localStorage.getItem('recentSearches');
+      let recentSearches = localStorage.getItem("recentSearches");
       if (recentSearches) {
         this.recentSearches = JSON.parse(recentSearches);
       }
@@ -88,15 +88,17 @@
     methods: {
       ...mapActions([]),
       fetchSearchQuery() {
-        console.log('searchModel', this.searchModel);
+        console.log("searchModel", this.searchModel);
         // var searchQuery = event.target.value || this.$refs.searchQuery.value;
         var searchQuery = this.searchModel;
-        var recentSearches = this.recentSearches
-        var searchQueryPositionInRecentSearches = recentSearches.indexOf(searchQuery);
+        var recentSearches = this.recentSearches;
+        var searchQueryPositionInRecentSearches = recentSearches.indexOf(
+          searchQuery
+        );
         // this.searchQuery = searchQuery;
         if (searchQuery) {
           if (searchQueryPositionInRecentSearches === -1) {
-            console.log('not inside', recentSearches);
+            console.log("not inside", recentSearches);
             // remove first element and insert new element once excced the max limit
             if (recentSearches.length >= 5) {
               recentSearches.shift();
@@ -105,8 +107,8 @@
               recentSearches.unshift(searchQuery);
             }
           } else {
-            console.log('already inside');
-            recentSearches.splice(searchQueryPositionInRecentSearches,1);
+            console.log("already inside");
+            recentSearches.splice(searchQueryPositionInRecentSearches, 1);
             recentSearches.unshift(searchQuery);
           }
   
@@ -117,18 +119,17 @@
           // } else {
           //   recentSearches.push(searchQuery);
           // }
-          localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+          localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
         } else {
-          console.log('blank input field');
+          console.log("blank input field");
           return;
         }
-        fetchSearchNews(searchQuery)
-          .then(results => {
-            this.searchResult = results.articles.map(item => {
-              item.showDescription = false;
-              return item;
-            })
+        fetchSearchNews(searchQuery).then(results => {
+          this.searchResult = results.articles.map(item => {
+            item.showDescription = false;
+            return item;
           });
+        });
       },
       goBack() {
         this.isSearchInputVisible = false;
@@ -152,9 +153,9 @@
       QChip
     },
     watch: {
-      '$route' (to) {
-        console.log('params', this.$route.path);
-        console.log('sdf', to);
+      $route(to) {
+        console.log("params", this.$route.path);
+        console.log("sdf", to);
       },
       searchModel: function(params) {
         if (!params) {
@@ -162,7 +163,7 @@
         }
       }
     }
-  }
+  };
 </script>
 
 <style lang="scss">
@@ -191,7 +192,7 @@
       transition: top 500ms ease;
       .search-input {
         margin: 0;
-        background: #027BE3;
+        background: #027be3;
         flex-grow: 2;
         display: flex;
       }
@@ -199,18 +200,18 @@
         box-shadow: 0 0 0 0;
       }
       .q-search {
-        background: #FFFFFF!important;
+        background: #ffffff !important;
         box-shadow: 0 0 0 0;
         margin: 0;
         flex-grow: 2;
       }
        ::placeholder {
-        color: #7b7b7b!important;
+        color: #7b7b7b !important;
       }
     }
     .back {
       width: 5rem;
-      background: #027BE3;
+      background: #027be3;
     }
     .search.bring-search {
       top: 0;
@@ -232,7 +233,7 @@
       margin: 0.3rem;
       &:focus {
         outline: none;
-        background: #035398!important;
+        background: #035398 !important;
       }
     }
   }
