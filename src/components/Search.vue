@@ -166,7 +166,10 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+body{
+  overflow: scroll!important;
+}
   .search-page {
     .description.isVisible {
       height: auto;

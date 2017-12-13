@@ -1,27 +1,78 @@
 <template>
   <q-layout ref="layout" view="hHr LpR Fff">
-    <q-carousel class="text-white article" ref="newsCarousel" @slide="(index, direction) => slidePosition(index, direction)">
-      <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
-        <div class="article-image row justify-center items-center">
-          <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
-          <q-spinner-cube class="spinner" color="primary" :size="50" />
-        </div>
-        <div class="news-text">
-          <h2>
-            {{article.title}}
-          </h2>
-          <p>
-          </p>
-          <p>
-            {{article.description}}
-          </p>
-          <p class="read-full">
-            Swipe Up to read the full story...
-          </p>
-          <!-- <wave /> -->
+    <!-- <q-carousel class="text-white article" ref="newsCarousel" @slide="(index, direction) => slidePosition(index, direction)">
+            <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
+              <div class="article-image row justify-center items-center">
+                <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
+                <q-spinner-cube class="spinner" color="primary" :size="50" />
+              </div>
+              <div class="news-text">
+                <h2>
+                  {{article.title}}
+                </h2>
+                <p>
+                </p>
+                <p>
+                  {{article.description}}
+                </p>
+                <p class="read-full">
+                  Swipe Up to read the full story...
+                </p>
+              </div>
+            </div>
+          </q-carousel> -->
+    <div class="flipWrapper" v-if="newsCollection.length">
+      <div class="flip-container">
+        <div class="flipper" :style="{ 'transform': `rotateY(${deg}deg)`}">
+          <div class="front" v-touch-swipe.horizontal="frontCardSwipe">
+            <div class="news">
+              <div class="article-image row justify-center items-center">
+                <img :src="newsCollection[front].urlToImage" alt="" width="100%">
+                <!-- <q-spinner-cube class="spinner" color="primary" :size="50" /> -->
+              </div>
+              <div class="news-text">
+                <h2>
+                  <pre>{{front}}</pre>
+                  {{newsCollection[front].title}}
+                </h2>
+                <p>
+                </p>
+                <p>
+                  {{newsCollection[front].description}}
+                </p>
+                <p class="read-full">
+                  Swipe Up to read the full story...
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="back">
+            <div class="news" v-touch-swipe.horizontal="backCardSwipe">
+              <div class="article-image row justify-center items-center">
+                <img :src="newsCollection[back].urlToImage" alt="" width="100%">
+                <!-- <q-spinner-cube class="spinner" color="primary" :size="50" /> -->
+              </div>
+              <div class="news-text">
+                <h2>
+                  <pre>{{back}}</pre>
+                  {{newsCollection[back].title}}
+                </h2>
+                <p>
+                </p>
+                <p>
+                  {{newsCollection[back].description}}
+                </p>
+                <p class="read-full">
+                  Swipe Up to read the full story...
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </q-carousel>
+    </div>
+  
+  
   
   
     <!-- Page insertion point -->
@@ -114,6 +165,9 @@
         openModal: false,
         showShimmer: false,
         inAppBrowserLoadNewsUrl: '',
+        deg: 0,
+        front:0,
+        back:1
       };
     },
     mounted() {
@@ -136,15 +190,47 @@
         loadNews()
       });
       Events.$on('scrollToStart', (param1, param2) => {
-         //start from 1st slide
-         let newCarouselRef = this.$refs.newsCarousel;
-         if(newCarouselRef){
-           newCarouselRef.goToSlide(0)
-         }
+        //start from 1st slide
+        let newCarouselRef = this.$refs.newsCarousel;
+        if (newCarouselRef) {
+          newCarouselRef.goToSlide(0)
+        }
       })
     },
     methods: {
       ...mapActions(['toggleReadMorePanel', 'saveSocialShareData']),
+  
+      frontCardSwipe(e) {
+        console.log('front card swipe', this.front);
+        if(this.front >= 0 || this.front <= (this.newsCollection.length-1)){
+          if (e.direction == 'left') {
+            console.log('left swipe on front card');
+            this.deg -= 180;
+            this.front = this.front+2;
+          } else if(e.direction == 'right') {
+            console.log('right swipe on front card');
+            this.deg += 180;
+            this.front = this.front-2;
+            
+          }
+        }
+      },
+        backCardSwipe(e) {
+        console.log('back card swipe');
+        if(this.back >= 0 || this.back <= (this.newsCollection.length-1)){
+          if (e.direction == 'left') {
+            console.log('left swipe on backcard');
+            this.deg -= 180;
+            this.back = this.back+2;
+          } else if(e.direction == 'right') {
+            console.log('right swipe on backcard');
+            this.deg += 180;
+            this.back += this.back -2;
+            
+          }
+        }
+      },
+  
       slidePosition(index, direction) {
         const {
           description,
@@ -201,7 +287,9 @@
     height: calc(100vh - 100px);
     overflow: hidden;
   }
-  
+  body{
+    overflow: hidden;
+}
   .news {
     width: 100%;
     padding: 0;
@@ -216,7 +304,7 @@
       position: absolute;
     }
     img {
-      opacity: 0;
+      // opacity: 0;
       width: 100%;
       height: 250px;
       display: inline-block;
@@ -229,24 +317,22 @@
       font-size: 1.5rem;
       color: red;
     }
-    img[lazy=loading] {
-      opacity:1;
-    }
-    img[lazy=loaded] {
-      opacity: 1
-    }
-    img[lazy=loaded]+.spinner {
-      display: none;
-    }
-    img[lazy=error]{
-      display:block;
-      opacity:1;
-      background: url('../assets/no_image_placeholder.png') no-repeat;
-    }
-
-    img[lazy=error]+.spinner {
-      display: none;
-      
-    }
+    // img[lazy=loading] {
+    //   opacity: 1;
+    // }
+    // img[lazy=loaded] {
+    //   opacity: 1
+    // }
+    // img[lazy=loaded]+.spinner {
+    //   display: none;
+    // }
+    // img[lazy=error] {
+    //   display: block;
+    //   opacity: 1;
+    //   background: url('../assets/no_image_placeholder.png') no-repeat;
+    // }
+    // img[lazy=error]+.spinner {
+    //   display: none;
+    // }
   }
 </style>
