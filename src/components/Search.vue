@@ -13,7 +13,7 @@
         </q-btn>
       </div>
     </div>
-    <div v-if="searchResult.length > 0">
+    <section class="scroll-container" v-if="searchResult.length > 0">
       <q-card v-for="(result, index) in searchResult" :key="index">
         <q-card-media>
           <img v-lazy="result.urlToImage" :src="result.urlToImage" @click="result.showDescription = !result.showDescription">
@@ -31,7 +31,7 @@
           <q-btn flat color="primary"><a :href="result.url" target="_blank">READ THE FULL STORY</a></q-btn>
         </q-card-actions>
       </q-card>
-    </div>
+    </section>
     <div class="no-result" v-else>
       <div class="recent-search-query">
         <h2 v-if="recentSearches.length>0">Recent Searches</h2>
@@ -168,6 +168,12 @@
 
 <style lang="scss">
   .search-page {
+
+    .scroll-container{
+      height: calc(100vh - 5rem);
+      overflow: scroll;
+    }
+
     .description.isVisible {
       height: auto;
       max-height: 300px;

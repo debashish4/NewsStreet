@@ -45,8 +45,8 @@
               </div>
             </div>
           </div>
-          <div class="back">
-            <div class="news" v-touch-swipe.horizontal="backCardSwipe">
+          <div class="back" v-touch-swipe.horizontal="backCardSwipe">
+            <div class="news">
               <div class="article-image row justify-center items-center">
                 <img :src="newsCollection[back].urlToImage" alt="" width="100%">
                 <!-- <q-spinner-cube class="spinner" color="primary" :size="50" /> -->
@@ -302,7 +302,7 @@
     .flip-container {
       perspective: 2000px;
       position: relative;
-      z-index: 2000;
+      z-index: 90000;
     }
     /* flip the pane when hovered */
     .flip-container.hover .flipper {
@@ -323,6 +323,8 @@
     /* hide back of pane during swap */
     .front,
     .back {
+      border: 10px solid #ccc;
+      background: #ffffff;
       backface-visibility: hidden;
       position: absolute;
       top: 0;
