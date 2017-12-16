@@ -27,8 +27,8 @@
           <div class="front" v-touch-swipe.horizontal="frontCardSwipe">
             <div class="news">
               <div class="article-image row justify-center items-center">
-                <img :src="newsCollection[front].urlToImage" alt="" width="100%">
-                <!-- <q-spinner-cube class="spinner" color="primary" :size="50" /> -->
+                <img v-lazy="newsCollection[front].urlToImage" :src="newsCollection[front].urlToImage" alt="" width="100%">
+                <q-spinner-cube class="spinner" color="primary" :size="50" />
               </div>
               <div class="news-text">
                 <h2>
@@ -48,8 +48,8 @@
           <div class="back" v-touch-swipe.horizontal="backCardSwipe">
             <div class="news">
               <div class="article-image row justify-center items-center">
-                <img :src="newsCollection[back].urlToImage" alt="" width="100%">
-                <!-- <q-spinner-cube class="spinner" color="primary" :size="50" /> -->
+                <img v-lazy="newsCollection[back].urlToImage" :src="newsCollection[back].urlToImage" alt="" width="100%">
+                <q-spinner-cube class="spinner" color="primary" :size="50" />
               </div>
               <div class="news-text">
                 <h2>
