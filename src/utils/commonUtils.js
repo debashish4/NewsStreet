@@ -83,20 +83,22 @@ const stopInAppBrowser = () => {
     }
 };
 
-const cordovaShare = () => {
+const cordovaShare = (socialShareData) => {
     const {
-                    description,
+        description,
         title,
         url,
-        urlToImage
-                } = this.socialShareData;
+        } = socialShareData;
     // this is the complete list of currently supported params you can pass to the plugin (all optional)
     var options = {
-        message: `${title}
+        message:
+            `
+    ${title}
                                   
-                  ${description}
+${description}
                   
-                  Read More: ` || null, // not supported on some apps (Facebook, Instagram)
+To read full story visit:
+` || null, // not supported on some apps (Facebook, Instagram)
         subject: title, // fi. for email
         files: null, // an array of filenames either locally or remotely
         url: url || null,

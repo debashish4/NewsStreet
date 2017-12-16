@@ -1,26 +1,26 @@
 <template>
   <q-layout ref="layout" view="hHr LpR Fff">
     <!-- <q-carousel class="text-white article" ref="newsCarousel" @slide="(index, direction) => slidePosition(index, direction)">
-                    <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
-                      <div class="article-image row justify-center items-center">
-                        <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
-                        <q-spinner-cube class="spinner" color="primary" :size="50" />
-                      </div>
-                      <div class="news-text">
-                        <h2>
-                          {{article.title}}
-                        </h2>
-                        <p>
-                        </p>
-                        <p>
-                          {{article.description}}
-                        </p>
-                        <p class="read-full">
-                          Swipe Up to read the full story...
-                        </p>
-                      </div>
-                    </div>
-                  </q-carousel> -->
+                            <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
+                              <div class="article-image row justify-center items-center">
+                                <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
+                                <q-spinner-cube class="spinner" color="primary" :size="50" />
+                              </div>
+                              <div class="news-text">
+                                <h2>
+                                  {{article.title}}
+                                </h2>
+                                <p>
+                                </p>
+                                <p>
+                                  {{article.description}}
+                                </p>
+                                <p class="read-full">
+                                  Swipe Up to read the full story...
+                                </p>
+                              </div>
+                            </div>
+                          </q-carousel> -->
     <div class="flipWrapper" v-if="newsCollection.length">
       <div class="flip-container" :class="{'disable-touch': disableTouch}">
         <div class="flipper" :style="{ 'transform': `rotateY(${deg}deg)`}">
@@ -102,7 +102,6 @@
     QItemSide,
     QItemMain,
     QSideLink,
-    QCarousel,
     QSpinnerCube,
     QModal,
     TouchSwipe,
@@ -141,7 +140,6 @@
       QItemSide,
       QItemMain,
       QSideLink,
-      QCarousel,
       QSpinnerCube,
       QModal,
       Shimmer,
@@ -165,7 +163,8 @@
         deg: 0,
         front: 0,
         back: 1,
-        disableTouch: false
+        disableTouch: false,
+        socialShareNewsItemIndex: 0
       };
     },
     mounted() {
@@ -180,6 +179,19 @@
         }
         fetchNews(selectedLs).then(res => {
           this.newsCollection = res.articles;
+          // this.socialShareNewsItemIndex = 0;
+          const {
+            description,
+            title,
+            url,
+            urlToImage
+          } = this.newsCollection[0];
+          this.saveSocialShareData({
+            description,
+            title,
+            url,
+            urlToImage
+          })
           console.log('newsCollection', this.newsCollection);
         });
       }
@@ -198,28 +210,29 @@
     },
     methods: {
       ...mapActions(['toggleReadMorePanel', 'saveSocialShareData']),
-      slidePosition(index, direction) {
-        const {
-          description,
-          title,
-          url,
-          urlToImage
-        } = this.newsCollection[index];
-        this.saveSocialShareData({
-          description,
-          title,
-          url,
-          urlToImage
-        })
-      },
+      // slidePosition(index, direction) {
+      //   const {
+      //     description,
+      //     title,
+      //     url,
+      //     urlToImage
+      //   } = this.newsCollection[index];
+      //   this.saveSocialShareData({
+      //     description,
+      //     title,
+      //     url,
+      //     urlToImage
+      //   })
+      // },
   
       frontCardSwipe(e) {
         console.log('inside front if');
         this.disableTouch = true;
+        let newsCollection = this.newsCollection;
         if (e.direction == 'left') {
           console.log('left swipe on front card');
-          if (this.front < (this.newsCollection.length)) {
-            if (this.newsCollection[this.front + 2]) {
+          if (this.front < (newsCollection.length)) {
+            if (newsCollection[this.front + 2]) {
               this.deg -= 180;
               setTimeout(_ => {
                 this.front = this.front + 2;
@@ -229,16 +242,22 @@
               this.deg -= 180;
             }
           }
+          if (this.socialShareNewsItemIndex < newsCollection.length) {
+            this.socialShareNewsItemIndex++;
+          }
         } else if (e.direction == 'right') {
           console.log('right swipe on front card');
           if (this.back >= 1) {
-            if(this.newsCollection[this.back - 2]){
+            if (newsCollection[this.back - 2]) {
               this.deg += 180;
               setTimeout(_ => {
                 this.back = this.back - 2;
                 console.log('back', this.back);
-                }, 200)
+              }, 200)
             }
+          }
+          if (this.socialShareNewsItemIndex > 0) {
+            this.socialShareNewsItemIndex--;
           }
         }
         setTimeout(() => {
@@ -250,38 +269,44 @@
   
         console.log('inside back if');
         this.disableTouch = true;
+        let newsCollection = this.newsCollection;
         if (e.direction == 'left') {
           console.log('left swipe on backcard');
-          if (this.back < (this.newsCollection.length)) {
-            if (this.newsCollection[this.back + 2]) {
+          if (this.back < (newsCollection.length)) {
+            if (newsCollection[this.back + 2]) {
               this.deg -= 180;
               setTimeout(_ => {
                 this.back = this.back + 2;
                 console.log('back', this.back);
-              }, 200)
+              }, 100)
             }
+          }
+          if (this.socialShareNewsItemIndex < newsCollection.length-1) {
+            this.socialShareNewsItemIndex++;
           }
         } else if (e.direction == 'right') {
           console.log('right swipe on backcard');
           if (this.front >= 0) {
-            if(this.back == this.newsCollection.length-1){
+            if (this.back == newsCollection.length - 1) {
               this.deg += 180;
-             
-            }
-            else if(this.newsCollection[this.front - 2]){
+  
+            } else if (newsCollection[this.front - 2]) {
               this.deg += 180;
               setTimeout(_ => {
                 this.front = this.front - 2;
                 console.log('front', this.front);
-                }, 200)
-            }else {
+              }, 100)
+            } else {
               this.deg += 180;
             }
+          }
+          if (this.socialShareNewsItemIndex > 0) {
+            this.socialShareNewsItemIndex--;
           }
         }
         setTimeout(() => {
           this.disableTouch = false;
-        }, 700);
+        }, 400);
       },
       openWindow() {
         this.toggleReadMorePanel();
@@ -314,6 +339,23 @@
         isReadMorePanelOpen: state => state.app.isReadMorePanelOpen,
         selectedNews: state => state.news.selectedNews || ["the-next-web", "techcrunch"]
       }),
+    },
+    watch: {
+      socialShareNewsItemIndex: function(newsIndex) {
+        const {
+          description = 'No Description Provided',
+          title = "No Title Provided",
+          url,
+          urlToImage
+        } = this.newsCollection[newsIndex];
+        console.log('newsIndex',newsIndex);
+        this.saveSocialShareData({
+          description,
+          title,
+          url,
+          urlToImage
+        })
+      }
     }
   };
 </script>
@@ -326,6 +368,7 @@
   }
   
   .flipWrapper {
+    background-image: url('../assets/egg-shell.png');
     .flip-container {
       perspective: 2000px;
       position: relative;
@@ -343,7 +386,8 @@
     }
     /* flip speed goes here */
     .flipper {
-      transition: 0.6s;
+      transition: 0.4s;
+      transition-timing-function: ease-out;
       transform-style: preserve-3d;
       position: relative;
     }
@@ -390,9 +434,9 @@
       position: absolute;
     }
     img {
-      // opacity: 0;
+      opacity: 0;
       width: 100%;
-      height: 250px;
+      height: 235px;
       display: inline-block;
       transition: opacity 1s ease;
     }

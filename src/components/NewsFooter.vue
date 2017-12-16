@@ -3,7 +3,7 @@
     <q-toolbar class="news-footer" slot="footer">
         <q-toolbar-title>
             <q-btn flat>
-            <q-icon @click="cordovaShare" name="share" />
+            <q-icon @click="shareInfo" name="share" />
             </q-btn>
             <q-btn flat>
             <q-icon @click="scrollToStart" name="vertical align top" class="change_history"/>
@@ -21,7 +21,8 @@
         QBtn,
         Events
     } from 'quasar'
-    
+    import { cordovaShare } from '../utils/commonUtils'
+
     export default {
         data() {
             return {}
@@ -35,39 +36,14 @@
             scrollToStart(){
                 Events.$emit('scrollToStart');
             },
-            cordovaShare() {
+            shareInfo() {
                 const {
                     description,
                     title,
                     url,
                     urlToImage
                 } = this.socialShareData;
-                // this is the complete list of currently supported params you can pass to the plugin (all optional)
-                var options = {
-                    message: `${title}
-                                  
-                  ${description}
-                  
-                  Read More: ` || null, // not supported on some apps (Facebook, Instagram)
-                    subject: title, // fi. for email
-                    files: null, // an array of filenames either locally or remotely
-                    url: url || null,
-                    chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
-                }
-    
-                var onSuccess = function(result) {
-                    console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-                    console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-                }
-    
-                var onError = function(msg) {
-                    console.log("Sharing failed with message: " + msg);
-                }
-                try {
-                    window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
-                } catch (err) {
-                    console.log(err);
-                }
+                cordovaShare({description, title, url})
             }
         },
         components: {
