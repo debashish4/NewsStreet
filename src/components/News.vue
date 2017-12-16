@@ -1,26 +1,26 @@
 <template>
   <q-layout ref="layout" view="hHr LpR Fff">
     <!-- <q-carousel class="text-white article" ref="newsCarousel" @slide="(index, direction) => slidePosition(index, direction)">
-            <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
-              <div class="article-image row justify-center items-center">
-                <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
-                <q-spinner-cube class="spinner" color="primary" :size="50" />
-              </div>
-              <div class="news-text">
-                <h2>
-                  {{article.title}}
-                </h2>
-                <p>
-                </p>
-                <p>
-                  {{article.description}}
-                </p>
-                <p class="read-full">
-                  Swipe Up to read the full story...
-                </p>
-              </div>
-            </div>
-          </q-carousel> -->
+                    <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
+                      <div class="article-image row justify-center items-center">
+                        <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
+                        <q-spinner-cube class="spinner" color="primary" :size="50" />
+                      </div>
+                      <div class="news-text">
+                        <h2>
+                          {{article.title}}
+                        </h2>
+                        <p>
+                        </p>
+                        <p>
+                          {{article.description}}
+                        </p>
+                        <p class="read-full">
+                          Swipe Up to read the full story...
+                        </p>
+                      </div>
+                    </div>
+                  </q-carousel> -->
     <div class="flipWrapper" v-if="newsCollection.length">
       <div class="flip-container" :class="{'disable-touch': disableTouch}">
         <div class="flipper" :style="{ 'transform': `rotateY(${deg}deg)`}">
@@ -32,7 +32,7 @@
               </div>
               <div class="news-text">
                 <h2>
-                {{newsCollection[front].title}}
+                  {{newsCollection[front].title}}
                 </h2>
                 <p>
                 </p>
@@ -169,7 +169,7 @@
       };
     },
     mounted() {
-      let selectedLs = ["the-next-web", "techcrunch"];
+      let selectedLs = ["the-next-web"];
       // let transformed = newsSourcetoApiString(selectedLs);
       let loadNews = () => {
         console.log('selectedNews', this.selectedNews);
@@ -180,6 +180,7 @@
         }
         fetchNews(selectedLs).then(res => {
           this.newsCollection = res.articles;
+          console.log('newsCollection', this.newsCollection);
         });
       }
       loadNews();
@@ -214,48 +215,73 @@
   
       frontCardSwipe(e) {
         console.log('inside front if');
-          this.disableTouch = true;
-          if (e.direction == 'left') {
-            console.log('left swipe on front card');
-            if (this.front < (this.newsCollection.length)) {
+        this.disableTouch = true;
+        if (e.direction == 'left') {
+          console.log('left swipe on front card');
+          if (this.front < (this.newsCollection.length)) {
+            if (this.newsCollection[this.front + 2]) {
               this.deg -= 180;
-              setTimeout(_ => this.front = this.front + 2, 500)
-  
-            }
-          } else if (e.direction == 'right') {
-            console.log('right swipe on front card');
-            if (this.back > 1) {
-              this.deg += 180;
-              setTimeout(_ => this.back = this.back - 2, 200)
+              setTimeout(_ => {
+                this.front = this.front + 2;
+                console.log('front', this.front);
+              }, 200)
+            } else {
+              this.deg -= 180;
             }
           }
-          setTimeout(() => {
-              this.disableTouch = false;
-          }, 700);
+        } else if (e.direction == 'right') {
+          console.log('right swipe on front card');
+          if (this.back >= 1) {
+            if(this.newsCollection[this.back - 2]){
+              this.deg += 180;
+              setTimeout(_ => {
+                this.back = this.back - 2;
+                console.log('back', this.back);
+                }, 200)
+            }
+          }
+        }
+        setTimeout(() => {
+          this.disableTouch = false;
+        }, 500);
       },
       backCardSwipe(e) {
         // if (this.back >= 0 && this.back <= (this.newsCollection.length - 1)) {
-
+  
         console.log('inside back if');
         this.disableTouch = true;
-          if (e.direction == 'left') {
-            console.log('left swipe on backcard');
-            if (this.back < (this.newsCollection.length)) {
+        if (e.direction == 'left') {
+          console.log('left swipe on backcard');
+          if (this.back < (this.newsCollection.length)) {
+            if (this.newsCollection[this.back + 2]) {
               this.deg -= 180;
-              setTimeout(_ => this.back = this.back + 2, 500)
-  
-            }
-          } else if (e.direction == 'right') {
-            console.log('right swipe on backcard');
-            if (this.front >= 0) {
-              this.deg += 180;
-              setTimeout(_ => this.front = this.front - 2, 200)
-  
+              setTimeout(_ => {
+                this.back = this.back + 2;
+                console.log('back', this.back);
+              }, 200)
             }
           }
-          setTimeout(() => {
-              this.disableTouch = false;
-          }, 700);
+        } else if (e.direction == 'right') {
+          console.log('right swipe on backcard');
+          if (this.front >= 0) {
+            if(this.back == this.newsCollection.length-1){
+              this.deg += 180;
+             
+            }
+            else if(this.newsCollection[this.front - 2]){
+              this.deg += 180;
+              setTimeout(_ => {
+                this.front = this.front - 2;
+                console.log('front', this.front);
+                }, 200)
+            }else {
+              this.deg += 180;
+            }
+          }
+        }
+        setTimeout(() => {
+          this.disableTouch = false;
+        }, 700);
       },
       openWindow() {
         this.toggleReadMorePanel();
@@ -294,15 +320,16 @@
 
 <style lang="scss" scoped>
   /* entire container, keeps perspective */
-    .disable-touch{
-      pointer-events: none
-    }
+  
+  .disable-touch {
+    pointer-events: none
+  }
   
   .flipWrapper {
     .flip-container {
       perspective: 2000px;
       position: relative;
-      z-index: 90000;
+      z-index: 2000;
     }
     /* flip the pane when hovered */
     .flip-container.hover .flipper {
