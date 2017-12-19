@@ -1,34 +1,13 @@
 <template>
   <q-layout ref="layout" view="hHr LpR Fff">
-    <!-- <q-carousel class="text-white article" ref="newsCarousel" @slide="(index, direction) => slidePosition(index, direction)">
-                            <div slot="slide" class="news" v-for="(article, articleIndex) in newsCollection" :key="articleIndex" v-touch-swipe.vertical="(evt) => loadNewsInBrowser(article.url, evt)">
-                              <div class="article-image row justify-center items-center">
-                                <img v-lazy="article.urlToImage" :src="article.urlToImage" alt="" width="100%">
-                                <q-spinner-cube class="spinner" color="primary" :size="50" />
-                              </div>
-                              <div class="news-text">
-                                <h2>
-                                  {{article.title}}
-                                </h2>
-                                <p>
-                                </p>
-                                <p>
-                                  {{article.description}}
-                                </p>
-                                <p class="read-full">
-                                  Swipe Up to read the full story...
-                                </p>
-                              </div>
-                            </div>
-                          </q-carousel> -->
     <div class="flipWrapper" v-if="newsCollection.length">
       <div class="flip-container" :class="{'disable-touch': disableTouch}">
         <div class="flipper" :style="{ 'transform': `rotateY(${deg}deg)`}">
           <div class="front" v-touch-swipe.horizontal="frontCardSwipe">
             <div class="news">
-              <div class="article-image row justify-center items-center">
-                <img v-lazy="newsCollection[front].urlToImage" :src="newsCollection[front].urlToImage" alt="" width="100%">
-                <q-spinner-cube class="spinner" color="primary" :size="50" />
+              <div class="article-image-container row justify-center items-center">
+                <img class="article-image" v-lazy="newsCollection[front].urlToImage" :src="newsCollection[front].urlToImage" alt="" width="100%">
+                <q-spinner-cube class="spinner" color="red-8" :size="50" />
               </div>
               <div class="news-text">
                 <h2>
@@ -39,17 +18,14 @@
                 <p>
                   {{newsCollection[front].description}}
                 </p>
-                <p class="read-full">
-                  Swipe Up to read the full story...
-                </p>
               </div>
             </div>
           </div>
           <div class="back" v-touch-swipe.horizontal="backCardSwipe">
             <div class="news">
-              <div class="article-image row justify-center items-center">
-                <img v-lazy="newsCollection[back].urlToImage" :src="newsCollection[back].urlToImage" alt="" width="100%">
-                <q-spinner-cube class="spinner" color="primary" :size="50" />
+              <div class="article-image-container row justify-center items-center">
+                <img class="article-image" v-lazy="newsCollection[back].urlToImage" :src="newsCollection[back].urlToImage" alt="" width="100%">
+                <q-spinner-cube class="spinner" color="red-8" :size="50" />
               </div>
               <div class="news-text">
                 <h2>
@@ -59,9 +35,6 @@
                 </p>
                 <p>
                   {{newsCollection[back].description}}
-                </p>
-                <p class="read-full">
-                  Swipe Up to read the full story...
                 </p>
               </div>
             </div>
@@ -106,7 +79,6 @@
     QModal,
     TouchSwipe,
     Events,
-    debounce
   } from "quasar"
   import VueLazyload from 'vue-lazyload'
   import {
@@ -121,7 +93,6 @@
     stringifyArray,
   } from "../network/requestNews"
   import Shimmer from '@/Shimmer.vue'
-  // import Loader from '@/Loader.vue'
   import SideBarPanel from '@/SideBarPanel.vue'
   import NewsFooter from '@/NewsFooter.vue'
   Vue.use(VueLazyload);
@@ -145,7 +116,6 @@
       Shimmer,
       SideBarPanel,
       NewsFooter,
-      // Loader
     },
     directives: {
       TouchSwipe
@@ -198,7 +168,7 @@
       }
       loadNews();
       eventBus.$on('loadNews', (data) => {
-        console.log('i received on', data)
+        console.log('i received on', data);
         loadNews()
       });
       Events.$on('scrollToStart', (param1, param2) => {
@@ -211,21 +181,6 @@
     },
     methods: {
       ...mapActions(['toggleReadMorePanel', 'saveSocialShareData']),
-      // slidePosition(index, direction) {
-      //   const {
-      //     description,
-      //     title,
-      //     url,
-      //     urlToImage
-      //   } = this.newsCollection[index];
-      //   this.saveSocialShareData({
-      //     description,
-      //     title,
-      //     url,
-      //     urlToImage
-      //   })
-      // },
-  
       frontCardSwipe(e) {
         console.log('inside front if');
         this.disableTouch = true;
@@ -282,7 +237,7 @@
               }, 100)
             }
           }
-          if (this.socialShareNewsItemIndex < newsCollection.length-1) {
+          if (this.socialShareNewsItemIndex < newsCollection.length - 1) {
             this.socialShareNewsItemIndex++;
           }
         } else if (e.direction == 'right') {
@@ -345,11 +300,11 @@
       socialShareNewsItemIndex: function(newsIndex) {
         const {
           description = 'No Description Provided',
-          title = "No Title Provided",
-          url,
-          urlToImage
+            title = "No Title Provided",
+            url,
+            urlToImage
         } = this.newsCollection[newsIndex];
-        console.log('newsIndex',newsIndex);
+        console.log('newsIndex', newsIndex);
         this.saveSocialShareData({
           description,
           title,
@@ -401,7 +356,8 @@
     /* hide back of pane during swap */
     .front,
     .back {
-      border: 10px solid #ccc;
+      border-top: 0.4rem solid #d23f50;
+      border-bottom: 0.4rem solid #ce2539;
       background: #ffffff;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
@@ -433,9 +389,10 @@
   
   .news {
     width: 100%;
+    height: calc(100vh - 10rem);
     padding: 0;
     overflow: hidden;
-    .article-image {
+    .article-image-container-container {
       position: relative;
       width: 100%;
       padding: 0;
@@ -445,36 +402,45 @@
     .spinner {
       position: absolute;
     }
-    img {
+    .article-image {
       opacity: 0;
       width: 100%;
       height: 235px;
+      border-bottom: 0.5rem solid white;
       display: inline-block;
       -webkit-transition: opacity 1s ease;
       transition: opacity 1s ease;
     }
     .news-text {
       padding: 1rem;
+      height: calc(100vh - 34rem);
+      overflow-y: scroll;
+      background: linear-gradient(to top, rgba(214, 214, 214, 0.65) 0%,rgba(0,0,0,0) 100%);
     }
-    .read-full {
-      font-size: 1.5rem;
-      color: red;
+    .news-text::-webkit-scrollbar {
+      display: block!important;
+      width: 0.5rem;
+      visibility: visible!important;
     }
-    img[lazy=loading] {
+    .news-text::-webkit-scrollbar-thumb {
+      background: #d23f50;
+      // outline: 1px solid #852016;
+    }
+    .article-image[lazy=loading] {
       opacity: 1;
     }
-    img[lazy=loaded] {
+    .article-image[lazy=loaded] {
       opacity: 1
     }
-    img[lazy=loaded]+.spinner {
+    .article-image[lazy=loaded]+.spinner {
       display: none;
     }
-    img[lazy=error] {
+    .article-image[lazy=error] {
       display: block;
       opacity: 1;
       background: url('../assets/no_image_placeholder.png') no-repeat;
     }
-    img[lazy=error]+.spinner {
+    .article-image[lazy=error]+.spinner {
       display: none;
     }
   }

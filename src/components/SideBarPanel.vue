@@ -45,7 +45,7 @@
         </div>
         <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" />
         <div class="continue full-width">
-            <q-btn class="full-width" color="primary" big @click="loadNews">Load Selected News</q-btn>
+            <q-btn class="full-width load-news" big @click="loadNews">Load Selected News</q-btn>
         </div>
     </div>
 </template>
@@ -98,63 +98,63 @@
         },
         mounted() {
             fetchNewsSource().then(res => {
-                res.sources.map((item, index, arr) => {
-                    item.isSelected = false; // used to select/deselect item in news source list
-                    switch (item.category) {
-                        case NEWS_CATEGORY.GENERAL:
-                            {
-                                this.NewsCategories.general.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.BUSINESS:
-                            {
-                                this.NewsCategories.business.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.ENTERTAINMENT:
-                            {
-                                this.NewsCategories.entertainment.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.GAMING:
-                            {
-                                this.NewsCategories.gaming.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.MUSIC:
-                            {
-                                this.NewsCategories.music.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.POLITICS:
-                            {
-                                this.NewsCategories.politics.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.SCIENCE_AND_NATURE:
-                            {
-                                this.NewsCategories.science_and_nature.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.HEALTH_AND_MEDICAL:
-                            {
-                                this.NewsCategories.health_and_medical.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.SPORT:
-                            {
-                                this.NewsCategories.sport.push(item);
-                                break;
-                            }
-                        case NEWS_CATEGORY.TECHNOLOGY:
-                            {
-                                this.NewsCategories.technology.push(item);
-                                break;
-                            }
-                    }
+                    res.sources.map((item, index, arr) => {
+                        item.isSelected = false; // used to select/deselect item in news source list
+                        switch (item.category) {
+                            case NEWS_CATEGORY.GENERAL:
+                                {
+                                    this.NewsCategories.general.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.BUSINESS:
+                                {
+                                    this.NewsCategories.business.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.ENTERTAINMENT:
+                                {
+                                    this.NewsCategories.entertainment.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.GAMING:
+                                {
+                                    this.NewsCategories.gaming.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.MUSIC:
+                                {
+                                    this.NewsCategories.music.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.POLITICS:
+                                {
+                                    this.NewsCategories.politics.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.SCIENCE_AND_NATURE:
+                                {
+                                    this.NewsCategories.science_and_nature.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.HEALTH_AND_MEDICAL:
+                                {
+                                    this.NewsCategories.health_and_medical.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.SPORT:
+                                {
+                                    this.NewsCategories.sport.push(item);
+                                    break;
+                                }
+                            case NEWS_CATEGORY.TECHNOLOGY:
+                                {
+                                    this.NewsCategories.technology.push(item);
+                                    break;
+                                }
+                        }
+                    })
                 })
-            })
-            .catch( err => console.log('sdfdsf', err))
+                .catch(err => console.log('sdfdsf', err))
     
         },
         methods: {
@@ -250,7 +250,9 @@
         position: fixed;
         bottom: 0;
         button {
+            color:white;
             height: 100%;
+            background: #27ae60;
         }
     }
     

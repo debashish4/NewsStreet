@@ -34,13 +34,13 @@
                         messageColor: 'white',
                         spinnerSize: 250, // in pixels
                         spinnerColor: 'white',
-                        customClass: 'bg-primary'
+                        customClass: 'loader-bg'
                     })
                 });
                 eventBus.$on('stopLoader', () => {
                     this.isShown = false;
                     // default options
-                    Loading.hide();
+                    // Loading.hide();
                     // with a custom delay
                     Loading.hide({
                         delay: 300 // milliseconds
@@ -57,7 +57,7 @@
 </script>
 
 <style lang="scss" scoped>
-    /*waves****************************/
+ 
     
     .box {
         display: none;

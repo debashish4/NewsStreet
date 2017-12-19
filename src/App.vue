@@ -17,11 +17,12 @@
         <div class="q-toolbar-title">
           News Street
         </div>
-        <q-btn flat>
+        <q-btn class="search-btn" flat>
           <router-link to="/search">
-            <q-icon name="search" /></router-link>
+            <q-icon name="search" />
+            </router-link>
         </q-btn>
-        <q-btn flat @click="openLeftDrawer">
+        <q-btn class="menu-btn" flat @click="openLeftDrawer">
           <q-icon name="menu" />
         </q-btn>
   
@@ -167,6 +168,14 @@
   }
 </script>
 
-<style>
-  
+<style lang="scss" scoped>
+  .search-btn{
+    background: #d23f50;
+    padding: 0 1rem;
+    border-radius: 0;
+  }
+  .menu-btn{
+    margin: 0 0 0 1rem;
+    padding: 0;
+  }
 </style>

@@ -12,14 +12,14 @@ html {
     }
     h2 {
         font-family: 'Numans', 'sans-serif';
-        font-size: 2rem;
+        font-size: 1.9rem;
         color: #171717;
         margin: 0;
         line-height: 1.2;
     }
     p {
         color: #343434;
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         line-height: 1.4;
     }
     i.q-icon {
@@ -47,11 +47,28 @@ html {
     clear: both;
 }
 
+
+
 // Quasar CSS Overrides
 .layout-aside.layout-aside-left {
     width: 100%;
     background-image: url('../assets/cream-pixels.png');
 }
+
+   .loader-bg{
+        background:#d23f50!important;
+    }
+
+    .q-toolbar.q-toolbar-normal{
+        padding-top: 0;
+        padding-bottom: 0;
+        align-items: stretch;
+        background: #333;
+    }
+    .q-toolbar-title{
+        display: inline-flex;
+        align-items: center;
+    }
 
 @font-face {
     font-family: 'Numans';
