@@ -154,6 +154,7 @@
                     }
                 })
             })
+            .catch( err => console.log('sdfdsf', err))
     
         },
         methods: {

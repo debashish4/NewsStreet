@@ -27,7 +27,7 @@
         </q-card-main>
         <q-card-separator />
         <q-card-actions class="row justify-between">
-          <q-btn flat>SHARE</q-btn>
+          <q-btn flat @click="shareNews(result)">SHARE</q-btn>
           <q-btn flat color="primary"><a :href="result.url" target="_blank">READ THE FULL STORY</a></q-btn>
         </q-card-actions>
       </q-card>
@@ -65,6 +65,9 @@
   import {
     fetchSearchNews
   } from "../network/requestNews";
+  import {
+    cordovaShare
+  } from '../utils/commonUtils'
   Vue.use(VueLazyload);
   
   export default {
@@ -131,6 +134,20 @@
           });
         });
       },
+      shareNews(newsItem) {
+        const {
+          description = 'No Description Provided',
+            title = "No Title Provided",
+            url,
+            urlToImage
+        } = newsItem;
+        cordovaShare({
+          description,
+          title,
+          url,
+          urlToImage
+        });
+      },
       goBack() {
         this.isSearchInputVisible = false;
         this.$router.go(-1);
@@ -168,12 +185,10 @@
 
 <style lang="scss">
   .search-page {
-
-    .scroll-container{
+    .scroll-container {
       height: calc(100vh - 5rem);
       overflow: scroll;
     }
-
     .description.isVisible {
       height: auto;
       max-height: 300px;

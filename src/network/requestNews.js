@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { ARTICLES, API_KEY, SOURCES, TOP_HEADLINES, EVERYTHING } from '../constants/api'
 import { stringifyArray } from '../utils/commonUtils'
-
+import { eventBus } from '../utils/eventBus'
 
 const fetchNews = (checkedItems) => {
+	eventBus.$emit('startLoader');
 	let stringified = stringifyArray(checkedItems);
 	return axios({
 		method: 'GET',

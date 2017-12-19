@@ -121,7 +121,7 @@
     stringifyArray,
   } from "../network/requestNews"
   import Shimmer from '@/Shimmer.vue'
-  // import Wave from '@/Wave.vue'
+  // import Loader from '@/Loader.vue'
   import SideBarPanel from '@/SideBarPanel.vue'
   import NewsFooter from '@/NewsFooter.vue'
   Vue.use(VueLazyload);
@@ -145,7 +145,7 @@
       Shimmer,
       SideBarPanel,
       NewsFooter,
-      // Wave
+      // Loader
     },
     directives: {
       TouchSwipe
@@ -191,7 +191,8 @@
             title,
             url,
             urlToImage
-          })
+          });
+          eventBus.$emit('stopLoader');
           console.log('newsCollection', this.newsCollection);
         });
       }
@@ -370,24 +371,30 @@
   .flipWrapper {
     background-image: url('../assets/egg-shell.png');
     .flip-container {
+      -webkit-perspective: 2000px;
       perspective: 2000px;
       position: relative;
       z-index: 2000;
     }
     /* flip the pane when hovered */
     .flip-container.hover .flipper {
+      -webkit-transform: rotateY(180deg);
       transform: rotateY(180deg);
     }
     .flip-container,
     .front,
     .back {
       width: 100vw;
+      height: -webkit-calc(100vh - 10rem);
       height: calc(100vh - 10rem);
     }
     /* flip speed goes here */
     .flipper {
+      -webkit-transition: 0.4s;
       transition: 0.4s;
+      -webkit-transition-timing-function: ease-out;
       transition-timing-function: ease-out;
+      -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
       position: relative;
     }
@@ -396,6 +403,7 @@
     .back {
       border: 10px solid #ccc;
       background: #ffffff;
+      -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
       position: absolute;
       top: 0;
@@ -405,10 +413,12 @@
     .front {
       z-index: 2;
       /* for firefox 31 */
+      -webkit-transform: rotateY(0deg);
       transform: rotateY(0deg);
     }
     /* back, initially hidden pane */
     .back {
+      -webkit-transform: rotateY(180deg);
       transform: rotateY(180deg);
     }
   }
@@ -416,6 +426,7 @@
   .article {
     width: 100vw;
     background: white;
+    height: -webkit-calc(100vh - 100px);
     height: calc(100vh - 100px);
     overflow: hidden;
   }
@@ -428,6 +439,7 @@
       position: relative;
       width: 100%;
       padding: 0;
+      background: -webkit-linear-gradient(to bottom, rgba(245, 247, 250, 1) 0%, rgba(195, 207, 226, 1) 100%);
       background: linear-gradient(to bottom, rgba(245, 247, 250, 1) 0%, rgba(195, 207, 226, 1) 100%);
     }
     .spinner {
@@ -438,6 +450,7 @@
       width: 100%;
       height: 235px;
       display: inline-block;
+      -webkit-transition: opacity 1s ease;
       transition: opacity 1s ease;
     }
     .news-text {

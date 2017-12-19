@@ -2,11 +2,11 @@
     <!-- Footer -->
     <q-toolbar class="news-footer" slot="footer">
         <q-toolbar-title>
-            <q-btn flat>
-            <q-icon @click="shareInfo" name="share" />
+            <q-btn @click="shareNews" flat>
+            <q-icon name="share" />
             </q-btn>
-            <q-btn flat>
-            <q-icon @click="scrollToStart" name="vertical align top" class="change_history"/>
+            <q-btn @click="scrollToStart" flat>
+            <q-icon name="vertical align top" class="change_history"/>
             </q-btn>
         </q-toolbar-title>
     </q-toolbar>
@@ -36,7 +36,7 @@
             scrollToStart(){
                 Events.$emit('scrollToStart');
             },
-            shareInfo() {
+            shareNews() {
                 const {
                     description,
                     title,

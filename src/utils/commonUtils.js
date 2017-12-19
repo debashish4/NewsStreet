@@ -84,6 +84,7 @@ const stopInAppBrowser = () => {
 };
 
 const cordovaShare = (socialShareData) => {
+    console.log({socialShareData});
     const {
         description,
         title,

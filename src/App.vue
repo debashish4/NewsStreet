@@ -2,6 +2,7 @@
   <!-- Don't drop "q-app" class -->
   <div id="q-app">
     <!-- Example using a QLayout as required -->
+    <Loader />
     <q-layout ref="layout" view="hHr LpR Fff">
       <!-- Layout header -->
       <q-toolbar slot="header">
@@ -75,6 +76,7 @@
     QModal,
     TouchSwipe
   } from "quasar";
+  import Loader from '@/Loader.vue'
   import News from '@/News.vue'
   import SideBarPanel from '@/SideBarPanel.vue'
   
@@ -159,7 +161,8 @@
       QModal,
       TouchSwipe,
       News,
-      SideBarPanel
+      SideBarPanel,
+      Loader
     }
   }
 </script>

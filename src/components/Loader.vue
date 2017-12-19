@@ -1,0 +1,76 @@
+<template>
+    <div class='box' v-if="isShown">
+        <q-spinner-gears />
+    </div>
+</template>
+
+<script>
+    import {
+        Loading,
+        // optional!, for example below
+        // with custom spinner
+        QSpinnerGears
+    } from 'quasar'
+    import {
+        eventBus
+    } from '../utils/eventBus'
+    console.log('eventBus', eventBus);
+    export default {
+        data() {
+            return {
+                isShown: false,
+            }
+        },
+        mounted() {
+            eventBus.$on('startLoader', () => {
+                this.isShown = true;
+                    // default options
+                    // Loading.show();
+                    // with a custom delay
+                    Loading.show({
+                        delay: 300, // milliseconds
+                        spinner: QSpinnerGears,
+                        message: 'Loading news...',
+                        messageColor: 'white',
+                        spinnerSize: 250, // in pixels
+                        spinnerColor: 'white',
+                        customClass: 'bg-primary'
+                    })
+                });
+                eventBus.$on('stopLoader', () => {
+                    this.isShown = false;
+                    // default options
+                    Loading.hide();
+                    // with a custom delay
+                    Loading.hide({
+                        delay: 300 // milliseconds
+                    })
+                })
+        },
+        methods: {
+    
+        },
+        components: {
+            QSpinnerGears
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    /*waves****************************/
+    
+    .box {
+        display: none;
+        z-index: 2001;
+        width: 100vw;
+        height: 100vh;
+        box-shadow: 0 2px 30px rgba(black, .2);
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+        transform: translate3d(0, 0, 0);
+    }
+
+</style>
+
+
