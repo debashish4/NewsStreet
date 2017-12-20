@@ -171,7 +171,7 @@
 <style lang="scss" scoped>
   .search-btn{
     background: #d23f50;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     border-radius: 0;
   }
   .menu-btn{
