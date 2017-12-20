@@ -171,12 +171,12 @@
         console.log('i received on', data);
         loadNews()
       });
-      Events.$on('scrollToStart', (param1, param2) => {
+      Events.$on('moveTofirst', (param1, param2) => {
         //start from 1st slide
-        let newCarouselRef = this.$refs.newsCarousel;
-        if (newCarouselRef) {
-          newCarouselRef.goToSlide(0)
-        }
+        this.deg= 0;
+        this.front= 0;
+        this.back= 1;
+        this.socialShareNewsItemIndex = 0;
       })
     },
     methods: {

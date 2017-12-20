@@ -5,7 +5,7 @@
             <q-btn @click="shareNews" flat>
             <q-icon name="share" />
             </q-btn>
-            <q-btn @click="scrollToStart" flat>
+            <q-btn @click="moveTofirst" flat>
             <q-icon name="vertical align top" class="change_history"/>
             </q-btn>
         </q-toolbar-title>
@@ -33,8 +33,8 @@
             })
         },
         methods: {
-            scrollToStart(){
-                Events.$emit('scrollToStart');
+            moveTofirst(){
+                Events.$emit('moveTofirst');
             },
             shareNews() {
                 const {
