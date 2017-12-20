@@ -1,6 +1,6 @@
 <template>
   <!-- Don't drop "q-app" class -->
-  <div id="q-app">
+  <div id="q-app" :class="{offline: isOffline}">
     <!-- Example using a QLayout as required -->
     <Loader />
     <q-layout ref="layout" view="hHr LpR Fff">
@@ -20,7 +20,7 @@
         <q-btn class="search-btn" flat>
           <router-link to="/search">
             <q-icon name="search" />
-            </router-link>
+          </router-link>
         </q-btn>
         <q-btn class="menu-btn" flat @click="openLeftDrawer">
           <q-icon name="menu" />
@@ -86,12 +86,12 @@
     data() {
       return {
         appExitConfirm: false,
-        currentPath: ''
+        currentPath: '',
+        isOffline:false
       }
     },
     mounted() {
       let self = this;
-  
       function onBackKeyDown(e) {
         if (!self.isDrawerOpen && !self.isNewsListModalOpen && !self.isReadMorePanelOpen) {
           if (e) {
@@ -109,8 +109,27 @@
           self.toggleDrawer();
         }
       }
-      // onBackKeyDown();
-      document.addEventListener("backbutton", onBackKeyDown, false);
+  
+      document.addEventListener("deviceready", onDeviceReady, false);
+  
+      function onDeviceReady() {
+        // Now safe to use device APIs
+        // onBackKeyDown();
+        document.addEventListener("backbutton", onBackKeyDown, false);
+  
+        document.addEventListener("online", onOnline, false);
+        document.addEventListener("offline", onOffline, false);
+  
+        function onOnline() {
+          self.isOffline = false;
+        }
+  
+        function onOffline() {
+          self.isOffline = true;
+        }
+      }
+  
+  
   
     },
     computed: {
@@ -169,13 +188,19 @@
 </script>
 
 <style lang="scss" scoped>
-  .search-btn{
+  .search-btn {
     background: #d23f50;
     padding: 0 1.5rem;
     border-radius: 0;
   }
-  .menu-btn{
+  
+  .menu-btn {
     margin: 0 0 0 1rem;
     padding: 0;
+  }
+  
+  .offline{
+    filter: blur(3px) grayscale(100%);
+    pointer-events: none;
   }
 </style>
