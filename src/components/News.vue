@@ -44,6 +44,8 @@
     </div>
   
   
+    <!-- Footer -->
+    <news-footer v-if="newsCollection.length"/>
     <!-- Page insertion point -->
     <div>
       <q-modal v-model="isReadMorePanelOpen" @open="notify('open')">
@@ -52,8 +54,6 @@
       </q-modal>
     </div>
   
-    <!-- Footer -->
-    <news-footer />
   </q-layout>
 </template>
 
@@ -173,9 +173,9 @@
       });
       Events.$on('moveTofirst', (param1, param2) => {
         //start from 1st slide
-        this.deg= 0;
-        this.front= 0;
-        this.back= 1;
+        this.deg = 0;
+        this.front = 0;
+        this.back = 1;
         this.socialShareNewsItemIndex = 0;
       })
     },
@@ -415,7 +415,7 @@
       padding: 1rem;
       height: calc(100vh - 34rem);
       overflow-y: scroll;
-      background: linear-gradient(to top, rgba(214, 214, 214, 0.65) 0%,rgba(0,0,0,0) 100%);
+      background: linear-gradient(to top, rgba(214, 214, 214, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
     }
     .news-text::-webkit-scrollbar {
       display: block!important;

@@ -57,10 +57,7 @@
 
 <style lang="scss" scoped>
     .news-footer{
-        position:fixed;
         width:100%;
-        bottom:0;
-
         .change_history{
             transform: rotate(-90deg);
         }

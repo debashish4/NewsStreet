@@ -50,11 +50,17 @@ html {
 
 
 // Quasar CSS Overrides
+#q-app > .layout {
+    overflow: hidden;
+    height: 100vh;
+}
 .layout-aside.layout-aside-left {
     width: 100%;
     background-image: url('../assets/cream-pixels.png');
 }
-
+.layout-page-container{
+    padding-top: 0!important;
+}
    .loader-bg{
         background:#d23f50!important;
     }

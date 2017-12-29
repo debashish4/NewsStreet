@@ -3,7 +3,7 @@
   <div id="q-app" :class="{offline: isOffline}">
     <!-- Example using a QLayout as required -->
     <Loader />
-    <q-layout ref="layout" view="hHr LpR Fff">
+    <q-layout ref="layout">
       <!-- Layout header -->
       <q-toolbar slot="header">
         <q-btn flat v-if="currentPath !== '/settings'">
@@ -15,7 +15,7 @@
           <q-icon @click="goBack" name="keyboard arrow left" />
         </q-btn>
         <div class="q-toolbar-title">
-          News Street
+          News Wave
         </div>
         <q-btn class="search-btn" flat>
           <router-link to="/search">
