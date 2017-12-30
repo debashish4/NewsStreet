@@ -62,7 +62,7 @@
       </q-modal>
     </div>
     <div class="news-count" :class="{'show-count': isNewsCount}">
-      <p class="count">{{newsCollection.length - socialShareNewsItemIndex-1}} more cards to flip</p>
+      <p class="count">{{newsCollection.length - socialShareNewsItemIndex-1}} more cards remaining to flip</p>
     </div>
   </q-layout>
 </template>
@@ -489,7 +489,7 @@
       padding: 0.5rem;
       border-radius: 2rem;
       color: white;
-      width: 15rem;
+      width: 20rem;
       margin: 0 auto;
       font-size: 1.2rem;
       background: rgba(51, 51, 51, 0.7);
