@@ -24,7 +24,7 @@
     </platform>
     <preference name="SplashScreen" value="screen" />
     <preference name="orientation" value="portrait" />
-    <preference name="ShowSplashScreenSpinner" value="false"/>
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <engine name="android" spec="^6.3.0" />

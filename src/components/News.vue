@@ -2,7 +2,7 @@
   <q-layout ref="layout" view="hHr LpR Fff">
     <div class="flipWrapper" v-if="newsCollection.length">
       <div class="flip-container" :class="{'disable-touch': disableTouch}">
-        <div class="flipper" @click="showNewsCount" :style="{ 'transform': `rotateY(${deg}deg)`}">
+        <div class="flipper" v-touch-swipe="evt => loadNewsInBrowser(newsCollection[socialShareNewsItemIndex].url,evt)" @click="showNewsCount" :style="{ 'transform': `rotateY(${deg}deg)`}">
           <div class="front" v-touch-swipe.horizontal="frontCardSwipe">
             <div class="news">
               <div class="article-image-container row justify-center items-center">
@@ -54,15 +54,9 @@
   
     <!-- Footer -->
     <news-footer v-if="newsCollection.length" />
-    <!-- Page insertion point -->
-    <div>
-      <q-modal v-model="isReadMorePanelOpen" @open="notify('open')">
-        <button @click="toggleReadMorePanel">close</button>
-        <shimmer v-if="showShimmer"></shimmer>
-      </q-modal>
-    </div>
+  
     <div class="news-count" :class="{'show-count': isNewsCount}">
-      <p class="count">{{newsCollection.length - socialShareNewsItemIndex-1}} more cards remaining to flip</p>
+      <p class="count">{{newsCollection.length - socialShareNewsItemIndex-1}} more news remaining to flip</p>
     </div>
   </q-layout>
 </template>
@@ -113,13 +107,7 @@
     },
     data() {
       return {
-        opened: false,
-        popUpContent: "",
         newsCollection: [],
-        isPopupOpen: false,
-        preLoader: true,
-        openModal: false,
-        showShimmer: false,
         inAppBrowserLoadNewsUrl: "",
         deg: 0,
         front: 0,
@@ -132,7 +120,6 @@
     },
     mounted() {
       let selectedLs = ["the-next-web"];
-      // let transformed = newsSourcetoApiString(selectedLs);
       let loadNews = () => {
         console.log("selectedNews", this.selectedNews);
         console.log("selectedLs", selectedLs);
@@ -156,12 +143,10 @@
             urlToImage
           });
           eventBus.$emit("stopLoader");
-          console.log("newsCollection", this.newsCollection);
         });
       };
       loadNews();
       eventBus.$on("loadNews", data => {
-        console.log("i received on", data);
         loadNews();
       });
       Events.$on("moveTofirst", (param1, param2) => {
@@ -259,25 +244,22 @@
         this.showNewsCount();
       },
       openWindow() {
-        this.toggleReadMorePanel();
+        // this.toggleReadMorePanel();
         try {
           if (cordova) {
             let url = this.inAppBrowserLoadNewsUrl;
-            console.log({
-              url
-            });
             openInAppBrowser(url);
           }
         } catch (err) {
           console.log(err);
         }
       },
-      notify() {
-        this.showShimmer = true;
-      },
-      loadNewsInBrowser(url, evt) {
-        console.log("swiped", url);
-        console.log("event", evt);
+      loadNewsInBrowser(direction, evt) {
+        console.log({
+          direction,
+          evt
+        });
+        let url = this.newsCollection[this.socialShareNewsItemIndex].url;
         if (evt.direction == "up" && evt.distance.y > 50) {
           this.inAppBrowserLoadNewsUrl = url;
           this.openWindow();
@@ -286,8 +268,10 @@
       showNewsCount() {
         let vm = this;
         vm.isNewsCount = true;
-        console.log('isNewsCount', this.isNewsCount);
-        setTimeout(_ => vm.isNewsCount = false, 2000)
+        if(window.newsCount) window.clearInterval(window.newsCount);
+        window.newsCount = setTimeout(_ => {
+              vm.isNewsCount = false
+            }, 2000)
       }
     },
     computed: {
@@ -299,15 +283,22 @@
       formatDateFront() {
         console.log('here front', this.newsCollection[this.front]);
         let publishedAt = this.newsCollection[this.front].publishedAt;
-        let publishedDateEndPos = publishedAt.indexOf("T");
-        return this.publishedDate = publishedAt.slice(0, publishedDateEndPos);
-        console.log('publishdate', this.publishedDate);
+        if (publishedAt) {
+          let publishedDateEndPos = publishedAt.indexOf("T");
+          return this.publishedDate = publishedAt.slice(0, publishedDateEndPos);
+        }else{
+          return this.publishedDate = "Not Available";
+        }
       },
       formatDateBack() {
         console.log('here back', this.newsCollection[this.back]);
         let publishedAt = this.newsCollection[this.back].publishedAt;
-        let publishedDateEndPos = publishedAt.indexOf("T");
-        return this.publishedDate = publishedAt.slice(0, publishedDateEndPos);
+        if (publishedAt) {
+          let publishedDateEndPos = publishedAt.indexOf("T");
+          return this.publishedDate = publishedAt.slice(0, publishedDateEndPos);
+        }else{
+          return this.publishedDate = "Not Available";
+        }
         console.log('publishdate', this.publishedDate);
       }
     },
@@ -367,6 +358,7 @@
       -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
       position: relative;
+      height: 100%;
     }
     /* hide back of pane during swap */
     .front,
@@ -440,7 +432,7 @@
         margin: 0;
         padding: 0 1rem;
         color: white;
-        text-shadow: 0px 0px 5px rgba(150, 150, 150, 1);
+        text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
       }
     }
     .news-text {
@@ -478,13 +470,13 @@
   }
   
   .news-count {
-    position: fixed;
-    z-index: 2000;
-    opacity:0;
-    bottom:20vw;
-    transition:opacity 500ms ease;
     width: 100%;
     text-align: center;
+    position: fixed;
+    bottom: 20vw;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 500ms ease;
     .count {
       padding: 0.5rem;
       border-radius: 2rem;
@@ -495,7 +487,8 @@
       background: rgba(51, 51, 51, 0.7);
     }
   }
-  .show-count{
-    opacity:1;
+  
+  .show-count {
+    opacity: 1;
   }
 </style>

@@ -41,7 +41,7 @@
           Do you want to exit ?
         </p>
         <q-btn icon="create" @click="exitFromApp">Yes</q-btn>
-        <q-btn icon="create" class="primary">No</q-btn>
+        <q-btn icon="create" class="primary" @click="appExitConfirm = false">No</q-btn>
       </q-modal>
   
     </q-layout>

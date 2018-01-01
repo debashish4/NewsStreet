@@ -50,7 +50,7 @@ const openInAppBrowser = (url) => {
     console.log('inside in app browser', url);
     var url = url;
     var target = '_blank';
-    var options = "hardwareback=no,location=no,hidden=yes,zoom=no"
+    var options = "hardwareback=no,location=yes,hidden=no,zoom=no"
     inAppBrowserRef = cordova.InAppBrowser.open(url, target, options);
 
     inAppBrowserRef.addEventListener('loadstart', loadstartCallback);
@@ -63,7 +63,8 @@ const openInAppBrowser = (url) => {
     }
 
     function loadstopCallback(event) {
-        console.log('Loading finished: ' + event.url)
+        console.log('Loading finished: ' + event.url);
+        inAppBrowserRef.insertCSS({ code: "body{font-size: 25px;background:red}" });
         inAppBrowserRef.show();
     }
 
