@@ -462,7 +462,8 @@
     .article-image[lazy="error"] {
       display: block;
       opacity: 1;
-      background: url("../assets/no_image_placeholder.png") no-repeat;
+      background: url("../assets/no_image_placeholder.jpg") no-repeat;
+      background-size: cover; 
     }
     .article-image[lazy="error"]+.spinner {
       display: none;
