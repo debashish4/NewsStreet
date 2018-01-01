@@ -1,14 +1,12 @@
 <template>
     <div class='box' v-if="isShown">
-        <q-spinner-gears />
+        <q-spinner-gears :size="100"/>
     </div>
 </template>
 
 <script>
     import {
         Loading,
-        // optional!, for example below
-        // with custom spinner
         QSpinnerGears
     } from 'quasar'
     import {
@@ -24,28 +22,24 @@
         mounted() {
             eventBus.$on('startLoader', () => {
                 this.isShown = true;
-                    // default options
-                    // Loading.show();
-                    // with a custom delay
-                    Loading.show({
-                        delay: 300, // milliseconds
-                        spinner: QSpinnerGears,
-                        message: 'Loading news...',
-                        messageColor: 'white',
-                        spinnerSize: 250, // in pixels
-                        spinnerColor: 'white',
-                        customClass: 'loader-bg'
-                    })
-                });
-                eventBus.$on('stopLoader', () => {
-                    this.isShown = false;
-                    // default options
-                    // Loading.hide();
-                    // with a custom delay
-                    Loading.hide({
-                        delay: 300 // milliseconds
-                    })
+                // with a custom delay
+                Loading.show({
+                    delay: 300, // milliseconds
+                    spinner: QSpinnerGears,
+                    message: 'Loading news...',
+                    messageColor: 'white',
+                    spinnerSize: 250, // in pixels
+                    spinnerColor: 'white',
+                    customClass: 'loader-bg'
                 })
+            });
+            eventBus.$on('stopLoader', () => {
+                this.isShown = false;
+                // with a custom delay
+                Loading.hide({
+                    delay: 300 // milliseconds
+                })
+            })
         },
         methods: {
     
@@ -57,8 +51,6 @@
 </script>
 
 <style lang="scss" scoped>
- 
-    
     .box {
         display: none;
         z-index: 2001;
@@ -70,7 +62,6 @@
         overflow: hidden;
         transform: translate3d(0, 0, 0);
     }
-
 </style>
 
 

@@ -1,5 +1,5 @@
-*{
-    margin:0;
+* {
+    margin: 0;
     padding: 0;
 }
 
@@ -24,9 +24,9 @@ html {
     }
     i.q-icon {
         font-size: 2.4rem;
-        color:$white;
+        color: $white;
     }
-    .q-btn{
+    .q-btn {
         box-shadow: 0 0 0 0;
     }
 }
@@ -47,39 +47,51 @@ html {
     clear: both;
 }
 
-
-
-// Quasar CSS Overrides
-#q-app > .layout {
+// Quasar CSS Overrides (start)
+#q-app>.layout {
     overflow: hidden;
     height: 100vh;
 }
+
 .layout-aside.layout-aside-left {
     width: 100%;
     background-image: url('../assets/cream-pixels.png');
 }
-.layout-page-container{
+
+.layout-page-container {
     padding-top: 0!important;
 }
-   .loader-bg{
-        background:#d23f50!important;
-    }
 
-    .q-toolbar.q-toolbar-normal{
-        padding-top: 0;
-        padding-bottom: 0;
-        align-items: stretch;
-        background: #333;
-    }
-    .q-toolbar-title{
-        display: inline-flex;
-        align-items: center;
-    }
+.loader-bg {
+    background: #d23f50!important;
+}
 
+.q-toolbar.q-toolbar-normal {
+    padding-top: 0;
+    padding-bottom: 0;
+    align-items: stretch;
+    background: #333;
+}
+
+.q-toolbar-title {
+    display: inline-flex;
+    align-items: center;
+}
+
+.q-loading .q-spinner {
+    width: 20rem;
+}
+.q-loading .text-white {
+    margin:0;
+    font-size: 2.5rem;
+}
+
+// Quasar CSS Overrides (end)
 @font-face {
     font-family: 'Numans';
     src: url('../assets/fonts/Numans/Numans-Regular.ttf') format('truetype');
 }
+
 @font-face {
     font-family: 'Raleway';
     src: url('../assets/fonts/Raleway/Raleway-Regular.ttf') format('truetype');
