@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isNewsListModalOpen" position="left" :no-backdrop-dismiss="true">
+    <q-modal v-model="isNewsListModalOpen" :minimized="true" :no-backdrop-dismiss="true">
         <div class="news-list-wrapper">
             <h4 class="title">{{modalTitle}}</h4>
             <div class="news-list">
@@ -65,7 +65,7 @@
             if (localStorage.getItem('selectedNews') && localStorage.getItem('selectedNews')) {
                 this.selectedNews = JSON.parse(localStorage.getItem('selectedNews'));
                 this.selectedNewsId = JSON.parse(localStorage.getItem('selectedNewsId'));
-                 this.saveSelectedNews(this.selectedNews);
+                this.saveSelectedNews(this.selectedNews);
             }
         },
         methods: {
@@ -127,9 +127,13 @@
                     removedIdName
                 });
                 removedIdName.forEach((xitem, xindex) => {
-                    console.log({xitem});
+                    console.log({
+                        xitem
+                    });
                     this.newsSources.some((yitem, yindex) => {
-                    console.log({yitem:yitem.id});
+                        console.log({
+                            yitem: yitem.id
+                        });
                         if (xitem === yitem.id) {
                             this.newsSources[yindex].isSelected = false;
                             return true;
@@ -183,10 +187,14 @@
         min-height: 20vh;
         max-height: 60vh;
         overflow-y: scroll;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
         .news-item {
             position: relative;
-            width: 40vw;
-            height: 40vw;
+            width: 35vw;
+            height: 35vw;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -195,13 +203,13 @@
             margin: 0.5rem;
             background: transparent;
             .news-thumb {
-                height: 35vw;
-                padding: 0.5rem;
+                display: flex;
+                flex-direction: column;
                 border-radius: 0.5rem;
             }
             .source-logo {
-                width: 10rem;
-                height: 10rem;
+                width: 7rem;
+                height: 7rem;
                 display: block;
                 margin: 0 auto;
                 img {
@@ -213,8 +221,13 @@
                 }
             }
             .source-name {
-                text-align: center;
+                width: 32vw;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
                 font-size: 1.5rem;
+                text-align: center;
+                margin:0;
             }
         }
     }

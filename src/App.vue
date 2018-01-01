@@ -87,11 +87,12 @@
       return {
         appExitConfirm: false,
         currentPath: '',
-        isOffline:false
+        isOffline: false
       }
     },
     mounted() {
       let self = this;
+  
       function onBackKeyDown(e) {
         if (!self.isDrawerOpen && !self.isNewsListModalOpen && !self.isReadMorePanelOpen) {
           if (e) {
@@ -199,7 +200,7 @@
     padding: 0;
   }
   
-  .offline{
+  .offline {
     filter: blur(3px) grayscale(100%);
     pointer-events: none;
   }

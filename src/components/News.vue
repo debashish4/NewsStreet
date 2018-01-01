@@ -268,10 +268,10 @@
       showNewsCount() {
         let vm = this;
         vm.isNewsCount = true;
-        if(window.newsCount) window.clearInterval(window.newsCount);
+        if (window.newsCount) window.clearInterval(window.newsCount);
         window.newsCount = setTimeout(_ => {
-              vm.isNewsCount = false
-            }, 2000)
+          vm.isNewsCount = false
+        }, 2000)
       }
     },
     computed: {
@@ -286,7 +286,7 @@
         if (publishedAt) {
           let publishedDateEndPos = publishedAt.indexOf("T");
           return this.publishedDate = publishedAt.slice(0, publishedDateEndPos);
-        }else{
+        } else {
           return this.publishedDate = "Not Available";
         }
       },
@@ -296,7 +296,7 @@
         if (publishedAt) {
           let publishedDateEndPos = publishedAt.indexOf("T");
           return this.publishedDate = publishedAt.slice(0, publishedDateEndPos);
-        }else{
+        } else {
           return this.publishedDate = "Not Available";
         }
         console.log('publishdate', this.publishedDate);
