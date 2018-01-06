@@ -1,49 +1,78 @@
 <template>
-    <div class="side-bar-panel">
-        <div class="categories clearfix">
-            <div class="icon technology" @click="insertDataToSelectNewsModal('technology')">
-                <p><i class="ns-technology"></i>
-                    <span class="text">Technology</span></p>
-            </div>
-            <div class="icon general" @click="insertDataToSelectNewsModal('general')">
-                <p><i class="ns-general"></i>
-                    <span class="text">General</span></p>
-            </div>
-            <div class="icon entertainment" @click="insertDataToSelectNewsModal('entertainment')">
-                <p><i class="ns-entertainment"></i>
-                    <span class="text">Entertainment</span></p>
-            </div>
-            <div class="icon gaming" @click="insertDataToSelectNewsModal('gaming')">
-                <p><i class="ns-gaming"></i>
-                    <span class="text">Gaming</span></p>
-            </div>
-            <div class="icon health-and-medical" @click="insertDataToSelectNewsModal('health-and-medical')">
-                <p><i class="ns-health-and-medical"></i>
-                    <span class="text">Health & Medical</span></p>
-            </div>
-            <div class="icon business" @click="insertDataToSelectNewsModal('business')">
-                <p><i class="ns-business"></i>
-                    <span class="text">Business</span></p>
-            </div>
-            <div class="icon politics" @click="insertDataToSelectNewsModal('politics')">
-                <p><i class="ns-politics"></i>
-                    <span class="text">Politics</span></p>
-            </div>
-            <div class="icon sport" @click="insertDataToSelectNewsModal('sport')">
-                <p><i class="ns-sports"></i>
-                    <span class="text">Sports</span></p>
-            </div>
-            <div class="icon science-and-nature" @click="insertDataToSelectNewsModal('science-and-nature')">
-                <p><i class="ns-science-and-nature"></i>
-                    <span class="text">Science & Nature</span></p>
-            </div>
-            <div class="icon music" @click="insertDataToSelectNewsModal('music')">
-                <p><i class="ns-music"></i>
-                    <span class="text">Music</span></p>
-            </div>
+    <div class="side-bar-panel-wrapper">
+        <div class="side-bar-panel">
+            <div class="country categories clearfix">
+                <div class="heading-wrapper">
+                    <div class="heading">
+                        <!-- <h4>News based on Country</h4> -->
+                        <h4>Country</h4>
+                        <div class="skew"></div>
+                    </div>
+                    <div class="border"></div>
     
+                </div>
+                <div class="icon india" @click="insertDataToSelectNewsModal('technology')">
+                    <p><i class="country-flag"></i>
+                        <span class="text">India</span></p>
+                </div>
+                <div class="icon usa" @click="insertDataToSelectNewsModal('technology')">
+                    <p><i class="country-flag"></i>
+                        <span class="text">USA</span></p>
+                </div>
+            </div>
+            <div class="world categories clearfix">
+                <div class="heading-wrapper">
+                    <div class="heading">
+                        <!-- <h4>World News -- Top Headlines from world best news sites</h4> -->
+                        <h4>World News</h4>
+                        <div class="skew"></div>
+                    </div>
+                    <div class="border"></div>
+    
+                </div>
+                <div class="icon technology" @click="insertDataToSelectNewsModal('technology')">
+                    <p><i class="ns-technology"></i>
+                        <span class="text">Technology</span></p>
+                </div>
+                <div class="icon general" @click="insertDataToSelectNewsModal('general')">
+                    <p><i class="ns-general"></i>
+                        <span class="text">General</span></p>
+                </div>
+                <div class="icon entertainment" @click="insertDataToSelectNewsModal('entertainment')">
+                    <p><i class="ns-entertainment"></i>
+                        <span class="text">Entertainment</span></p>
+                </div>
+                <div class="icon gaming" @click="insertDataToSelectNewsModal('gaming')">
+                    <p><i class="ns-gaming"></i>
+                        <span class="text">Gaming</span></p>
+                </div>
+                <div class="icon health-and-medical" @click="insertDataToSelectNewsModal('health-and-medical')">
+                    <p><i class="ns-health-and-medical"></i>
+                        <span class="text">Health &nbsp; Medical</span></p>
+                </div>
+                <div class="icon business" @click="insertDataToSelectNewsModal('business')">
+                    <p><i class="ns-business"></i>
+                        <span class="text">Business</span></p>
+                </div>
+                <div class="icon politics" @click="insertDataToSelectNewsModal('politics')">
+                    <p><i class="ns-politics"></i>
+                        <span class="text">Politics</span></p>
+                </div>
+                <div class="icon sport" @click="insertDataToSelectNewsModal('sport')">
+                    <p><i class="ns-sports"></i>
+                        <span class="text">Sports</span></p>
+                </div>
+                <div class="icon science-and-nature" @click="insertDataToSelectNewsModal('science-and-nature')">
+                    <p><i class="ns-science-and-nature"></i>
+                        <span class="text">Science &nbsp; Nature</span></p>
+                </div>
+                <div class="icon music" @click="insertDataToSelectNewsModal('music')">
+                    <p><i class="ns-music"></i>
+                        <span class="text">Music</span></p>
+                </div>
+            </div>
+            <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" />
         </div>
-        <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" />
         <div class="continue full-width">
             <q-btn class="full-width load-news" big @click="loadNews">Load Selected News</q-btn>
         </div>
@@ -240,6 +269,9 @@
 <style lang="scss" scoped>
     .side-bar-panel {
         width: 100%;
+        height: 100vh;
+        padding-bottom: 5rem;
+        overflow: scroll;
         .categories {
             padding: 1rem 0.5rem;
         }
@@ -250,9 +282,9 @@
         position: fixed;
         bottom: 0;
         button {
-            color:white;
+            color: white;
             height: 100%;
-            background: #27ae60;
+            background: #d23f50;
         }
     }
     
@@ -320,6 +352,66 @@
     
     .technology {
         background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 100%);
+    }
+    
+    .country {
+        .country-flag {
+            width: 9rem!important;
+            height: 9rem;
+            border-radius: 50%;
+            display: block;
+            background-size: cover;
+        }
+        .icon {
+            background: #A2DED0;
+            background-size: cover;
+        }
+        .india .country-flag {
+            background-image: url('../assets/in.svg');
+        }
+        .usa .country-flag {
+            background-image: url('../assets/us.svg');
+        }
+    }
+
+    .heading {
+        height: 30px;
+        width: 200px;
+        position: relative;
+        display: flex;
+        align-content: center;
+        background: #333;
+    }
+    
+    .heading .skew {
+        background: #333;
+        height: 100%;
+        width: 120px;
+        position: absolute;
+        right: -10px;
+        transform: skew(35deg);
+    }
+    
+    .border {
+        position: relative;
+        z-index: 12;
+        width: 100%;
+        border:0.2rem solid #d23f50;
+        margin-bottom: 1rem;
+        
+    }
+    
+    h4 {
+        position: absolute;
+        padding: 0.5rem;;
+        color: #fff;
+        z-index: 1;
+        top: 0;
+        font-size: 1.7rem;
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        -webkit-margin-start: 0;
+        -webkit-margin-end: 0;
     }
 </style>
 

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "927125804571",
+    "firebase_url": "https://news-wave.firebaseio.com",
+    "project_id": "news-wave",
+    "storage_bucket": "news-wave.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927125804571:android:f2ebd377651c1c90",
+        "android_client_info": {
+          "package_name": "io.cordova.newswave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927125804571-3tli250b29anqor725tf66o7t03j78ic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjhmgdFQUvX6pZyVoVR1gZ5GrX2IHlw9g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
