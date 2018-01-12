@@ -58,7 +58,8 @@
     mapState
   } from 'vuex'
   import {
-    stopInAppBrowser
+    stopInAppBrowser,
+    disableOnContextMenu
   } from './utils/commonUtils'
   import {
     QLayout,
@@ -130,8 +131,7 @@
         }
       }
   
-  
-  
+      disableOnContextMenu();
     },
     computed: {
       ...mapState({

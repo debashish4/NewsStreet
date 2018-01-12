@@ -1,29 +1,24 @@
 $icomoon-font-path: "../assets/fonts/icons" !default;
-$ns-business: "\e900";
-$ns-entertainment: "\e901";
-$ns-gaming: "\e902";
-$ns-general: "\e903";
-$ns-health-and-medical: "\e904";
-$ns-music: "\e905";
-$ns-politics: "\e906";
-$ns-science-and-nature: "\e907";
-$ns-sports: "\e908";
-$ns-technology: "\e909";
-
-
+$nw-business: "\e900";
+$nw-entertainment: "\e901";
+$nw-general: "\e902";
+$nw-health: "\e903";
+$nw-science: "\e904";
+$nw-sports: "\e905";
+$nw-technology: "\e906";
 @font-face {
-    font-family: 'newsStreet';
-    src : url('#{$icomoon-font-path}/newsStreet.ttf?om9b2e') format('truetype'),
-    url('#{$icomoon-font-path}/newsStreet.woff?om9b2e') format('woff'),
-    url('#{$icomoon-font-path}/newsStreet.svg?om9b2e#newsStreet') format('svg');
+    font-family: 'newsWave';
+    src : url('#{$icomoon-font-path}/icomoon.ttf?qigpm7') format('truetype'),
+    url('#{$icomoon-font-path}/icomoon.woff?qigpm7') format('woff'),
+    url('#{$icomoon-font-path}/icomoon.svg?qigpm7#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
-[class^="ns-"],
-[class*=" ns-"] {
+[class^="nw-"],
+[class*=" nw-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'newsStreet' !important;
+    font-family: 'newsWave' !important;
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -35,62 +30,44 @@ $ns-technology: "\e909";
     -moz-osx-font-smoothing: grayscale;
 }
 
-.ns-business {
+.nw-business {
     &:before {
-        content: $ns-business;
+        content: $nw-business;
     }
 }
 
-.ns-entertainment {
+.nw-entertainment {
     &:before {
-        content: $ns-entertainment;
+        content: $nw-entertainment;
     }
 }
 
-.ns-gaming {
+.nw-general {
     &:before {
-        content: $ns-gaming;
+        content: $nw-general;
     }
 }
 
-.ns-general {
+.nw-health {
     &:before {
-        content: $ns-general;
+        content: $nw-health;
     }
 }
 
-.ns-health-and-medical {
+.nw-science {
     &:before {
-        content: $ns-health-and-medical;
+        content: $nw-science;
     }
 }
 
-.ns-music {
+.nw-sports {
     &:before {
-        content: $ns-music;
+        content: $nw-sports;
     }
 }
 
-.ns-politics {
+.nw-technology {
     &:before {
-        content: $ns-politics;
-    }
-}
-
-.ns-science-and-nature {
-    &:before {
-        content: $ns-science-and-nature;
-    }
-}
-
-.ns-sports {
-    &:before {
-        content: $ns-sports;
-    }
-}
-
-.ns-technology {
-    &:before {
-        content: $ns-technology;
+        content: $nw-technology;
     }
 }

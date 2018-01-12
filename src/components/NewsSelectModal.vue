@@ -58,6 +58,7 @@
             }
         },
         mounted() {
+            console.log('I am here');
             console.log({
                 newsSources: this.newsSources
             });
@@ -105,7 +106,7 @@
                 this.selectedNews.forEach((item, index) => {
                     console.log({
                         itemCategory: item.category,
-                        modalTitle: this.title
+                        modalTitle: this.titlesaveNews
                     });
                     if (item.category === this.title) {
                         console.log({

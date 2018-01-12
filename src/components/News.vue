@@ -128,7 +128,17 @@
           console.log("abc", this.selectedNews);
         }
         fetchNews(selectedLs).then(res => {
-          this.newsCollection = res.articles;
+          console.log('check res',res);
+          if(res && res.length){
+            console.log('inside if', res.constructor);
+            res.map(item => {
+              item.then(data =>{
+                console.log('now something', data);
+              })
+            })
+          }else{
+            this.newsCollection = res.articles;
+          }
           // this.socialShareNewsItemIndex = 0;
           const {
             description,

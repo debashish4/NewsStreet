@@ -35,7 +35,7 @@ const newsSourcetoApiString = (source) => {
 const stringifyArray = (array) => {
     console.log({ array });
     return array.join(",");
-}
+};
 
 const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -43,7 +43,27 @@ const shuffleArray = (array) => {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+};
+
+const splitArray = function (arr, chunkSize) {
+    console.log('splitArray',arr);
+    let groups = [], i;
+    for (i = 0; i < arr.length; i += chunkSize) {
+        groups.push(arr.slice(i, i + chunkSize));
+    }
+    // result: "[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14]]"
+    return groups;
 }
+
+
+const disableOnContextMenu = function(){
+    document.oncontextmenu = function () {
+        return false;
+    }
+}
+// var groupedArr = splitArray(someArray, 4);
+// var result = JSON.stringify(groupedArr);
+// console.log(groupedArr);
 
 var inAppBrowserRef;
 const openInAppBrowser = (url) => {
@@ -85,7 +105,7 @@ const stopInAppBrowser = () => {
 };
 
 const cordovaShare = (socialShareData) => {
-    console.log({socialShareData});
+    console.log({ socialShareData });
     const {
         description,
         title,
@@ -124,4 +144,4 @@ To read full story visit:
 
 
 
-export { cordovaShare, _toWhiteSpace, whiteSpaceTo_, newsSourcetoApiString, shuffleArray, openInAppBrowser, stopInAppBrowser, stringifyArray, hyphenToSpace };
+export { disableOnContextMenu, splitArray, cordovaShare, _toWhiteSpace, whiteSpaceTo_, newsSourcetoApiString, shuffleArray, openInAppBrowser, stopInAppBrowser, stringifyArray, hyphenToSpace };

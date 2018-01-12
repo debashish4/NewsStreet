@@ -30,52 +30,41 @@
                     <div class="border"></div>
     
                 </div>
-                <div class="icon technology" @click="insertDataToSelectNewsModal('technology')">
-                    <p><i class="ns-technology"></i>
+                <div class="icon technology" v-touch-hold="()=>openNewsSelectModal('technology')" @click="insertDataToSelectNewsModal('technology')">
+                    <p><i class="nw-technology"></i>
                         <span class="text">Technology</span></p>
                 </div>
-                <div class="icon general" @click="insertDataToSelectNewsModal('general')">
-                    <p><i class="ns-general"></i>
+                <div class="icon general" v-touch-hold="()=>openNewsSelectModal('general')" @click="insertDataToSelectNewsModal('general')">
+                    <p><i class="nw-general"></i>
                         <span class="text">General</span></p>
                 </div>
-                <div class="icon entertainment" @click="insertDataToSelectNewsModal('entertainment')">
-                    <p><i class="ns-entertainment"></i>
+                <div class="icon entertainment" v-touch-hold="()=>openNewsSelectModal('entertainment')" @click="insertDataToSelectNewsModal('entertainment')">
+                    <p><i class="nw-entertainment"></i>
                         <span class="text">Entertainment</span></p>
                 </div>
-                <div class="icon gaming" @click="insertDataToSelectNewsModal('gaming')">
-                    <p><i class="ns-gaming"></i>
-                        <span class="text">Gaming</span></p>
+                <div class="icon health" v-touch-hold="()=>openNewsSelectModal('health')" @click="insertDataToSelectNewsModal('health')">
+                    <p><i class="nw-health"></i>
+                        <span class="text">Health</span></p>
                 </div>
-                <div class="icon health-and-medical" @click="insertDataToSelectNewsModal('health-and-medical')">
-                    <p><i class="ns-health-and-medical"></i>
-                        <span class="text">Health &nbsp; Medical</span></p>
-                </div>
-                <div class="icon business" @click="insertDataToSelectNewsModal('business')">
-                    <p><i class="ns-business"></i>
+                <div class="icon business" v-touch-hold="()=>openNewsSelectModal('business')" @click="insertDataToSelectNewsModal('business')">
+                    <p><i class="nw-business"></i>
                         <span class="text">Business</span></p>
                 </div>
-                <div class="icon politics" @click="insertDataToSelectNewsModal('politics')">
-                    <p><i class="ns-politics"></i>
-                        <span class="text">Politics</span></p>
-                </div>
-                <div class="icon sport" @click="insertDataToSelectNewsModal('sport')">
-                    <p><i class="ns-sports"></i>
+                <div class="icon sports" v-touch-hold="()=>openNewsSelectModal('sports')" @click="insertDataToSelectNewsModal('sports')">
+                    <p><i class="nw-sports"></i>
                         <span class="text">Sports</span></p>
                 </div>
-                <div class="icon science-and-nature" @click="insertDataToSelectNewsModal('science-and-nature')">
-                    <p><i class="ns-science-and-nature"></i>
-                        <span class="text">Science &nbsp; Nature</span></p>
+                <div class="icon science" v-touch-hold="()=>openNewsSelectModal('science')" @click="insertDataToSelectNewsModal('science')">
+                    <p><i class="nw-science"></i>
+                        <span class="text">Science</span></p>
                 </div>
-                <div class="icon music" @click="insertDataToSelectNewsModal('music')">
-                    <p><i class="ns-music"></i>
-                        <span class="text">Music</span></p>
-                </div>
+              
             </div>
             <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" />
         </div>
-        <div class="continue full-width">
+        <!-- <div class="continue full-width">
             <q-btn class="full-width load-news" big @click="loadNews">Load Selected News</q-btn>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -96,6 +85,7 @@
         fetchNewsSource
     } from '../network/requestNews'
     import {
+        categoryName,
         eventBus
     } from '../utils/eventBus'
     import NewsSelectModal from '@/NewsSelectModal'
@@ -107,12 +97,9 @@
                     general: [],
                     business: [],
                     entertainment: [],
-                    gaming: [],
-                    music: [],
-                    politics: [],
-                    science_and_nature: [],
-                    health_and_medical: [],
-                    sport: [],
+                    science: [],
+                    health: [],
+                    sports: [],
                     technology: []
                 },
                 checkedItems: [],
@@ -145,34 +132,19 @@
                                     this.NewsCategories.entertainment.push(item);
                                     break;
                                 }
-                            case NEWS_CATEGORY.GAMING:
+                            case NEWS_CATEGORY.SCIENCE:
                                 {
-                                    this.NewsCategories.gaming.push(item);
+                                    this.NewsCategories.science.push(item);
                                     break;
                                 }
-                            case NEWS_CATEGORY.MUSIC:
+                            case NEWS_CATEGORY.HEALTH:
                                 {
-                                    this.NewsCategories.music.push(item);
+                                    this.NewsCategories.health.push(item);
                                     break;
                                 }
-                            case NEWS_CATEGORY.POLITICS:
+                            case NEWS_CATEGORY.SPORTS:
                                 {
-                                    this.NewsCategories.politics.push(item);
-                                    break;
-                                }
-                            case NEWS_CATEGORY.SCIENCE_AND_NATURE:
-                                {
-                                    this.NewsCategories.science_and_nature.push(item);
-                                    break;
-                                }
-                            case NEWS_CATEGORY.HEALTH_AND_MEDICAL:
-                                {
-                                    this.NewsCategories.health_and_medical.push(item);
-                                    break;
-                                }
-                            case NEWS_CATEGORY.SPORT:
-                                {
-                                    this.NewsCategories.sport.push(item);
+                                    this.NewsCategories.sports.push(item);
                                     break;
                                 }
                             case NEWS_CATEGORY.TECHNOLOGY:
@@ -184,20 +156,24 @@
                     })
                 })
                 .catch(err => console.log('sdfdsf', err))
-    
+        console.log('NewsCategories data', this.NewsCategories);
         },
         methods: {
-            ...mapActions(['toggleNewsListModal', 'toggleDrawer']),
+            ...mapActions(['toggleNewsListModal', 'toggleDrawer', 'saveSelectedNews']),
             insertDataToSelectNewsModal(category) {
                 switch (category) {
                     case NEWS_CATEGORY.GENERAL:
                         {
+                            this.saveSelectedNews(this.NewsCategories.general);
+                            this.loadNews();
                             this.selectNewsModalDataTitle = NEWS_CATEGORY.GENERAL;
                             this.selectNewsModalData = this.NewsCategories.general;
                             break;
                         }
                     case NEWS_CATEGORY.BUSINESS:
                         {
+                            this.saveSelectedNews(this.NewsCategories.business);
+                            this.loadNews();
                             this.selectNewsModalDataTitle = NEWS_CATEGORY.BUSINESS
                             this.selectNewsModalData = this.NewsCategories.business;
                             break;
@@ -208,40 +184,22 @@
                             this.selectNewsModalData = this.NewsCategories.entertainment;
                             break;
                         }
-                    case NEWS_CATEGORY.GAMING:
+                    case NEWS_CATEGORY.SCIENCE:
                         {
-                            this.selectNewsModalDataTitle = NEWS_CATEGORY.GAMING
-                            this.selectNewsModalData = this.NewsCategories.gaming;
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.SCIENCE;
+                            this.selectNewsModalData = this.NewsCategories.science;
                             break;
                         }
-                    case NEWS_CATEGORY.MUSIC:
+                    case NEWS_CATEGORY.HEALTH:
                         {
-                            this.selectNewsModalDataTitle = NEWS_CATEGORY.MUSIC
-                            this.selectNewsModalData = this.NewsCategories.music;
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.HEALTH
+                            this.selectNewsModalData = this.NewsCategories.health;
                             break;
                         }
-                    case NEWS_CATEGORY.POLITICS:
+                    case NEWS_CATEGORY.SPORTS:
                         {
-                            this.selectNewsModalDataTitle = NEWS_CATEGORY.POLITICS
-                            this.selectNewsModalData = this.NewsCategories.politics;
-                            break;
-                        }
-                    case NEWS_CATEGORY.SCIENCE_AND_NATURE:
-                        {
-                            this.selectNewsModalDataTitle = NEWS_CATEGORY.SCIENCE_AND_NATURE;
-                            this.selectNewsModalData = this.NewsCategories.science_and_nature;
-                            break;
-                        }
-                    case NEWS_CATEGORY.HEALTH_AND_MEDICAL:
-                        {
-                            this.selectNewsModalDataTitle = NEWS_CATEGORY.HEALTH_AND_MEDICAL
-                            this.selectNewsModalData = this.NewsCategories.health_and_medical;
-                            break;
-                        }
-                    case NEWS_CATEGORY.SPORT:
-                        {
-                            this.selectNewsModalDataTitle = NEWS_CATEGORY.SPORT
-                            this.selectNewsModalData = this.NewsCategories.sport;
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.SPORTS
+                            this.selectNewsModalData = this.NewsCategories.sports;
                             break;
                         }
                     case NEWS_CATEGORY.TECHNOLOGY:
@@ -251,7 +209,65 @@
                             break;
                         }
                 }
-                this.toggleNewsListModal();
+                // this.toggleNewsListModal();
+            },
+            openNewsSelectModal(categoryName) {
+                console.log('openNewsSelectModal', categoryName);
+                
+                switch (categoryName) {
+                    case NEWS_CATEGORY.GENERAL:
+                        {
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.GENERAL;
+                            this.selectNewsModalData = this.NewsCategories.general;
+                            this.toggleNewsListModal();
+                            break;
+                        }
+                    case NEWS_CATEGORY.BUSINESS:
+                        {
+                            console.log('hello', this.NewsCategories.business);
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.BUSINESS;
+                            this.selectNewsModalData = this.NewsCategories.business;
+                            this.toggleNewsListModal();
+                            break;
+                        }
+                    case NEWS_CATEGORY.ENTERTAINMENT:
+                        {
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.ENTERTAINMENT
+                            this.selectNewsModalData = this.NewsCategories.entertainment;
+                            this.toggleNewsListModal();                            
+                            break;
+                        }
+                    case NEWS_CATEGORY.SCIENCE:
+                        {
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.SCIENCE;
+                            this.selectNewsModalData = this.NewsCategories.science;
+                            this.toggleNewsListModal();
+                            break;
+                        }
+                    case NEWS_CATEGORY.HEALTH:
+                        {
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.HEALTH
+                            this.selectNewsModalData = this.NewsCategories.health;
+                            this.toggleNewsListModal();
+                            break;
+                        }
+                    case NEWS_CATEGORY.SPORTS:
+                        {
+                            console.log('sports content',this.NewsCategories.sports);
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.SPORTS
+                            this.selectNewsModalData = this.NewsCategories.sports;
+                            this.toggleNewsListModal();
+                            break;
+                        }
+                    case NEWS_CATEGORY.TECHNOLOGY:
+                        {
+                            this.selectNewsModalDataTitle = NEWS_CATEGORY.TECHNOLOGY
+                            this.selectNewsModalData = this.NewsCategories.technology;
+                            this.toggleNewsListModal();
+                            break;
+                        }
+                }
+    
             },
             loadNews() {
                 eventBus.$emit('loadNews', 'hello');
@@ -322,58 +338,46 @@
         background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
     }
     
-    .gaming {
-        background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-    }
-    
     .general {
         background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
     }
     
-    .health-and-medical {
+    .health {
         background-image: linear-gradient(-60deg, #a8edea 0%, #fed6e3 100%);
     }
     
-    .music {
-        background-image: linear-gradient(-60deg, #accbee 0%, #e7f0fd 100%);
-    }
-    
-    .politics {
-        background: linear-gradient(-180deg, #BCC5CE 0%, #929EAD 100%);
-    }
-    
-    .science-and-nature {
+    .science {
         background-image: linear-gradient(to top, #e6b980 0%, #eacda3 100%);
     }
     
-    .sport {
+    .sports {
         background-image: linear-gradient(60deg, #ffc3a0 0%, #ffafbd 100%);
     }
     
     .technology {
-        background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 100%);
+        background-image: linear-gradient(-225deg, #ffe29f 0%, #ffa99f 100%);
     }
     
     .country {
         .country-flag {
-            width: 9rem!important;
-            height: 9rem;
+            width: 8rem !important;
+            height: 8rem;
             border-radius: 50%;
             display: block;
             background-size: cover;
         }
         .icon {
-            background: #A2DED0;
+            background: #a2ded0;
             background-size: cover;
         }
         .india .country-flag {
-            background-image: url('../assets/in.svg');
+            background-image: url("../assets/in.svg");
         }
         .usa .country-flag {
-            background-image: url('../assets/us.svg');
+            background-image: url("../assets/us.svg");
         }
     }
-
+    
     .heading {
         height: 30px;
         width: 200px;
@@ -396,14 +400,13 @@
         position: relative;
         z-index: 12;
         width: 100%;
-        border:0.2rem solid #d23f50;
+        border: 0.2rem solid #d23f50;
         margin-bottom: 1rem;
-        
     }
     
     h4 {
         position: absolute;
-        padding: 0.5rem;;
+        padding: 0.5rem;
         color: #fff;
         z-index: 1;
         top: 0;
