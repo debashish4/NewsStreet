@@ -6,7 +6,7 @@ import { eventBus } from '../utils/eventBus'
 const fetchNews = (checkedItems) => {
 	eventBus.$emit('startLoader');
 	if (checkedItems && checkedItems.length > 20) {
-		async function test(){
+		async function test() {
 			console.log('grater then 20');
 			let splitBigNewSources = splitArray(checkedItems, 20);
 			let splitBigNewSourcesResponse = splitBigNewSources.map(item => {
@@ -35,7 +35,7 @@ const fetchSearchNews = (query) => {
 	return axios({
 		method: 'GET',
 		url: `${EVERYTHING}q=${query}`,
-		headers: { 'X-Api-Key': `${API_KEY}` },
+		headers: { 'X-Api-Key': `${API_KEY}` }
 	}).then(res => res.data);
 }
 
@@ -43,8 +43,39 @@ const fetchNewsSource = () => {
 	return axios({
 		method: 'GET',
 		url: `${SOURCES}`,
-		headers: { 'X-Api-Key': `${API_KEY}` },
+		headers: { 'X-Api-Key': `${API_KEY}` }
 	}).then(res => res.data);
 };
 
-export { fetchNews, fetchNewsSource, fetchSearchNews }
+const fetchNewsBasedOnCountry = (country) => {
+	eventBus.$emit('startLoader');
+	return axios({
+		method: 'GET',
+		url: `${TOP_HEADLINES}country=${country}&pageSize=100`,
+		headers: { 'X-Api-Key': `${API_KEY}` }
+	})
+};
+
+
+const fetchNewsBasedOnCategory = (category) => {
+	eventBus.$emit('startLoader');
+	return axios({
+		method: 'GET',
+		url: `${TOP_HEADLINES}country=in&category=${category}&pageSize=100`,
+		headers: { 'X-Api-Key': `${API_KEY}` }
+	})
+};
+
+
+const fetchNewsBasedOnSources = (sources) => {
+	eventBus.$emit('startLoader');
+	console.log('sources', sources);
+	return axios({
+		method: 'GET',
+		url: `${EVERYTHING}domains=${sources}&pageSize=100`,
+		headers: { 'X-Api-Key': `${API_KEY}` }
+	}).then(res => res.data);
+};
+
+
+export { fetchNewsBasedOnSources, fetchNewsBasedOnCountry, fetchNewsBasedOnCategory, fetchNews, fetchNewsSource, fetchSearchNews }

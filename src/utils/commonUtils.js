@@ -34,7 +34,7 @@ const newsSourcetoApiString = (source) => {
 
 const stringifyArray = (array) => {
     console.log({ array });
-    return array.join(",");
+    return array.toString();
 };
 
 const shuffleArray = (array) => {

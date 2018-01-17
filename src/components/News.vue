@@ -6,7 +6,7 @@
           <div class="front" v-touch-swipe.horizontal="frontCardSwipe">
             <div class="news">
               <div class="article-image-container row justify-center items-center">
-                <img class="article-image" v-lazy="newsCollection[front].urlToImage" :src="newsCollection[front].urlToImage" alt="" width="100%">
+                <img class="article-image" v-lazy="newsCollection[front].urlToImage || ''" :src="newsCollection[front].urlToImage || ''" alt="" width="100%">
                 <q-spinner-cube class="spinner" color="red-8" :size="50" />
                 <div class="source-info">
                   <p class="source-name">{{newsCollection[front].source.name}}</p>
@@ -14,12 +14,10 @@
                 </div>
               </div>
               <div class="news-text">
-                <h2>
+                <h2 class="title">
                   {{newsCollection[front].title}}
                 </h2>
-                <p>
-                </p>
-                <p>
+                <p class="description">
                   {{newsCollection[front].description}}
                 </p>
               </div>
@@ -36,12 +34,10 @@
                 </div>
               </div>
               <div class="news-text">
-                <h2>
+                <h2 class="title">
                   {{newsCollection[back].title}}
                 </h2>
-                <p>
-                </p>
-                <p>
+                <p class="description">
                   {{newsCollection[back].description}}
                 </p>
               </div>
@@ -78,14 +74,16 @@
   import VueLazyload from "vue-lazyload";
   import {
     newsSourcetoApiString,
-    openInAppBrowser
+    openInAppBrowser,
   } from "../utils/commonUtils";
   import {
     eventBus
   } from "../utils/eventBus";
   import {
     fetchNews,
-    stringifyArray
+    fetchNewsBasedOnCategory,
+    fetchNewsBasedOnCountry,
+    fetchNewsBasedOnSources,
   } from "../network/requestNews";
   import Shimmer from "@/Shimmer.vue";
   import SideBarPanel from "@/SideBarPanel.vue";
@@ -128,15 +126,15 @@
           console.log("abc", this.selectedNews);
         }
         fetchNews(selectedLs).then(res => {
-          console.log('check res',res);
-          if(res && res.length){
+          console.log('check res', res);
+          if (res && res.length) {
             console.log('inside if', res.constructor);
             res.map(item => {
-              item.then(data =>{
+              item.then(data => {
                 console.log('now something', data);
               })
             })
-          }else{
+          } else {
             this.newsCollection = res.articles;
           }
           // this.socialShareNewsItemIndex = 0;
@@ -159,6 +157,18 @@
       eventBus.$on("loadNews", data => {
         loadNews();
       });
+      eventBus.$on('evtLoadCategoryNews', category => {
+        console.log('received event');
+        this.loadCategoryNews(category);
+      });
+      eventBus.$on('evtLoadCountryNews', country => {
+        console.log('received event');
+        this.loadCountryNews(country);
+      });
+      eventBus.$on('evtLoadSourcesNews', domains => {
+        console.log('received event');
+        this.loadSourcesNews(domains);
+      });
       Events.$on("moveTofirst", (param1, param2) => {
         //start from 1st slide
         this.deg = 0;
@@ -166,6 +176,12 @@
         this.back = 1;
         this.socialShareNewsItemIndex = 0;
       });
+    },
+    beforeDestroy() {
+      // fix the weird issue of multiple api call on event listen
+      eventBus.$off('evtLoadCategoryNews');
+      eventBus.$off('evtLoadCountryNews');
+      eventBus.$off('evtLoadSourcesNews');
     },
     methods: {
       ...mapActions(["toggleReadMorePanel", "saveSocialShareData"]),
@@ -275,6 +291,7 @@
           this.openWindow();
         }
       },
+  
       showNewsCount() {
         let vm = this;
         vm.isNewsCount = true;
@@ -282,7 +299,55 @@
         window.newsCount = setTimeout(_ => {
           vm.isNewsCount = false
         }, 2000)
+      },
+      resetNewsCard() {
+        this.deg = 0;
+        this.front = 0;
+        this.back = 1;
+        this.socialShareNewsItemIndex = 0;
+      },
+      loadCategoryNews(category) {
+        console.log('clicked category', category);
+        fetchNewsBasedOnCategory(category)
+          .then(response => {
+            let articles = response.data.articles || [];
+            this.newsCollection = articles;
+            this.resetNewsCard();
+            eventBus.$emit('stopLoader');
+            console.log('here', response.data.articles);
+          })
+          .catch(err => {
+            console.log('loadCategoryNews', err);
+          })
+      },
+      loadCountryNews(country) {
+        console.log('clicked country', country);
+        fetchNewsBasedOnCountry(country)
+          .then(response => {
+            let articles = response.data.articles || [];
+            this.newsCollection = articles;
+            this.resetNewsCard();
+            eventBus.$emit('stopLoader');
+            console.log('here', response.data.articles);
+          })
+          .catch(err => {
+            console.log('loadCategoryNews', err);
+          })
+      },
+      loadSourcesNews(sources) {
+        fetchNewsBasedOnSources(sources)
+          .then(response => {
+            let articles = response.articles || [];
+            this.resetNewsCard();
+            this.newsCollection = articles;
+            eventBus.$emit('stopLoader');
+            console.log('here', response);
+          })
+          .catch(err => {
+            console.log('loadsource news error', err);
+          })
       }
+  
     },
     computed: {
       ...mapState({
@@ -450,6 +515,9 @@
       height: calc(100vh - 34rem);
       overflow-y: scroll;
       background: linear-gradient( to top, rgba(214, 214, 214, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
+      .description{
+        margin-top:1rem;
+      }
     }
     .news-text::-webkit-scrollbar {
       display: block !important;
@@ -473,7 +541,7 @@
       display: block;
       opacity: 1;
       background: url("../assets/no_image_placeholder.jpg") no-repeat;
-      background-size: cover; 
+      background-size: cover;
     }
     .article-image[lazy="error"]+.spinner {
       display: none;

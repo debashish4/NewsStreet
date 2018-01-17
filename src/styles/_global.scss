@@ -22,7 +22,7 @@ html {
         font-size: 1.6rem;
         line-height: 1.4;
     }
-    i.q-icon {
+    .layout-header i.q-icon {
         font-size: 2.4rem;
         color: $white;
     }
@@ -54,8 +54,7 @@ html {
 }
 
 .layout-aside.layout-aside-left {
-    width: 100%;
-    // transform: initial!important;
+    width: 100%; // transform: initial!important;
     background-image: url('../assets/cream-pixels.png');
 }
 

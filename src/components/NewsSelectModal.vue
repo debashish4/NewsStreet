@@ -63,11 +63,11 @@
                 newsSources: this.newsSources
             });
     
-            if (localStorage.getItem('selectedNews') && localStorage.getItem('selectedNews')) {
-                this.selectedNews = JSON.parse(localStorage.getItem('selectedNews'));
-                this.selectedNewsId = JSON.parse(localStorage.getItem('selectedNewsId'));
-                this.saveSelectedNews(this.selectedNews);
-            }
+            // if (localStorage.getItem('selectedNews') && localStorage.getItem('selectedNews')) {
+            //     this.selectedNews = JSON.parse(localStorage.getItem('selectedNews'));
+            //     this.selectedNewsId = JSON.parse(localStorage.getItem('selectedNewsId'));
+            //     this.saveSelectedNews(this.selectedNews);
+            // }
         },
         methods: {
             ...mapActions(['toggleNewsListModal', 'closeNewsListModal', 'saveSelectedNews']),
