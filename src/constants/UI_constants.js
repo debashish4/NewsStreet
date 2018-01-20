@@ -10,20 +10,54 @@ const NEWS_CATEGORY = {
 
 const INDIA_NEWS_SOURCES = [
     {
-        name: 'IndiaTV News',
+        name: 'AajTak',
+        url: "intoday.in",
+        imgurl: "https://i.imgur.com/amRxwBU.jpg",
+        category: 'general'
+    },
+    {
+        name: "ABP News",
+        url: "abplive.in",
+        category: "general"
+    },
+    {
+        name: "News18 India",
+        url: "news18.com",
+        category: "general"
+    },
+
+    {
+        name: "India TV",
         url: "indiatvnews.com",
-        category: 'general'
+        imgurl: "",
     },
+
     {
-        name: 'Deccan Herald',
-        url: "deccanherald.com",
-        category: 'general'
+        name: "NDTV India",
+        url: "ndtv.com",
+        imgurl: "",
     },
+
     {
-        name: 'Times Of India',
-        url: "timesofindia.com",
-        category: 'general' 
+        name: "News 24",
+        url: "news24online.com",
+        imgurl: "",
     },
+
+    {
+        name: "News Nation",
+        url: "newsnation.in",
+        imgurl: "",
+    },
+
+    {
+        name: "Zee News",
+        url: "india.com",
+        imgurl: "",
+    },
+
+
+
     {
         name: 'Bhaskar',
         url: "bhaskar.com",

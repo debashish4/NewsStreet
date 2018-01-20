@@ -67,15 +67,15 @@ const fetchNewsBasedOnCategory = (category) => {
 };
 
 
-const fetchNewsBasedOnSources = (sources) => {
+const fetchNewsBasedOnSource = (source) => {
 	eventBus.$emit('startLoader');
-	console.log('sources', sources);
+	console.log('sources', source);
 	return axios({
 		method: 'GET',
-		url: `${EVERYTHING}domains=${sources}&pageSize=100`,
+		url: `${EVERYTHING}domains=${source}&pageSize=100`,
 		headers: { 'X-Api-Key': `${API_KEY}` }
 	}).then(res => res.data);
 };
 
 
-export { fetchNewsBasedOnSources, fetchNewsBasedOnCountry, fetchNewsBasedOnCategory, fetchNews, fetchNewsSource, fetchSearchNews }
+export { fetchNewsBasedOnSource, fetchNewsBasedOnCountry, fetchNewsBasedOnCategory, fetchNews, fetchNewsSource, fetchSearchNews }

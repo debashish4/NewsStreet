@@ -83,7 +83,7 @@
     fetchNews,
     fetchNewsBasedOnCategory,
     fetchNewsBasedOnCountry,
-    fetchNewsBasedOnSources,
+    fetchNewsBasedOnSource,
   } from "../network/requestNews";
   import Shimmer from "@/Shimmer.vue";
   import SideBarPanel from "@/SideBarPanel.vue";
@@ -165,9 +165,9 @@
         console.log('received event');
         this.loadCountryNews(country);
       });
-      eventBus.$on('evtLoadSourcesNews', domains => {
+      eventBus.$on('evtLoadSourcesNews', source => {
         console.log('received event');
-        this.loadSourcesNews(domains);
+        this.loadSourceNews(source);
       });
       Events.$on("moveTofirst", (param1, param2) => {
         //start from 1st slide
@@ -334,8 +334,9 @@
             console.log('loadCategoryNews', err);
           })
       },
-      loadSourcesNews(sources) {
-        fetchNewsBasedOnSources(sources)
+      loadSourceNews(source) {
+        console.log('inside load source', source);
+        fetchNewsBasedOnSource(source)
           .then(response => {
             let articles = response.articles || [];
             this.resetNewsCard();

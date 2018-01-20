@@ -67,43 +67,53 @@
           </div>
           <div class="border"></div>
         </div>
-        <div class="source-chips">
-          <q-chip color="primary" v-for="(source, index) in selectedSources" :key="index">
-            <p>{{source}}</p>
-            <q-icon name="clear" class="close-chip" @click="removeFromSelection(source,index)" />
-          </q-chip>
-        </div>
+        <!-- <div class="source-chips">
+                          <q-chip color="primary" v-for="(source, index) in selectedSources" :key="index">
+                            <p>{{source}}</p>
+                            <q-icon name="clear" class="close-chip" @click="removeFromSelection(source,index)" />
+                          </q-chip>
+                        </div> -->
         <div class="sources-list clearfix">
-          <q-list separator class="clearfix">
-            <q-collapsible class="nw-icon nw-technology technology" group="top_sources" label="Technology" v-if="NewsCategories.technology.length">
-              <q-checkbox v-for="(source, index) in NewsCategories.technology" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-            </q-collapsible>
-            <q-collapsible class="nw-icon nw-general general" group="top_sources" label="General" v-if="NewsCategories.general.length">
-              <q-checkbox v-for="(source, index) in NewsCategories.general" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-            </q-collapsible>
-            <q-collapsible class="nw-icon nw-entertainment entertainment" group="top_sources" label="Entertainment" v-if="NewsCategories.entertainment.length">
-              <q-checkbox v-for="(source, index) in NewsCategories.entertainment" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-            </q-collapsible>
-            <q-collapsible class="nw-icon nw-health health" group="top_sources" label="Health" v-if="NewsCategories.health.length">
-              <q-checkbox v-for="(source, index) in NewsCategories.health" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-            </q-collapsible>
-            <q-collapsible class="nw-icon nw-business business" group="top_sources" label="Business" v-if="NewsCategories.business.length">
-              <q-checkbox v-for="(source, index) in NewsCategories.business" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-            </q-collapsible>
-            <q-collapsible class="nw-icon nw-sports sports" group="top_sources" label="Sports" v-if="NewsCategories.sports.length">
-              <q-checkbox v-for="(source, index) in NewsCategories.sports" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-            </q-collapsible>
-            <q-collapsible class="nw-icon nw-science science" group="top_sources" label="Science" v-if="NewsCategories.science.length">
-              <q-checkbox v-for="(source, index) in NewsCategories.science" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-            </q-collapsible>
-          </q-list>
+          <div class="news-list-wrapper">
+            <div class="news-list">
+              <div class="news-item" @click="loadSelectedSourcesNews(source.url)" v-for="(source, index) in topSourcesNews" :key="index">
+                <div class="news-thumb">
+                  <p class="source-logo"><img :src="'http://via.placeholder.com/100x100'" :alt="`${source.name} logo`" /></p>
+                  <p class="source-name">{{source.name}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <q-list separator class="clearfix">
+                            <q-collapsible class="nw-icon nw-technology technology" group="top_sources" label="Technology" v-if="NewsCategories.technology.length">
+                              <q-checkbox v-for="(source, index) in NewsCategories.technology" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
+                            </q-collapsible>
+                            <q-collapsible class="nw-icon nw-general general" group="top_sources" label="General" v-if="NewsCategories.general.length">
+                              <q-checkbox v-for="(source, index) in NewsCategories.general" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
+                            </q-collapsible>
+                            <q-collapsible class="nw-icon nw-entertainment entertainment" group="top_sources" label="Entertainment" v-if="NewsCategories.entertainment.length">
+                              <q-checkbox v-for="(source, index) in NewsCategories.entertainment" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
+                            </q-collapsible>
+                            <q-collapsible class="nw-icon nw-health health" group="top_sources" label="Health" v-if="NewsCategories.health.length">
+                              <q-checkbox v-for="(source, index) in NewsCategories.health" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
+                            </q-collapsible>
+                            <q-collapsible class="nw-icon nw-business business" group="top_sources" label="Business" v-if="NewsCategories.business.length">
+                              <q-checkbox v-for="(source, index) in NewsCategories.business" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
+                            </q-collapsible>
+                            <q-collapsible class="nw-icon nw-sports sports" group="top_sources" label="Sports" v-if="NewsCategories.sports.length">
+                              <q-checkbox v-for="(source, index) in NewsCategories.sports" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
+                            </q-collapsible>
+                            <q-collapsible class="nw-icon nw-science science" group="top_sources" label="Science" v-if="NewsCategories.science.length">
+                              <q-checkbox v-for="(source, index) in NewsCategories.science" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
+                            </q-collapsible>
+                          </q-list> -->
         </div>
       </div>
-      <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" />
+      <!-- <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" /> -->
     </div>
-    <div class="continue full-width" v-if="selectedSources.length">
+    <!-- <div class="continue full-width" v-if="selectedSources.length">
       <q-btn class="full-width load-news" big @click="loadSelectedSourcesNews">Load Selected News</q-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -141,14 +151,15 @@
     data() {
       return {
         NewsCategories: {
-          general: [],
-          business: [],
-          entertainment: [],
-          science: [],
-          health: [],
-          sports: [],
-          technology: []
+          // general: [],
+          // business: [],
+          // entertainment: [],
+          // science: [],
+          // health: [],
+          // sports: [],
+          // technology: []
         },
+        topSourcesNews: [],
         selectedSources: [],
         checkedItemUrls: [],
         checkedItemNames: [],
@@ -162,48 +173,12 @@
       TouchHold
     },
     mounted() {
-      eventBus.$on('@close', () => {
-        console.log('this event is working');
+      eventBus.$on("@close", () => {
+        console.log("this event is working");
       });
   
       INDIA_NEWS_SOURCES.forEach((item, index) => {
-        switch (item.category) {
-          case NEWS_CATEGORY.GENERAL:
-            {
-              this.NewsCategories.general.push(item);
-              break;
-            }
-          case NEWS_CATEGORY.BUSINESS:
-            {
-              this.NewsCategories.business.push(item);
-              break;
-            }
-          case NEWS_CATEGORY.ENTERTAINMENT:
-            {
-              this.NewsCategories.entertainment.push(item);
-              break;
-            }
-          case NEWS_CATEGORY.SCIENCE:
-            {
-              this.NewsCategories.science.push(item);
-              break;
-            }
-          case NEWS_CATEGORY.HEALTH:
-            {
-              this.NewsCategories.health.push(item);
-              break;
-            }
-          case NEWS_CATEGORY.SPORTS:
-            {
-              this.NewsCategories.sports.push(item);
-              break;
-            }
-          case NEWS_CATEGORY.TECHNOLOGY:
-            {
-              this.NewsCategories.technology.push(item);
-              break;
-            }
-        }
+        this.topSourcesNews.push(item);
       });
   
       if (localStorage.getItem("selectedNewsSources")) {
@@ -211,7 +186,6 @@
   
         let selectedNewsInArr = JSON.parse(selectedNews);
         this.selectedSources = selectedNewsInArr;
-  
       }
     },
     methods: {
@@ -227,33 +201,38 @@
         this.toggleDrawer();
       },
   
-      loadSelectedSourcesNews() {
-        let checkedNewsSourcesUrls = this.selectedSources.map((item, index) => {
-          for (var i = 0; i < INDIA_NEWS_SOURCES.length; i++) {
-            if (INDIA_NEWS_SOURCES[i].name == item) {
-              return INDIA_NEWS_SOURCES[i].url;
-              break;
-            }
-          }
-        });
+      // loadSelectedSourcesNews() {
+      //   let checkedNewsSourcesUrls = this.selectedSources.map((item, index) => {
+      //     for (var i = 0; i < INDIA_NEWS_SOURCES.length; i++) {
+      //       if (INDIA_NEWS_SOURCES[i].name == item) {
+      //         return INDIA_NEWS_SOURCES[i].url;
+      //         break;
+      //       }
+      //     }
+      //   });
   
-        let stringifiedNewsSourcesUrls = stringifyArray(checkedNewsSourcesUrls);
+      //   let stringifiedNewsSourcesUrls = stringifyArray(checkedNewsSourcesUrls);
   
-        localStorage.setItem(
-          "selectedNewsSources",
-          JSON.stringify(this.selectedSources)
-        );
-        eventBus.$emit("evtLoadSourcesNews", stringifiedNewsSourcesUrls);
+      //   localStorage.setItem(
+      //     "selectedNewsSources",
+      //     JSON.stringify(this.selectedSources)
+      //   );
+      //   eventBus.$emit("evtLoadSourcesNews", stringifiedNewsSourcesUrls);
+      //   this.toggleDrawer();
+      // },
+  
+  
+      loadSelectedSourcesNews(sourceUrl) {
+          console.log('loadSelectedSourcesNews', sourceUrl);
+        eventBus.$emit("evtLoadSourcesNews", sourceUrl);
         this.toggleDrawer();
       },
   
-      removeFromSelection(source, index) {
-        console.log('dekhte hai', source, index);
-        console.log(this.selectedSources);
-        this.selectedSources.splice(index, 1);
-      },
-  
-  
+      // removeFromSelection(source, index) {
+      //   console.log("dekhte hai", source, index);
+      //   console.log(this.selectedSources);
+      //   this.selectedSources.splice(index, 1);
+      // },
   
       openNewsSelectModal(categoryName) {
         console.log("openNewsSelectModal", categoryName);
@@ -311,7 +290,7 @@
               break;
             }
         }
-      },
+      }
     },
     components: {
       QIcon,
@@ -460,58 +439,82 @@
     -webkit-margin-end: 0;
   }
   
-  .top-sources {
-    .nw-icon {
-      position: relative!important;
-    }
-    .nw-icon:before {
-      font-size: 2rem;
-      position: absolute;
-      top: -0.8rem;
-      margin: 2rem;
-    }
-    .q-collapsible {
-      .q-collapsible-sub-item {
-        background: white;
-      }
-    }
-    .q-item-main {
-      font-size: 1.8rem;
-      font-family: 'Raleway', 'sans-serif';
-      padding-left: 4rem!important;
-    }
-    .q-list {
-      padding: 0;
+  // .top-sources {
+  //   .nw-icon {
+  //     position: relative !important;
+  //   }
+  //   .nw-icon:before {
+  //     font-size: 2rem;
+  //     position: absolute;
+  //     top: -0.8rem;
+  //     margin: 2rem;
+  //   }
+  //   .q-collapsible {
+  //     .q-collapsible-sub-item {
+  //       background: white;
+  //     }
+  //   }
+  //   .q-item-main {
+  //     font-size: 1.8rem;
+  //     font-family: "Raleway", "sans-serif";
+  //     padding-left: 4rem !important;
+  //   }
+  //   .q-list {
+  //     padding: 0;
+  //   }
+  // }
+  .news-list-wrapper {
+    background-image: url('../assets/cream-pixels.png');
+    .title {
+      margin: 0;
+      padding: 1rem;
+      height: 5rem;
+      color: #fff;
+      background: #595959;
     }
   }
   
-  .source-chips {
-    min-height: 4rem;
-    .q-chip {
-      margin: 0.4rem 0.4rem;
-      min-height: 2.5rem;
-      background: #333 !important;
-      .q-chip-main {
+  .news-list {
+    display: block;
+    .news-item {
+      position: relative;
+      width: 29vw;
+      height: 33vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #d23f50;
+      box-sizing: content-box;
+      border-radius: 0.5rem;
+      float: left;
+      margin: 0.5rem;
+      background: rgba(210, 63, 80, 0.1);
+      .news-thumb {
+        overflow: hidden;
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        border-radius: 0.5rem;
       }
-      p {
-        display: inline-block;
-        color: white;
-        margin: 0;
-        font-size: 1.2rem;
-      }
-      .q-chip-side {
-        i {
-          font-size: 1.7rem;
+      .source-logo {
+        width: 7rem;
+        height: 7rem;
+        display: block;
+        margin: 0 auto;
+        img {
+          display: block;
+          background: #ccc;
+          border-radius: 1rem;
+          width: 100%;
+          height: 100%;
         }
       }
-      .close-chip {
-        padding: 0.2rem 0;
-        font-size: 2rem;
-        display: inline-block;
-        position: relative;
-        right: -0.8rem;
+      .source-name {
+        // width: 32vw;
+        // overflow: hidden;
+        word-break: break-word;
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 0;
       }
     }
   }

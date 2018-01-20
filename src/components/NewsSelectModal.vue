@@ -18,7 +18,6 @@
                     Okay
                 </q-btn>
     
-    
             </div>
         </div>
     </q-modal>
