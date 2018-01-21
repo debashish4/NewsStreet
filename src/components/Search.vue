@@ -7,16 +7,23 @@
       </q-btn>
   
       <div class="search-input">
-        <q-search inverted color="primary" ref="inputSearchRef" placeholder="Search in 5000+ news sources" icon="" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery" />
-        <q-btn class="search-btn" color="positive">
+        <q-search inverted ref="inputSearchRef" placeholder="Search in 5000+ news sources" icon="" float-label="What is in your Mind?" v-model="searchModel" @keyup.enter="fetchSearchQuery" />
+        <q-btn class="search-btn">
           <q-icon name="search" @click="fetchSearchQuery" />
         </q-btn>
       </div>
     </div>
     <section class="scroll-container" v-if="searchResult.length > 0">
       <q-card v-for="(result, index) in searchResult" :key="index">
-        <q-card-media>
-          <img v-lazy="result.urlToImage" :src="result.urlToImage" @click="result.showDescription = !result.showDescription">
+        <q-card-media class="test">
+          <!-- <img v-lazy="result.urlToImage" :src="result.urlToImage" @click="result.showDescription = !result.showDescription"> -->
+  
+          <div class="article-image-container row justify-center items-center">
+            <img class="article-image" v-lazy="result.urlToImage" :src="result.urlToImage || ''" alt="" width="100%">
+            <q-spinner-cube class="spinner" color="red-8" :size="50" />
+          </div>
+  
+  
         </q-card-media>
         <q-card-title>
           <h2 @click="result.showDescription = !result.showDescription">{{result.title}}</h2>
@@ -35,7 +42,7 @@
     <div class="no-result" v-else>
       <div class="recent-search-query">
         <h2 v-if="recentSearches.length>0">Recent Searches</h2>
-        <q-chip tabindex="-1" @click="fillInSearch($event)" v-for="(recentSearch, index) in recentSearches" :key="index" color="primary">
+        <q-chip tabindex="-1" @click="fillSearchAndLoad($event)" v-for="(recentSearch, index) in recentSearches" :key="index" color="dark">
           {{recentSearch}}
         </q-chip>
       </div>
@@ -60,7 +67,8 @@
     QIcon,
     QCardActions,
     QBtn,
-    QChip
+    QChip,
+    QSpinnerCube
   } from "quasar";
   import {
     fetchSearchNews
@@ -89,7 +97,6 @@
       this.$refs.inputSearchRef.focus();
     },
     methods: {
-      ...mapActions([]),
       fetchSearchQuery() {
         console.log("searchModel", this.searchModel);
         // var searchQuery = event.target.value || this.$refs.searchQuery.value;
@@ -152,9 +159,10 @@
         this.isSearchInputVisible = false;
         this.$router.go(-1);
       },
-      fillInSearch(event) {
+      fillSearchAndLoad(event) {
         console.log(event);
         this.searchModel = event.target.innerText;
+        this.fetchSearchQuery();
       }
     },
     components: {
@@ -167,7 +175,8 @@
       QIcon,
       QCardActions,
       QBtn,
-      QChip
+      QChip,
+      QSpinnerCube
     },
     watch: {
       $route(to) {
@@ -185,6 +194,43 @@
 
 <style lang="scss">
   .search-page {
+    .article-image-container {
+      position: relative;
+      width: 100%;
+      height: 23.5rem;
+      padding: 0;
+      background: -webkit-linear-gradient( to bottom, rgba(245, 247, 250, 1) 0%, rgba(195, 207, 226, 1) 100%);
+      background: linear-gradient( to bottom, rgba(245, 247, 250, 1) 0%, rgba(195, 207, 226, 1) 100%);
+      .spinner{
+        position: absolute;
+      }
+    }
+    .article-image {
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      -webkit-transition: opacity 1s ease;
+      transition: opacity 1s ease;
+    }
+    .article-image[lazy="loading"] {
+      opacity: 1;
+    }
+    .article-image[lazy="loaded"] {
+      opacity: 1;
+    }
+    .article-image[lazy="loaded"]+.spinner {
+      display: none;
+    }
+    .article-image[lazy="error"] {
+      display: block;
+      opacity: 1;
+      background: url("../assets/no_image_placeholder.jpg") no-repeat;
+      background-size: cover;
+    }
+    .article-image[lazy="error"]+.spinner {
+      display: none;
+    }
     .scroll-container {
       height: calc(100vh - 5rem);
       overflow: scroll;
@@ -201,6 +247,10 @@
     .q-if-inverted {
       border-radius: 0;
     }
+    .q-if-control.q-icon{
+      margin-right: 0.5rem;
+    }
+
     .search {
       position: fixed;
       display: flex;
@@ -213,14 +263,17 @@
       transition: top 500ms ease;
       .search-input {
         margin: 0;
-        background: #027be3;
+        background: #333;
         flex-grow: 2;
         display: flex;
       }
       .q-btn {
         box-shadow: 0 0 0 0;
+        background: #d23f50;
+        color: #fff;
       }
       .q-search {
+        padding: 0;
         background: #ffffff !important;
         box-shadow: 0 0 0 0;
         margin: 0;
@@ -232,7 +285,7 @@
     }
     .back {
       width: 5rem;
-      background: #027be3;
+      background: #333!important;
     }
     .search.bring-search {
       top: 0;
@@ -254,7 +307,7 @@
       margin: 0.3rem;
       &:focus {
         outline: none;
-        background: #035398 !important;
+        background:#d23f50 !important;
       }
     }
   }

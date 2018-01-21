@@ -18,7 +18,7 @@ const fetchNews = (checkedItems) => {
 const fetchSearchNews = (query) => {
 	return axios({
 		method: 'GET',
-		url: `${EVERYTHING}q=${query}`,
+		url: `${EVERYTHING}q=${query}&sortBy=popularity`,
 		headers: { 'X-Api-Key': `${API_KEY}` }
 	}).then(res => res.data);
 }
