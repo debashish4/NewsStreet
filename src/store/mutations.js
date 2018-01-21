@@ -22,6 +22,9 @@ const mutations = {
     },
     [types.SAVE_SOCIAL_SHARE_DATA](state, payload){
         state.news.socialShareData = payload
+    },
+    [types.CHANGE_COUNTRY](state, payload) {
+        state.settings.country = payload
     }
 };
 

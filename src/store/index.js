@@ -16,6 +16,10 @@ const state = {
     news:{
         selectedNews:[],
         socialShareData:{}
+    },
+
+    settings:{
+        country:  'in',
     }
 };
 

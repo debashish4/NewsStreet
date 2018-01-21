@@ -132,6 +132,15 @@
       }
   
       disableOnContextMenu();
+  
+       let settings = localStorage.getItem('settings');
+  
+      if(settings){
+          // console.log('localstorage settings', settings);
+          let parsedSettings = JSON.parse(settings);
+          let country = parsedSettings.country;
+          this.changeCountry(country);
+      }
     },
     computed: {
       ...mapState({
@@ -141,7 +150,7 @@
       })
     },
     methods: {
-      ...mapActions(['toggleDrawer', 'openDrawer', 'toggleReadMorePanel', 'closeNewsListModal']),
+      ...mapActions(['changeCountry', 'toggleDrawer', 'openDrawer', 'toggleReadMorePanel', 'closeNewsListModal']),
       openLeftDrawer() {
         this.$refs.layout.showLeft();
         this.openDrawer();

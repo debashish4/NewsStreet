@@ -18,7 +18,10 @@
                   {{newsCollection[front].title}}
                 </h2>
                 <p class="description">
-                  {{newsCollection[front].description}}
+                  {{newsCollection[front].description || 'No Description Provided'}}
+                </p>
+                <p :class="{hide:!newsCollection[front].author}" class="author">
+                  Author: <span>{{newsCollection[front].author || 'none'}}</span>
                 </p>
               </div>
             </div>
@@ -38,7 +41,10 @@
                   {{newsCollection[back].title}}
                 </h2>
                 <p class="description">
-                  {{newsCollection[back].description}}
+                  {{newsCollection[back].description || 'No Description Provided'}}
+                </p>
+                <p :class="{hide:!newsCollection[back].author}" class="author">
+                  Author: <span>{{newsCollection[back].author || 'none'}}</span>
                 </p>
               </div>
             </div>
@@ -117,41 +123,57 @@
       };
     },
     mounted() {
-      let selectedLs = ["the-next-web"];
+      // let selectedLs = ["the-next-web"];
       let loadNews = () => {
-        console.log("selectedNews", this.selectedNews);
-        console.log("selectedLs", selectedLs);
-        if (this.selectedNews.length) {
-          selectedLs = this.selectedNews.map(item => item.id);
-          console.log("abc", this.selectedNews);
-        }
-        fetchNews(selectedLs).then(res => {
-          console.log('check res', res);
-          if (res && res.length) {
-            console.log('inside if', res.constructor);
-            res.map(item => {
-              item.then(data => {
-                console.log('now something', data);
-              })
-            })
-          } else {
-            this.newsCollection = res.articles;
-          }
-          // this.socialShareNewsItemIndex = 0;
-          const {
-            description,
-            title,
-            url,
-            urlToImage
-          } = this.newsCollection[0];
-          this.saveSocialShareData({
-            description,
-            title,
-            url,
-            urlToImage
-          });
-          eventBus.$emit("stopLoader");
-        });
+        // console.log("selectedNews", this.selectedNews);
+        // console.log("selectedLs", selectedLs);
+        // if (this.selectedNews.length) {
+        //   selectedLs = this.selectedNews.map(item => item.id);
+        //   console.log("abc", this.selectedNews);
+        // }
+  
+  
+  
+  
+        // fetchNews(selectedLs).then(res => {
+        //   console.log('check res', res);
+        //   if (res && res.length) {
+        //     console.log('inside if', res.constructor);
+        //     res.map(item => {
+        //       item.then(data => {
+        //         console.log('now something', data);
+        //       })
+        //     })
+        //   } else {
+        //     this.newsCollection = res.articles;
+        //   }
+        //   // this.socialShareNewsItemIndex = 0;
+        //   const {
+        //     description,
+        //     title,
+        //     url,
+        //     urlToImage
+        //   } = this.newsCollection[0];
+        //   this.saveSocialShareData({
+        //     description,
+        //     title,
+        //     url,
+        //     urlToImage
+        //   });
+        //   eventBus.$emit("stopLoader");
+        // });
+        let country = this.country;
+        fetchNewsBasedOnCountry(country)
+          .then(response => {
+            let articles = response.data.articles || [];
+            this.newsCollection = articles;
+            this.resetNewsCard();
+            eventBus.$emit('stopLoader');
+            console.log('here', response.data.articles);
+          })
+          .catch(err => {
+            console.log('loadCategoryNews', err);
+          })
       };
       loadNews();
       eventBus.$on("loadNews", data => {
@@ -352,6 +374,7 @@
     },
     computed: {
       ...mapState({
+        country: state => state.settings.country,
         isReadMorePanelOpen: state => state.app.isReadMorePanelOpen,
         selectedNews: state =>
           state.news.selectedNews || ["the-next-web", "techcrunch"]
@@ -404,7 +427,9 @@
   .disable-touch {
     pointer-events: none;
   }
-  
+  .hide{
+    display: none;
+  }
   .flipWrapper {
     background-image: url("../assets/egg-shell.png");
     .flip-container {
@@ -516,8 +541,8 @@
       height: calc(100vh - 34rem);
       overflow-y: scroll;
       background: linear-gradient( to top, rgba(214, 214, 214, 0.65) 0%, rgba(0, 0, 0, 0) 100%);
-      .description{
-        margin-top:1rem;
+      .description {
+        margin-top: 1rem;
       }
     }
     .news-text::-webkit-scrollbar {
@@ -546,6 +571,11 @@
     }
     .article-image[lazy="error"]+.spinner {
       display: none;
+    }
+    .author {
+      margin-top: 2rem;
+      font-style: italic;
+      font-size: 1.1rem;
     }
   }
   

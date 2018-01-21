@@ -129,7 +129,8 @@
     TouchHold
   } from "quasar";
   import {
-    mapActions
+    mapActions,
+    mapState
   } from "vuex";
   import {
     NEWS_CATEGORY,
@@ -187,6 +188,11 @@
         let selectedNewsInArr = JSON.parse(selectedNews);
         this.selectedSources = selectedNewsInArr;
       }
+    },
+    computed:{
+      ...mapState({
+        country: state => state.settings.country
+      })
     },
     methods: {
       ...mapActions(["toggleNewsListModal", "toggleDrawer", "saveSelectedNews"]),
@@ -315,17 +321,17 @@
     }
   }
   
-  .continue {
-    height: 50px;
-    position: fixed;
-    bottom: 0;
-    z-index: 1;
-    button {
-      color: white;
-      height: 100%;
-      background: #d23f50;
-    }
-  }
+  // .continue {
+  //   height: 50px;
+  //   position: fixed;
+  //   bottom: 0;
+  //   z-index: 1;
+  //   button {
+  //     color: white;
+  //     height: 100%;
+  //     background: #d23f50;
+  //   }
+  // }
   
   .icon {
     margin: 1.2vw;

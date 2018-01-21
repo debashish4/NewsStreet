@@ -28,5 +28,9 @@ const saveSocialShareData = ({commit}, payload) => {
     commit(types.SAVE_SOCIAL_SHARE_DATA, payload)
 }
 
+const changeCountry = ({ commit }, payload) => {
+    commit(types.CHANGE_COUNTRY, payload)
+}
 
-export { saveSocialShareData, openDrawer, toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}
+
+export { changeCountry, saveSocialShareData, openDrawer, toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}

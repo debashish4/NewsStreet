@@ -5,7 +5,6 @@
   
   
     </div>
-  
     <q-list-header>Toggles</q-list-header>
     <q-item tag="label" multiline>
       <q-item-main>
@@ -17,9 +16,9 @@
       </q-item-side>
     </q-item>
     <q-item tag="label" multiline>
-       <q-item-main>
-      <q-item-tile label>Push Notifications</q-item-tile>
-      <q-item-tile sublabel>Turn push notification on or off </q-item-tile>
+      <q-item-main>
+        <q-item-tile label>Push Notifications</q-item-tile>
+        <q-item-tile sublabel>Turn push notification on or off </q-item-tile>
       </q-item-main>
       <q-item-side right>
         <q-toggle v-model="checked"></q-toggle>
@@ -46,7 +45,9 @@
       </q-item-side>
     </q-item>
     <q-item-separator />
-  
+    <div class="continue full-width">
+      <q-btn class="full-width load-news" @click="applySettings" big>Apply Settings</q-btn>
+    </div>
   </div>
 </template>
 
@@ -60,24 +61,28 @@
     QItemTile,
     QItemSeparator,
     QToggle,
-    QSelect
+    QSelect,
+    QBtn
   } from "quasar"
-  
+  import {
+    mapActions,
+    mapState
+  } from "vuex"
   export default {
     data() {
       return {
         checked: false,
-        country: 'india',
+        country: '',
         countryOptions: [{
-            label: 'India',
-            value: 'india'
+            label: "India",
+            value: "in"
           },
           {
-            label: 'USA',
-            value: 'usa'
+            label: "USA",
+            value: "us"
           }
         ]
-      }
+      };
     },
   
     components: {
@@ -89,9 +94,32 @@
       QItemTile,
       QItemSeparator,
       QToggle,
-      QSelect
+      QSelect,
+      QBtn
+    },
+  
+    mounted() {
+      if (this.settings.country) {
+        this.country = this.settings.country;
+      }
+    },
+  
+    computed: {
+      ...mapState({
+        settings: state => state.settings
+      })
+    },
+    methods: {
+      ...mapActions(['changeCountry']),
+  
+      applySettings() {
+        console.log('route', this.$route);
+        this.changeCountry(this.country);
+        localStorage.setItem('settings', JSON.stringify(this.settings));
+        this.$router.push('/');
+      }
     }
-  }
+  };
 </script>
 
 <style lang="scss">
@@ -101,6 +129,17 @@
     }
     .q-item-sublabel {
       font-size: 1.3rem;
+    }
+    .continue {
+      height: 50px;
+      position: fixed;
+      bottom: 0;
+      z-index: 1;
+      button {
+        color: white;
+        height: 100%;
+        background: #d23f50;
+      }
     }
   }
 </style>
