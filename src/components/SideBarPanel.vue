@@ -71,7 +71,7 @@
           <div class="border"></div>
         </div>
         <q-list separator class="clearfix">
-          <q-collapsible group="top_sources" label="Asia">
+          <q-collapsible group="top_sources" label="Asia" opened>
             <div class="clearfix">
               <div v-for="(country, index) in asia" :key="index" class="icon" :class="country.code" @click="loadSelectedCountryNews(country.code)">
                 <p class="country-info"><i class="country-flag"></i>
@@ -166,7 +166,7 @@
         america: COUNTRIES.AMERICA,
         africa: COUNTRIES.AFRICA,
         europe: COUNTRIES.EUROPE,
-        autonomous: COUNTRIES.EUROPE
+        autonomous: COUNTRIES.AUTONOMOUS
       };
     },
     directives: {
@@ -240,63 +240,63 @@
       //   this.selectedSources.splice(index, 1);
       // },
   
-      openNewsSelectModal(categoryName) {
-        console.log("openNewsSelectModal", categoryName);
+      // openNewsSelectModal(categoryName) {
+      //   console.log("openNewsSelectModal", categoryName);
   
-        switch (categoryName) {
-          case NEWS_CATEGORY.GENERAL:
-            {
-              this.selectNewsModalDataTitle = NEWS_CATEGORY.GENERAL;
-              this.selectNewsModalData = this.NewsCategories.general;
-              this.toggleNewsListModal();
-              break;
-            }
-          case NEWS_CATEGORY.BUSINESS:
-            {
-              console.log("hello", this.NewsCategories.business);
-              this.selectNewsModalDataTitle = NEWS_CATEGORY.BUSINESS;
-              this.selectNewsModalData = this.NewsCategories.business;
-              this.toggleNewsListModal();
-              break;
-            }
-          case NEWS_CATEGORY.ENTERTAINMENT:
-            {
-              this.selectNewsModalDataTitle = NEWS_CATEGORY.ENTERTAINMENT;
-              this.selectNewsModalData = this.NewsCategories.entertainment;
-              this.toggleNewsListModal();
-              break;
-            }
-          case NEWS_CATEGORY.SCIENCE:
-            {
-              this.selectNewsModalDataTitle = NEWS_CATEGORY.SCIENCE;
-              this.selectNewsModalData = this.NewsCategories.science;
-              this.toggleNewsListModal();
-              break;
-            }
-          case NEWS_CATEGORY.HEALTH:
-            {
-              this.selectNewsModalDataTitle = NEWS_CATEGORY.HEALTH;
-              this.selectNewsModalData = this.NewsCategories.health;
-              this.toggleNewsListModal();
-              break;
-            }
-          case NEWS_CATEGORY.SPORTS:
-            {
-              console.log("sports content", this.NewsCategories.sports);
-              this.selectNewsModalDataTitle = NEWS_CATEGORY.SPORTS;
-              this.selectNewsModalData = this.NewsCategories.sports;
-              this.toggleNewsListModal();
-              break;
-            }
-          case NEWS_CATEGORY.TECHNOLOGY:
-            {
-              this.selectNewsModalDataTitle = NEWS_CATEGORY.TECHNOLOGY;
-              this.selectNewsModalData = this.NewsCategories.technology;
-              this.toggleNewsListModal();
-              break;
-            }
-        }
-      }
+      //   switch (categoryName) {
+      //     case NEWS_CATEGORY.GENERAL:
+      //       {
+      //         this.selectNewsModalDataTitle = NEWS_CATEGORY.GENERAL;
+      //         this.selectNewsModalData = this.NewsCategories.general;
+      //         this.toggleNewsListModal();
+      //         break;
+      //       }
+      //     case NEWS_CATEGORY.BUSINESS:
+      //       {
+      //         console.log("hello", this.NewsCategories.business);
+      //         this.selectNewsModalDataTitle = NEWS_CATEGORY.BUSINESS;
+      //         this.selectNewsModalData = this.NewsCategories.business;
+      //         this.toggleNewsListModal();
+      //         break;
+      //       }
+      //     case NEWS_CATEGORY.ENTERTAINMENT:
+      //       {
+      //         this.selectNewsModalDataTitle = NEWS_CATEGORY.ENTERTAINMENT;
+      //         this.selectNewsModalData = this.NewsCategories.entertainment;
+      //         this.toggleNewsListModal();
+      //         break;
+      //       }
+      //     case NEWS_CATEGORY.SCIENCE:
+      //       {
+      //         this.selectNewsModalDataTitle = NEWS_CATEGORY.SCIENCE;
+      //         this.selectNewsModalData = this.NewsCategories.science;
+      //         this.toggleNewsListModal();
+      //         break;
+      //       }
+      //     case NEWS_CATEGORY.HEALTH:
+      //       {
+      //         this.selectNewsModalDataTitle = NEWS_CATEGORY.HEALTH;
+      //         this.selectNewsModalData = this.NewsCategories.health;
+      //         this.toggleNewsListModal();
+      //         break;
+      //       }
+      //     case NEWS_CATEGORY.SPORTS:
+      //       {
+      //         console.log("sports content", this.NewsCategories.sports);
+      //         this.selectNewsModalDataTitle = NEWS_CATEGORY.SPORTS;
+      //         this.selectNewsModalData = this.NewsCategories.sports;
+      //         this.toggleNewsListModal();
+      //         break;
+      //       }
+      //     case NEWS_CATEGORY.TECHNOLOGY:
+      //       {
+      //         this.selectNewsModalDataTitle = NEWS_CATEGORY.TECHNOLOGY;
+      //         this.selectNewsModalData = this.NewsCategories.technology;
+      //         this.toggleNewsListModal();
+      //         break;
+      //       }
+      //   }
+      // }
     },
     components: {
       QIcon,
@@ -605,7 +605,7 @@
         .news-item {
           position: relative;
           width: 21vw;
-          height: 30vw;
+          height: 25vw;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -622,8 +622,8 @@
             border-radius: 0.5rem;
           }
           .source-logo {
-            width: 7rem;
-            height: 7rem;
+            width: 16vw;
+            height: 16vw;
             display: block;
             margin: 0 auto;
             img {
@@ -639,7 +639,7 @@
             font-size: 1.3rem;
             text-align: center;
             line-height: 1.2rem;
-            margin: 0.5rem 0 0 0;
+            margin: 0.3rem 0 0 0;
           }
         }
       }

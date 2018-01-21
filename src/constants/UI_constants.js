@@ -25,39 +25,31 @@ const INDIA_NEWS_SOURCES = [
         url: "news18.com",
         category: "general"
     },
-
     {
         name: "India TV",
         url: "indiatvnews.com",
         imgurl: "",
     },
-
     {
         name: "NDTV India",
         url: "ndtv.com",
         imgurl: "",
     },
-
     {
         name: "News 24",
-        url: "news24online.com",
+        url: "news24.com",
         imgurl: "",
     },
-
     {
         name: "News Nation",
         url: "newsnation.in",
         imgurl: "",
     },
-
     {
         name: "Zee News",
         url: "india.com",
         imgurl: "",
     },
-
-
-
     {
         name: 'Bhaskar',
         url: "bhaskar.com",
