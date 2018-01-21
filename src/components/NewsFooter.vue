@@ -1,9 +1,15 @@
 <template>
     <!-- Footer -->
     <q-toolbar class="news-footer" slot="footer">
-        <q-toolbar-title>
+        <q-toolbar-title class="footer-icons">
             <q-btn @click="shareNews" flat>
             <q-icon name="share" />
+            </q-btn>
+            <q-btn flat>
+            <q-icon name="save" />
+            </q-btn>
+            <q-btn flat>
+            <q-icon name="chrome reader mode" />
             </q-btn>
             <q-btn @click="moveTofirst" flat>
             <q-icon name="vertical align top" class="change_history"/>
@@ -58,6 +64,10 @@
 <style lang="scss" scoped>
     .news-footer{
         width:100%;
+        .footer-icons{
+            display: flex;
+            justify-content: space-between;
+        }
         .change_history{
             transform: rotate(-90deg);
         }

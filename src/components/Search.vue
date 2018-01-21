@@ -35,7 +35,7 @@
         <q-card-separator />
         <q-card-actions class="row justify-between">
           <q-btn flat @click="shareNews(result)">SHARE</q-btn>
-          <q-btn flat color="primary"><a :href="result.url" target="_blank">READ THE FULL STORY</a></q-btn>
+          <q-btn flat class="read-full"><a :href="result.url" target="_blank">READ THE FULL STORY</a></q-btn>
         </q-card-actions>
       </q-card>
     </section>
@@ -261,16 +261,16 @@
       margin: 0;
       height: 5rem;
       transition: top 500ms ease;
+      .q-btn {
+        box-shadow: 0 0 0 0;
+        background: #d23f50;
+        color: #fff;
+      }
       .search-input {
         margin: 0;
         background: #333;
         flex-grow: 2;
         display: flex;
-      }
-      .q-btn {
-        box-shadow: 0 0 0 0;
-        background: #d23f50;
-        color: #fff;
       }
       .q-search {
         padding: 0;

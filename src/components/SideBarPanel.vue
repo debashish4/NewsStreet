@@ -1,25 +1,7 @@
 <template>
   <div class="side-bar-panel-wrapper">
     <div class="side-bar-panel">
-      <div class="country categories clearfix">
-        <div class="heading-wrapper">
-          <div class="heading">
-            <!-- <h4>News based on Country</h4> -->
-            <h4>Country</h4>
-            <div class="skew"></div>
-          </div>
-          <div class="border"></div>
   
-        </div>
-        <div class="icon india" @click="loadSelectedCountryNews('in')">
-          <p><i class="country-flag"></i>
-            <span class="text">India</span></p>
-        </div>
-        <div class="icon usa" @click="loadSelectedCountryNews('us')">
-          <p><i class="country-flag"></i>
-            <span class="text">USA</span></p>
-        </div>
-      </div>
       <div class="categories clearfix">
         <div class="heading-wrapper">
           <div class="heading">
@@ -67,12 +49,6 @@
           </div>
           <div class="border"></div>
         </div>
-        <!-- <div class="source-chips">
-                          <q-chip color="primary" v-for="(source, index) in selectedSources" :key="index">
-                            <p>{{source}}</p>
-                            <q-icon name="clear" class="close-chip" @click="removeFromSelection(source,index)" />
-                          </q-chip>
-                        </div> -->
         <div class="sources-list clearfix">
           <div class="news-list-wrapper">
             <div class="news-list">
@@ -84,36 +60,62 @@
               </div>
             </div>
           </div>
-          <!-- <q-list separator class="clearfix">
-                            <q-collapsible class="nw-icon nw-technology technology" group="top_sources" label="Technology" v-if="NewsCategories.technology.length">
-                              <q-checkbox v-for="(source, index) in NewsCategories.technology" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-                            </q-collapsible>
-                            <q-collapsible class="nw-icon nw-general general" group="top_sources" label="General" v-if="NewsCategories.general.length">
-                              <q-checkbox v-for="(source, index) in NewsCategories.general" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-                            </q-collapsible>
-                            <q-collapsible class="nw-icon nw-entertainment entertainment" group="top_sources" label="Entertainment" v-if="NewsCategories.entertainment.length">
-                              <q-checkbox v-for="(source, index) in NewsCategories.entertainment" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-                            </q-collapsible>
-                            <q-collapsible class="nw-icon nw-health health" group="top_sources" label="Health" v-if="NewsCategories.health.length">
-                              <q-checkbox v-for="(source, index) in NewsCategories.health" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-                            </q-collapsible>
-                            <q-collapsible class="nw-icon nw-business business" group="top_sources" label="Business" v-if="NewsCategories.business.length">
-                              <q-checkbox v-for="(source, index) in NewsCategories.business" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-                            </q-collapsible>
-                            <q-collapsible class="nw-icon nw-sports sports" group="top_sources" label="Sports" v-if="NewsCategories.sports.length">
-                              <q-checkbox v-for="(source, index) in NewsCategories.sports" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-                            </q-collapsible>
-                            <q-collapsible class="nw-icon nw-science science" group="top_sources" label="Science" v-if="NewsCategories.science.length">
-                              <q-checkbox v-for="(source, index) in NewsCategories.science" :key="index" v-model="selectedSources" :val="source.name" :label="source.name" />
-                            </q-collapsible>
-                          </q-list> -->
         </div>
+      </div>
+      <div class="country clearfix">
+        <div class="heading-wrapper">
+          <div class="heading">
+            <h4>Country</h4>
+            <div class="skew"></div>
+          </div>
+          <div class="border"></div>
+        </div>
+        <q-list separator class="clearfix">
+          <q-collapsible group="top_sources" label="Asia">
+            <div class="clearfix">
+              <div v-for="(country, index) in asia" :key="index" class="icon" :class="country.code" @click="loadSelectedCountryNews(country.code)">
+                <p class="country-info"><i class="country-flag"></i>
+                  <span class="text">{{country.name}}</span></p>
+              </div>
+            </div>
+          </q-collapsible>
+          <q-collapsible group="top_sources" label="America">
+            <div class="clearfix">
+              <div v-for="(country, index) in america" :key="index" class="icon" :class="country.code" @click="loadSelectedCountryNews(country.code)">
+                <p class="country-info"><i class="country-flag"></i>
+                  <span class="text">{{country.name}}</span></p>
+              </div>
+            </div>
+          </q-collapsible>
+          <q-collapsible group="top_sources" label="Africa">
+            <div class="clearfix">
+              <div v-for="(country, index) in africa" :key="index" class="icon" :class="country.code" @click="loadSelectedCountryNews(country.code)">
+                <p class="country-info"><i class="country-flag"></i>
+                  <span class="text">{{country.name}}</span></p>
+              </div>
+            </div>
+          </q-collapsible>
+          <q-collapsible group="top_sources" label="Europe">
+            <div class="clearfix">
+              <div v-for="(country, index) in europe" :key="index" class="icon" :class="country.code" @click="loadSelectedCountryNews(country.code)">
+                <p class="country-info"><i class="country-flag"></i>
+                  <span class="text">{{country.name}}</span></p>
+              </div>
+            </div>
+          </q-collapsible>
+          <q-collapsible group="top_sources" label="Oceania/Autonomous">
+            <div class="clearfix">
+              <div v-for="(country, index) in autonomous" :key="index" class="icon" :class="country.code" @click="loadSelectedCountryNews(country.code)">
+                <p class="country-info"><i class="country-flag"></i>
+                  <span class="text">{{country.name}}</span></p>
+              </div>
+            </div>
+          </q-collapsible>
+        </q-list>
       </div>
       <!-- <news-select-modal :title="selectNewsModalDataTitle" :data="selectNewsModalData" /> -->
     </div>
-    <!-- <div class="continue full-width" v-if="selectedSources.length">
-      <q-btn class="full-width load-news" big @click="loadSelectedSourcesNews">Load Selected News</q-btn>
-    </div> -->
+  
   </div>
 </template>
 
@@ -134,7 +136,8 @@
   } from "vuex";
   import {
     NEWS_CATEGORY,
-    INDIA_NEWS_SOURCES
+    INDIA_NEWS_SOURCES,
+    COUNTRIES
   } from "../constants/UI_constants";
   import {
     stringifyArray
@@ -151,22 +154,19 @@
   export default {
     data() {
       return {
-        NewsCategories: {
-          // general: [],
-          // business: [],
-          // entertainment: [],
-          // science: [],
-          // health: [],
-          // sports: [],
-          // technology: []
-        },
+        NewsCategories: {},
         topSourcesNews: [],
         selectedSources: [],
         checkedItemUrls: [],
         checkedItemNames: [],
         isPanelOpen: false,
         selectNewsModalData: [],
-        selectNewsModalDataTitle: ""
+        selectNewsModalDataTitle: "",
+        asia: COUNTRIES.ASIA,
+        america: COUNTRIES.AMERICA,
+        africa: COUNTRIES.AFRICA,
+        europe: COUNTRIES.EUROPE,
+        autonomous: COUNTRIES.EUROPE
       };
     },
     directives: {
@@ -189,7 +189,7 @@
         this.selectedSources = selectedNewsInArr;
       }
     },
-    computed:{
+    computed: {
       ...mapState({
         country: state => state.settings.country
       })
@@ -229,7 +229,7 @@
   
   
       loadSelectedSourcesNews(sourceUrl) {
-          console.log('loadSelectedSourcesNews', sourceUrl);
+        console.log('loadSelectedSourcesNews', sourceUrl);
         eventBus.$emit("evtLoadSourcesNews", sourceUrl);
         this.toggleDrawer();
       },
@@ -317,210 +317,331 @@
     padding-bottom: 5rem;
     overflow: scroll;
     .categories {
-      padding: 1rem 0.5rem;
-    }
-  }
-  
-  // .continue {
-  //   height: 50px;
-  //   position: fixed;
-  //   bottom: 0;
-  //   z-index: 1;
-  //   button {
-  //     color: white;
-  //     height: 100%;
-  //     background: #d23f50;
-  //   }
-  // }
-  
-  .icon {
-    margin: 1.2vw;
-    padding-top: 1rem;
-    display: flex;
-    border-radius: 0.8rem;
-    float: left;
-    align-items: center;
-    justify-content: center;
-    width: 30vw;
-    height: 30vw;
-    overflow: hidden;
-    i {
-      width: 100%;
-      display: block;
-      color: #343434;
-      font-size: 7rem;
-      text-align: center;
-    }
-    .text {
-      text-align: center;
-      font-size: 1.3rem;
-      display: inline-block;
-      width: 100%;
-    }
-  }
-  
-  .business {
-    background-image: linear-gradient(60deg, #96deda 0%, #50c9c3 100%);
-  }
-  
-  .entertainment {
-    background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
-  }
-  
-  .general {
-    background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
-  }
-  
-  .health {
-    background-image: linear-gradient(-60deg, #a8edea 0%, #fed6e3 100%);
-  }
-  
-  .science {
-    background-image: linear-gradient(to top, #e6b980 0%, #eacda3 100%);
-  }
-  
-  .sports {
-    background-image: linear-gradient(60deg, #ffc3a0 0%, #ffafbd 100%);
-  }
-  
-  .technology {
-    background-image: linear-gradient(-225deg, #ffe29f 0%, #ffa99f 100%);
-  }
-  
-  .country {
-    .country-flag {
-      width: 8rem !important;
-      height: 8rem;
-      border-radius: 50%;
-      display: block;
-      background-size: cover;
+      padding: 1rem 0;
     }
     .icon {
-      background: #a2ded0;
-      background-size: cover;
-    }
-    .india .country-flag {
-      background-image: url("../assets/in.svg");
-    }
-    .usa .country-flag {
-      background-image: url("../assets/us.svg");
-    }
-  }
-  
-  .heading {
-    height: 30px;
-    width: 200px;
-    position: relative;
-    display: flex;
-    align-content: center;
-    background: #333;
-    .skew {
-      background: #333;
-      height: 100%;
-      width: 120px;
-      position: absolute;
-      right: -10px;
-      transform: skew(35deg);
-    }
-  }
-  
-  .border {
-    position: relative;
-    z-index: 12;
-    width: 100%;
-    border: 0.2rem solid #d23f50;
-    margin-bottom: 1rem;
-  }
-  
-  h4 {
-    position: absolute;
-    padding: 0.5rem;
-    color: #fff;
-    z-index: 1;
-    top: 0;
-    font-size: 1.7rem;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    -webkit-margin-start: 0;
-    -webkit-margin-end: 0;
-  }
-  
-  // .top-sources {
-  //   .nw-icon {
-  //     position: relative !important;
-  //   }
-  //   .nw-icon:before {
-  //     font-size: 2rem;
-  //     position: absolute;
-  //     top: -0.8rem;
-  //     margin: 2rem;
-  //   }
-  //   .q-collapsible {
-  //     .q-collapsible-sub-item {
-  //       background: white;
-  //     }
-  //   }
-  //   .q-item-main {
-  //     font-size: 1.8rem;
-  //     font-family: "Raleway", "sans-serif";
-  //     padding-left: 4rem !important;
-  //   }
-  //   .q-list {
-  //     padding: 0;
-  //   }
-  // }
-  .news-list-wrapper {
-    background-image: url('../assets/cream-pixels.png');
-    .title {
-      margin: 0;
-      padding: 1rem;
-      height: 5rem;
-      color: #fff;
-      background: #595959;
-    }
-  }
-  
-  .news-list {
-    display: block;
-    .news-item {
-      position: relative;
-      width: 29vw;
-      height: 33vw;
+      margin: 1.2vw;
+      padding-top: 1rem;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 2px solid #d23f50;
-      box-sizing: content-box;
-      border-radius: 0.5rem;
+      border-radius: 0.8rem;
       float: left;
-      margin: 0.5rem;
-      background: rgba(210, 63, 80, 0.1);
-      .news-thumb {
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        border-radius: 0.5rem;
-      }
-      .source-logo {
-        width: 7rem;
-        height: 7rem;
+      align-items: center;
+      justify-content: center;
+      width: 30.9vw;
+      height: 30.9vw;
+      overflow: hidden;
+      i {
+        width: 100%;
         display: block;
-        margin: 0 auto;
-        img {
-          display: block;
-          background: #ccc;
-          border-radius: 1rem;
-          width: 100%;
-          height: 100%;
+        color: #343434;
+        font-size: 7rem;
+        text-align: center;
+      }
+      .text {
+        text-align: center;
+        font-size: 1.3rem;
+        display: inline-block;
+        width: 100%;
+      }
+    }
+    .business {
+      background-image: linear-gradient(60deg, #96deda 0%, #50c9c3 100%);
+    }
+    .entertainment {
+      background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+    }
+    .general {
+      background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+    }
+    .health {
+      background-image: linear-gradient(-60deg, #a8edea 0%, #fed6e3 100%);
+    }
+    .science {
+      background-image: linear-gradient(to top, #e6b980 0%, #eacda3 100%);
+    }
+    .sports {
+      background-image: linear-gradient(60deg, #ffc3a0 0%, #ffafbd 100%);
+    }
+    .technology {
+      background-image: linear-gradient(-225deg, #ffe29f 0%, #ffa99f 100%);
+    }
+    .country {
+      .q-list {
+        padding: 0;
+        .q-collapsible-sub-item {
+          padding: 0;
+        }
+        .icon {
+          width: 22vw;
+          height: 25vw;
+          .country-info {
+            width: 16vw;
+            line-height: 1.4rem;
+          }
         }
       }
-      .source-name {
-        // width: 32vw;
-        // overflow: hidden;
-        word-break: break-word;
-        font-size: 1.3rem;
-        text-align: center;
-        margin: 0;
+      .country-flag {
+        width: 16vw;
+        height: 16vw;
+        border-radius: 0.5rem;
+        display: block;
+        background-size: cover;
+      }
+      .icon {
+        background: #a2ded0;
+        background-size: cover;
+      }
+      .ae .country-flag {
+        background-image: url("../assets/countries/ae.svg");
+      }
+      .ar .country-flag {
+        background-image: url("../assets/countries/ar.svg");
+      }
+      .at .country-flag {
+        background-image: url("../assets/countries/at.svg");
+      }
+      .au .country-flag {
+        background-image: url("../assets/countries/au.svg");
+      }
+      .be .country-flag {
+        background-image: url("../assets/countries/be.svg");
+      }
+      .bg .country-flag {
+        background-image: url("../assets/countries/bg.svg");
+      }
+      .br .country-flag {
+        background-image: url("../assets/countries/br.svg");
+      }
+      .ca .country-flag {
+        background-image: url("../assets/countries/ca.svg");
+      }
+      .ch .country-flag {
+        background-image: url("../assets/countries/ch.svg");
+      }
+      .cn .country-flag {
+        background-image: url("../assets/countries/cn.svg");
+      }
+      .co .country-flag {
+        background-image: url("../assets/countries/co.svg");
+      }
+      .cu .country-flag {
+        background-image: url("../assets/countries/cu.svg");
+      }
+      .cz .country-flag {
+        background-image: url("../assets/countries/cz.svg");
+      }
+      .de .country-flag {
+        background-image: url("../assets/countries/de.svg");
+      }
+      .eg .country-flag {
+        background-image: url("../assets/countries/eg.svg");
+      }
+      .fr .country-flag {
+        background-image: url("../assets/countries/fr.svg");
+      }
+      .gb .country-flag {
+        background-image: url("../assets/countries/gb.svg");
+      }
+      .gr .country-flag {
+        background-image: url("../assets/countries/gr.svg");
+      }
+      .hk .country-flag {
+        background-image: url("../assets/countries/hk.svg");
+      }
+      .hu .country-flag {
+        background-image: url("../assets/countries/hu.svg");
+      }
+      .id .country-flag {
+        background-image: url("../assets/countries/id.svg");
+      }
+      .ie .country-flag {
+        background-image: url("../assets/countries/ie.svg");
+      }
+      .il .country-flag {
+        background-image: url("../assets/countries/il.svg");
+      }
+      .in .country-flag {
+        background-image: url("../assets/countries/in.svg");
+      }
+      .it .country-flag {
+        background-image: url("../assets/countries/it.svg");
+      }
+      .jp .country-flag {
+        background-image: url("../assets/countries/jp.svg");
+      }
+      .kr .country-flag {
+        background-image: url("../assets/countries/kr.svg");
+      }
+      .lt .country-flag {
+        background-image: url("../assets/countries/lt.svg");
+      }
+      .lv .country-flag {
+        background-image: url("../assets/countries/lv.svg");
+      }
+      .ma .country-flag {
+        background-image: url("../assets/countries/ma.svg");
+      }
+      .mx .country-flag {
+        background-image: url("../assets/countries/mx.svg");
+      }
+      .my .country-flag {
+        background-image: url("../assets/countries/my.svg");
+      }
+      .ng .country-flag {
+        background-image: url("../assets/countries/ng.svg");
+      }
+      .nl .country-flag {
+        background-image: url("../assets/countries/nl.svg");
+      }
+      .no .country-flag {
+        background-image: url("../assets/countries/no.svg");
+      }
+      .nz .country-flag {
+        background-image: url("../assets/countries/nz.svg");
+      }
+      .ph .country-flag {
+        background-image: url("../assets/countries/ph.svg");
+      }
+      .pl .country-flag {
+        background-image: url("../assets/countries/pl.svg");
+      }
+      .pt .country-flag {
+        background-image: url("../assets/countries/pt.svg");
+      }
+      .ro .country-flag {
+        background-image: url("../assets/countries/ro.svg");
+      }
+      .rs .country-flag {
+        background-image: url("../assets/countries/rs.svg");
+      }
+      .ru .country-flag {
+        background-image: url("../assets/countries/ru.svg");
+      }
+      .sa .country-flag {
+        background-image: url("../assets/countries/sa.svg");
+      }
+      .se .country-flag {
+        background-image: url("../assets/countries/se.svg");
+      }
+      .sg .country-flag {
+        background-image: url("../assets/countries/sg.svg");
+      }
+      .si .country-flag {
+        background-image: url("../assets/countries/si.svg");
+      }
+      .sk .country-flag {
+        background-image: url("../assets/countries/sk.svg");
+      }
+      .th .country-flag {
+        background-image: url("../assets/countries/th.svg");
+      }
+      .tr .country-flag {
+        background-image: url("../assets/countries/tr.svg");
+      }
+      .tw .country-flag {
+        background-image: url("../assets/countries/tw.svg");
+      }
+      .ua .country-flag {
+        background-image: url("../assets/countries/ua.svg");
+      }
+      .us .country-flag {
+        background-image: url("../assets/countries/us.svg");
+      }
+      .ve .country-flag {
+        background-image: url("../assets/countries/ve.svg");
+      }
+      .za .country-flag {
+        background-image: url("../assets/countries/za.svg");
+      }
+    }
+    .heading {
+      height: 30px;
+      width: 200px;
+      position: relative;
+      display: flex;
+      align-content: center;
+      background: #333;
+      .skew {
+        background: #333;
+        height: 100%;
+        width: 120px;
+        position: absolute;
+        right: -10px;
+        transform: skew(35deg);
+      }
+    }
+    .border {
+      position: relative;
+      z-index: 12;
+      width: 100%;
+      border: 0.2rem solid #d23f50;
+      margin-bottom: 1rem;
+    }
+    h4 {
+      position: absolute;
+      padding: 0.5rem;
+      color: #fff;
+      z-index: 1;
+      top: 0;
+      font-size: 1.7rem;
+      -webkit-margin-before: 0;
+      -webkit-margin-after: 0;
+      -webkit-margin-start: 0;
+      -webkit-margin-end: 0;
+    }
+    .top-sources {
+      .news-list-wrapper {
+        background-image: url('../assets/cream-pixels.png');
+        .title {
+          margin: 0;
+          padding: 1rem;
+          height: 5rem;
+          color: #fff;
+          background: #595959;
+        }
+      }
+      .news-list {
+        display: block;
+        .news-item {
+          position: relative;
+          width: 21vw;
+          height: 30vw;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 2px solid #d23f50;
+          box-sizing: content-box;
+          border-radius: 0.5rem;
+          float: left;
+          margin: 0.5rem;
+          background: rgba(210, 63, 80, 0.1);
+          .news-thumb {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.5rem;
+          }
+          .source-logo {
+            width: 7rem;
+            height: 7rem;
+            display: block;
+            margin: 0 auto;
+            img {
+              display: block;
+              background: #ccc;
+              border-radius: 1rem;
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .source-name {
+            word-break: break-word;
+            font-size: 1.3rem;
+            text-align: center;
+            line-height: 1.2rem;
+            margin: 0.5rem 0 0 0;
+          }
+        }
       }
     }
   }
