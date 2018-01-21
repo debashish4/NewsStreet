@@ -6,15 +6,17 @@
   
     </div>
     <q-list-header>Toggles</q-list-header>
+      <q-item-separator />
     <q-item tag="label" multiline>
       <q-item-main>
         <q-item-tile label>Country</q-item-tile>
-        <q-item-tile sublabel>Select country which you prefer news from</q-item-tile>
+        <q-item-tile sublabel>Preferred country to read news from</q-item-tile>
       </q-item-main>
       <q-item-side right>
         <q-select class="select-country" v-model="country" :options="countryOptions" />
       </q-item-side>
     </q-item>
+      <q-item-separator />
     <q-item tag="label" multiline>
       <q-item-main>
         <q-item-tile label>Push Notifications</q-item-tile>
@@ -24,6 +26,7 @@
         <q-toggle v-model="checked"></q-toggle>
       </q-item-side>
     </q-item>
+      <q-item-separator />
     <q-item tag="label" multiline>
       <q-item-main>
         <q-item-tile label>Theme</q-item-tile>
@@ -33,11 +36,12 @@
         <q-toggle v-model="checked" color="purple"></q-toggle>
       </q-item-side>
     </q-item>
+      <q-item-separator />
     <q-item tag="label" multiline>
       <q-item-main>
-        <q-item-tile label>Events and reminders</q-item-tile>
-        <q-item-tile sublabel lines="3">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+        <q-item-tile label>News Display Layout</q-item-tile>
+        <q-item-tile sublabel>
+          Toggle between card and card carousel
         </q-item-tile>
       </q-item-main>
       <q-item-side right>
@@ -46,7 +50,7 @@
     </q-item>
     <q-item-separator />
     <div class="continue full-width">
-      <q-btn class="full-width load-news" @click="applySettings" big>Apply Settings</q-btn>
+      <q-btn class="full-width load-news" @click="applySettings" big>Apply Changes</q-btn>
     </div>
   </div>
 </template>
@@ -81,7 +85,9 @@
             label: "USA",
             value: "us"
           }
-        ]
+        ],
+        notification: false,
+        theme: true,
       };
     },
   
@@ -127,8 +133,11 @@
     .select-country {
       margin: 0;
     }
+    .q-item-label{
+      font-size: 1.6rem;
+    }
     .q-item-sublabel {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
     }
     .continue {
       height: 50px;
@@ -138,6 +147,7 @@
       button {
         color: white;
         height: 100%;
+        text-transform: none;
         background: #d23f50;
       }
     }
