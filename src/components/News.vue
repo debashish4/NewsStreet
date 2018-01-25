@@ -464,9 +464,17 @@
     font-size: 1.4rem;
     letter-spacing: 0.1rem;
     margin: 0 auto;
-    background: rgba(30, 144, 255, 0.058823529411764705);
+    background: rgba(30, 144, 255, 0.05);
     border: 0.1rem solid rgba(30, 144, 255, 0.2);
     border-radius: 0.5rem;
+    transition: 1s all;
+  }
+  
+  .read-more:hover,
+  .read-more:active{
+    color: #004a92;
+    background: rgba(76, 160, 243, 0.249);
+    border: 0.1rem solid #004a92;
   }
   
   // .read-more:before {

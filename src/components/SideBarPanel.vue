@@ -71,7 +71,7 @@
           <div class="border"></div>
         </div>
         <q-list separator class="clearfix">
-          <q-collapsible group="top_sources" label="Asia" opened>
+          <q-collapsible group="top_sources" label="Asia">
             <div class="clearfix">
               <div v-for="(country, index) in asia" :key="index" class="icon" :class="country.code" @click="loadSelectedCountryNews(country.code)">
                 <p class="country-info"><i class="country-flag"></i>
@@ -126,9 +126,7 @@
     QList,
     QCollapsible,
     QCheckbox,
-    QChip,
-    TouchSwipe,
-    TouchHold
+    QChip
   } from "quasar";
   import {
     mapActions,
@@ -166,12 +164,9 @@
         america: COUNTRIES.AMERICA,
         africa: COUNTRIES.AFRICA,
         europe: COUNTRIES.EUROPE,
-        autonomous: COUNTRIES.AUTONOMOUS
+        autonomous: COUNTRIES.AUTONOMOUS,
+        rippleEnabled: false
       };
-    },
-    directives: {
-      TouchSwipe,
-      TouchHold
     },
     mounted() {
       eventBus.$on("@close", () => {
@@ -553,6 +548,11 @@
       .za .country-flag {
         background-image: url("../assets/countries/za.svg");
       }
+    }
+    .heading-wrapper{
+      position: sticky;
+      top:0;
+      z-index: 1; 
     }
     .heading {
       height: 30px;

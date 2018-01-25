@@ -20,12 +20,17 @@
                 <ol class="saved-news-list">
                     <li v-for="(item, index) in savedNewsCollection" :key="index">
                         <p class="saved-news">{{item.title}}</p>
+                        <button class="clear" @click="removeSavedItem(item, index)"><q-icon name="clear" /></button>
                     </li>
                 </ol>
-                <q-btn color="primary" @click="isSavedNewsCollectionWindowOpen = false" label="Close">
-    
-                    <p>close</p>
-                </q-btn>
+                <div class="actions">
+                    <q-btn @click="removeAllSavedNews" color="red" :outline="true" class="clear">
+                        Clear All
+                    </q-btn>
+                    <q-btn class="close" color="red" @click="isSavedNewsCollectionWindowOpen = false" label="Close">
+                        Close
+                    </q-btn>
+                </div>
             </q-modal>
         </div>
     </q-toolbar>
@@ -97,6 +102,15 @@
                 let getSavedNews = JSON.parse(localStorage.getItem('readLater'));
                 this.savedNewsCollection = getSavedNews;
                 console.log('this.savedNewsCollection', this.savedNewsCollection);
+            },
+            removeAllSavedNews() {
+                this.savedNewsCollection = [];
+                localStorage.setItem('readLater', '[]');
+            },
+            removeSavedItem(item, index){
+                this.savedNewsCollection.splice(index,1);
+                let stringifyNewsCollection = JSON.stringify(this.savedNewsCollection);
+                localStorage.setItem('readLater', stringifyNewsCollection);
             }
         },
         components: {
@@ -122,32 +136,46 @@
     }
     
     .saved-news-list-wrapper {
-        .modal-content{
-            max-width: 90vw!important;
+        .modal-content {
+            width: 90vw!important;
             max-height: 90vh!important;
-            overflow:hidden;
-            overflow-y: scroll; 
+            overflow: hidden;
             padding: 1rem;
         }
         .saved-news-list {
+            height: 80vh;
+            overflow: hidden;
+            overflow-y: scroll;
             li:nth-child(even) {
-                background: rgb(236, 236, 236);
+                background: rgb(255, 245, 245);
             }
             li:nth-child(odd) {
-                background: rgb(221, 221, 221);
+                background: rgb(255, 226, 226);
             }
             li {
                 min-height: 5rem;
                 display: flex;
-                align-items: center;
-                padding: 1rem;
+                align-items: stretch;
+                padding: 0 0 0 1rem;
                 font-size: 1.6rem;
-
             }
-            .saved-news{
-             color: blue;
-             text-decoration: underline;   
+            .saved-news {
+                color: dodgerblue;
+                padding: 1rem 0;
+                text-decoration: underline;
             }
+            .clear {
+                background: rgba(51,51,51,0.8);
+                color: #fff;
+                border: none;
+                padding:0 1rem;
+            }
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
         }
     }
 </style>
