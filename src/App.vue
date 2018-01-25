@@ -1,9 +1,9 @@
 <template>
   <!-- Don't drop "q-app" class -->
-  <div id="q-app" :class="{offline: isOffline}">
+  <div id="q-app">
     <!-- Example using a QLayout as required -->
     <Loader />
-    <q-layout ref="layout">
+    <q-layout ref="layout" :class="{offline: isOffline}">
       <!-- Layout header -->
       <q-toolbar slot="header">
         <q-btn flat v-if="currentPath !== '/settings'">
@@ -76,7 +76,8 @@
     QCarousel,
     QSpinnerCube,
     QModal,
-    TouchSwipe
+    TouchSwipe,
+    Toast
   } from "quasar";
   import Loader from '@/Loader.vue'
   import News from '@/News.vue'
@@ -144,6 +145,7 @@
     },
     computed: {
       ...mapState({
+        toast: state => state.toast,
         isDrawerOpen: state => state.app.isDrawerOpen,
         isNewsListModalOpen: state => state.app.isNewsListModalOpen,
         isReadMorePanelOpen: state => state.app.isReadMorePanelOpen
@@ -163,11 +165,18 @@
       },
       goBack() {
         this.$router.go(-1);
+      },
+      openToast(data){
+        Toast.create(data);
       }
     },
     watch: {
       isDrawerOpen: function(data) {
         data ? this.openLeftDrawer() : this.closeLeftDrawer()
+      },
+      toast:function(data){
+        console.log('what is data', data);
+        this.openToast(data);
       },
       $route(route) {
         console.log('path', route.path);
@@ -210,6 +219,7 @@
   }
   
   .offline {
+    -webkit-filter: blur(3px) grayscale(100%);
     filter: blur(3px) grayscale(100%);
     pointer-events: none;
   }

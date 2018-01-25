@@ -2,7 +2,7 @@
   <q-layout ref="layout" view="hHr LpR Fff">
     <div class="flipWrapper" v-if="newsCollection.length">
       <div class="flip-container" :class="{'disable-touch': disableTouch}">
-        <div class="flipper" v-touch-swipe="evt => loadNewsInBrowser(newsCollection[socialShareNewsItemIndex].url,evt)" @click="showNewsCount" :style="{ 'transform': `rotateY(${deg}deg)`}">
+        <div class="flipper" @click="showNewsCount" :style="{ 'transform': `rotateY(${deg}deg)`}">
           <div class="front" v-touch-swipe.horizontal="frontCardSwipe">
             <div class="news">
               <div class="article-image-container row justify-center items-center">
@@ -23,6 +23,7 @@
                 <p :class="{hide:!newsCollection[front].author}" class="author">
                   Author: <span>{{newsCollection[front].author || 'none'}}</span>
                 </p>
+                <p @click="loadNewsInBrowser(newsCollection[socialShareNewsItemIndex].url)" class="read-more">Read full article</p>
               </div>
             </div>
           </div>
@@ -46,6 +47,7 @@
                 <p :class="{hide:!newsCollection[back].author}" class="author">
                   Author: <span>{{newsCollection[back].author || 'none'}}</span>
                 </p>
+                <div class="read-more">Read full article</div>
               </div>
             </div>
           </div>
@@ -168,6 +170,19 @@
             let articles = response.data.articles || [];
             this.newsCollection = articles;
             this.resetNewsCard();
+            // this.socialShareNewsItemIndex = 0;
+            const {
+              description,
+              title,
+              url,
+              urlToImage
+            } = this.newsCollection[0];
+            this.saveSocialShareData({
+              description,
+              title,
+              url,
+              urlToImage
+            });
             eventBus.$emit('stopLoader');
             console.log('here', response.data.articles);
           })
@@ -206,7 +221,11 @@
       eventBus.$off('evtLoadSourcesNews');
     },
     methods: {
-      ...mapActions(["toggleReadMorePanel", "saveSocialShareData"]),
+      ...mapActions(["toggleReadMorePanel", "saveSocialShareData", "triggerToast"]),
+      openToast() {
+        console.log('open toast function');
+        this.triggerToast('hellow')
+      },
       frontCardSwipe(e) {
         console.log("inside front if", e);
         this.disableTouch = true;
@@ -302,16 +321,18 @@
           console.log(err);
         }
       },
-      loadNewsInBrowser(direction, evt) {
-        console.log({
-          direction,
-          evt
-        });
+      loadNewsInBrowser(direction) {
+        // console.log({
+        //   direction,
+        //   evt
+        // });
         let url = this.newsCollection[this.socialShareNewsItemIndex].url;
-        if (evt.direction == "up" && evt.distance.y > 50) {
-          this.inAppBrowserLoadNewsUrl = url;
-          this.openWindow();
-        }
+        this.inAppBrowserLoadNewsUrl = url;
+        this.openWindow();
+        // if (evt.direction == "up" && evt.distance.y > 50) {
+        //   this.inAppBrowserLoadNewsUrl = url;
+        //   this.openWindow();
+        // }
       },
   
       showNewsCount() {
@@ -427,9 +448,39 @@
   .disable-touch {
     pointer-events: none;
   }
-  .hide{
+  
+  .hide {
     display: none;
   }
+  
+  .read-more {
+    color: rgb(30, 144, 255);
+    display: flex;
+    width: 17rem;
+    white-space: nowrap;
+    height: 3.5rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    letter-spacing: 0.1rem;
+    margin: 0 auto;
+    background: rgba(30, 144, 255, 0.058823529411764705);
+    border: 0.1rem solid rgba(30, 144, 255, 0.2);
+    border-radius: 0.5rem;
+  }
+  
+  // .read-more:before {
+  //   content: "";
+  //   position: absolute;
+  //   right: -0.1rem;
+  //   bottom: -0.1rem;
+  //   width: 0;
+  //   height: 0;
+  //   border-style: solid;
+  //   border-width: 0 0 2rem 2rem;
+  //   border-color: transparent transparent #d23f50 transparent;
+  //   z-index: 1;
+  // }
   .flipWrapper {
     background-image: url("../assets/egg-shell.png");
     .flip-container {

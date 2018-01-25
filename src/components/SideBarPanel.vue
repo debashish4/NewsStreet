@@ -323,23 +323,23 @@
       margin: 1.2vw;
       padding-top: 1rem;
       display: flex;
-      border-radius: 0.8rem;
+      border-radius: 0.5rem;
       float: left;
       align-items: center;
       justify-content: center;
-      width: 30.9vw;
-      height: 30.9vw;
+      width: 22.6vw;
+      height: 25vw;
       overflow: hidden;
       i {
         width: 100%;
         display: block;
         color: #343434;
-        font-size: 7rem;
+        font-size: 5rem;
         text-align: center;
       }
       .text {
         text-align: center;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         display: inline-block;
         width: 100%;
       }

@@ -25,6 +25,9 @@ const mutations = {
     },
     [types.CHANGE_COUNTRY](state, payload) {
         state.settings.country = payload
+    },
+    [types.TRIGGER_TOAST](state, payload) {
+        state.toast = payload
     }
 };
 

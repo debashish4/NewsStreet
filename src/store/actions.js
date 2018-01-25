@@ -1,10 +1,10 @@
 import * as types from '../constants/mutation_types'
 
-const toggleReadMorePanel = ({commit}) => {
+const toggleReadMorePanel = ({ commit }) => {
     commit(types.TOGGLE_READ_MORE_PANEL)
 };
 
-const toggleNewsListModal = ({commit}) => {
+const toggleNewsListModal = ({ commit }) => {
     commit(types.TOGGLE_NEWS_LIST_MODAL)
 };
 
@@ -12,11 +12,11 @@ const closeNewsListModal = ({ commit }) => {
     commit(types.CLOSE_NEWS_LIST_MODAL, false)
 };
 
-const saveSelectedNews = ({commit}, payload) => {
+const saveSelectedNews = ({ commit }, payload) => {
     commit(types.SAVE_SELECTED_NEWS, payload)
 };
 
-const toggleDrawer = ({commit}) => {
+const toggleDrawer = ({ commit }) => {
     commit(types.TOGGLE_DRAWER)
 };
 
@@ -24,13 +24,16 @@ const openDrawer = ({ commit }) => {
     commit(types.OPEN_DRAWER)
 };
 
-const saveSocialShareData = ({commit}, payload) => {
+const saveSocialShareData = ({ commit }, payload) => {
     commit(types.SAVE_SOCIAL_SHARE_DATA, payload)
-}
+};
 
 const changeCountry = ({ commit }, payload) => {
     commit(types.CHANGE_COUNTRY, payload)
-}
+};
 
+const triggerToast = ({ commit }, payload) => {
+    commit(types.TRIGGER_TOAST, payload)
+};
 
-export { changeCountry, saveSocialShareData, openDrawer, toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews}
+export { triggerToast, changeCountry, saveSocialShareData, openDrawer, toggleDrawer, toggleReadMorePanel, toggleNewsListModal, closeNewsListModal, saveSelectedNews }

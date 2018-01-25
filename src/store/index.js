@@ -7,20 +7,20 @@ Vue.use(Vuex);
 
 
 const state = {
+
     app: {
         isDrawerOpen: false,
         isReadMorePanelOpen: false,
         isNewsListModalOpen: false,
     },
-    
-    news:{
-        selectedNews:[],
-        socialShareData:{}
+    news: {
+        selectedNews: [],
+        socialShareData: {}
     },
-
-    settings:{
-        country:  'in',
-    }
+    settings: {
+        country: 'in',
+    },
+    toast: ''
 };
 
 export default new Vuex.Store({
